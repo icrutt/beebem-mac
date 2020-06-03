@@ -61,6 +61,8 @@
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.gcc;
 			fileType = sourcecode.c;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 			);
@@ -70,6 +72,8 @@
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.gcc;
 			fileType = sourcecode.c;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 			);
@@ -77,6 +81,8 @@
 		};
 		1905228708A5FC8B0096D433 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 			);
@@ -476,7 +482,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C170E2BB214098EB00A4221B /* Debug.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -491,12 +497,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PREBINDING = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.g7jjf.beebem;
 				PRODUCT_NAME = BeebEm4;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -506,8 +512,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C1903D4421409181003BE0C2 /* Release.xcconfig */;
 			buildSettings = {
-				ARCHS = i386;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM_ID}";
@@ -519,13 +525,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PREBINDING = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.g7jjf.beebem;
 				PRODUCT_NAME = BeebEm4;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
@@ -544,7 +550,7 @@
 				);
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = "-lz";
 				SDKROOT = "";
 			};
@@ -560,7 +566,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = SOUNDSUPPORT;
 				GCC_VERSION = "";
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = "-lz";
 				SDKROOT = "";
 			};
