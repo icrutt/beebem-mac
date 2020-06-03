@@ -93,6 +93,7 @@
 /* Begin PBXFileReference section */
 		0867D6ABFE840B52C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
+		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
 		19005B940963E34200872367 /* scsi.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = scsi.cc; path = Src/scsi.cc; sourceTree = "<group>"; };
 		19023C8808E3E96000BA702E /* uef.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = uef.cc; path = Src/uef.cc; sourceTree = "<group>"; };
 		1907F0680AA32D4D0098CA99 /* serialdevices.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = serialdevices.cc; path = Src/serialdevices.cc; sourceTree = "<group>"; };
@@ -227,6 +228,7 @@
 				173406582487E203005588CC /* discedit.h */,
 				19AC0F76139C06D4003679A1 /* BeebEm4_Prefix.pch */,
 				19E9FA09086B5C85008741A6 /* 6502core.cc */,
+				173406592487E315005588CC /* 6502core.h */,
 				199193910BF601F20025F5A0 /* Arm.cc */,
 				1991931B0BF5D4D20025F5A0 /* ArmDisassembler.cc */,
 				19E9FA07086B5C85008741A6 /* atodconv.cc */,
