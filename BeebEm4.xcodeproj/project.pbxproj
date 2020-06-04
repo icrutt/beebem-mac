@@ -97,6 +97,15 @@
 		179F7C8F2487F4F600A4D164 /* BeebEm4-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BeebEm4-Bridging-Header.h"; path = "Src/BeebEm4-Bridging-Header.h"; sourceTree = "<group>"; };
 		179F7C902487F4F600A4D164 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftUIView.swift; path = Src/SwiftUIView.swift; sourceTree = "<group>"; };
 		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
+		17E47C132488FE9C0073DF2D /* ArchitectureNotes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArchitectureNotes.txt; sourceTree = "<group>"; };
+		17E47C15248901090073DF2D /* Arm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Arm.h; path = Src/Arm.h; sourceTree = "<group>"; };
+		17E47C16248901150073DF2D /* ArmDisassembler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArmDisassembler.h; path = Src/ArmDisassembler.h; sourceTree = "<group>"; };
+		17E47C172489012F0073DF2D /* beebsound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = beebsound.h; path = Src/beebsound.h; sourceTree = "<group>"; };
+		17E47C182489012F0073DF2D /* beebwin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = beebwin.h; path = Src/beebwin.h; sourceTree = "<group>"; };
+		17E47C192489012F0073DF2D /* beebmem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = beebmem.h; path = Src/beebmem.h; sourceTree = "<group>"; };
+		17E47C1A2489012F0073DF2D /* audev.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = audev.h; path = Src/audev.h; sourceTree = "<group>"; };
+		17E47C1B2489012F0073DF2D /* atodconv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = atodconv.h; path = Src/atodconv.h; sourceTree = "<group>"; };
+		17E47C1C24890C130073DF2D /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = main.h; path = Src/main.h; sourceTree = "<group>"; };
 		19005B940963E34200872367 /* scsi.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = scsi.cc; path = Src/scsi.cc; sourceTree = "<group>"; };
 		19023C8808E3E96000BA702E /* uef.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = uef.cc; path = Src/uef.cc; sourceTree = "<group>"; };
 		1907F0680AA32D4D0098CA99 /* serialdevices.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = serialdevices.cc; path = Src/serialdevices.cc; sourceTree = "<group>"; };
@@ -195,6 +204,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17E47C122488FE4D0073DF2D /* Dev Docs */ = {
+			isa = PBXGroup;
+			children = (
+				17E47C132488FE9C0073DF2D /* ArchitectureNotes.txt */,
+			);
+			path = "Dev Docs";
+			sourceTree = "<group>";
+		};
 		195DF8CFFE9D517E11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +223,7 @@
 		20286C29FDCF999611CA2CEA /* BeebEm3 */ = {
 			isa = PBXGroup;
 			children = (
+				17E47C122488FE4D0073DF2D /* Dev Docs */,
 				C14C1AAC2145FE7D00946B2B /* Install */,
 				C14463B021409DF000E90AC2 /* Config */,
 				194EFCF7090E7EBE0060F3BD /* QuickTime.framework */,
@@ -223,27 +241,38 @@
 		20286C2AFDCF999611CA2CEA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				FC8B56521EBB94F1001DF5A9 /* discedit.cc */,
-				173406582487E203005588CC /* discedit.h */,
-				19AC0F76139C06D4003679A1 /* BeebEm4_Prefix.pch */,
 				19E9FA09086B5C85008741A6 /* 6502core.cc */,
 				173406592487E315005588CC /* 6502core.h */,
 				199193910BF601F20025F5A0 /* Arm.cc */,
+				17E47C15248901090073DF2D /* Arm.h */,
 				1991931B0BF5D4D20025F5A0 /* ArmDisassembler.cc */,
+				17E47C16248901150073DF2D /* ArmDisassembler.h */,
 				19E9FA07086B5C85008741A6 /* atodconv.cc */,
+				17E47C1B2489012F0073DF2D /* atodconv.h */,
 				19E9FA06086B5C85008741A6 /* audev-macosx.cc */,
+				17E47C1A2489012F0073DF2D /* audev.h */,
+				19AC0F76139C06D4003679A1 /* BeebEm4_Prefix.pch */,
+				179F7C8F2487F4F600A4D164 /* BeebEm4-Bridging-Header.h */,
 				19E9FA0A086B5C85008741A6 /* beebmem.cc */,
+				17E47C192489012F0073DF2D /* beebmem.h */,
 				19E9FA0B086B5C85008741A6 /* beebsound.cc */,
+				17E47C172489012F0073DF2D /* beebsound.h */,
 				19CE53490D22551100B90A78 /* beebwin.cc */,
+				17E47C182489012F0073DF2D /* beebwin.h */,
 				190C3A100AA211B500DF468A /* csw.cc */,
 				19E9FA08086B5C85008741A6 /* debug.cc */,
+				19E0F8FD0871C86800EFCF2D /* defines.h */,
 				19E9FA04086B5C85008741A6 /* disc1770.cc */,
 				19E9FA0D086B5C85008741A6 /* disc8271.cc */,
+				FC8B56521EBB94F1001DF5A9 /* discedit.cc */,
+				173406582487E203005588CC /* discedit.h */,
 				197E62FF09605023008AA155 /* econet.cc */,
 				199E79EF088121AE006705E8 /* GetFile.cc */,
-				191CA3A409A11734006B6614 /* i386dasm.cc */,
 				191CA3A309A11734006B6614 /* i86.cc */,
+				191CA3A409A11734006B6614 /* i386dasm.cc */,
 				19E9FA0E086B5C85008741A6 /* main.cc */,
+				17E47C1C24890C130073DF2D /* main.h */,
+				179F7C922487F56B00A4D164 /* MainWindow.xib */,
 				199E7BB008816C80006705E8 /* plist.cc */,
 				195825A70D19A79F0026D58C /* printing.cc */,
 				19172C3F09653728006A4ED9 /* sasi.cc */,
@@ -251,6 +280,7 @@
 				1933BC880952FA1900C45D5A /* serial.cc */,
 				1907F0680AA32D4D0098CA99 /* serialdevices.cc */,
 				19E90D7D095B395C0004AD96 /* speech.cc */,
+				179F7C902487F4F600A4D164 /* SwiftUIView.swift */,
 				19E9FA10086B5C85008741A6 /* sysvia.cc */,
 				19368F9A098397E300B05B51 /* teletext.cc */,
 				19E9FA03086B5C85008741A6 /* tube.cc */,
@@ -260,13 +290,9 @@
 				19E9FA11086B5C85008741A6 /* uservia.cc */,
 				19E9FA12086B5C85008741A6 /* via.cc */,
 				19E9FA13086B5C85008741A6 /* video.cc */,
+				190C57C308A55D5A007CD57E /* z80_support.cc */,
 				190C57C408A55D5A007CD57E /* z80.cc */,
 				190C57C508A55D5A007CD57E /* z80dis.cc */,
-				190C57C308A55D5A007CD57E /* z80_support.cc */,
-				19E0F8FD0871C86800EFCF2D /* defines.h */,
-				179F7C902487F4F600A4D164 /* SwiftUIView.swift */,
-				179F7C922487F56B00A4D164 /* MainWindow.xib */,
-				179F7C8F2487F4F600A4D164 /* BeebEm4-Bridging-Header.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
