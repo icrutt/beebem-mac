@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		179F7C912487F4F600A4D164 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179F7C902487F4F600A4D164 /* SwiftUIView.swift */; };
+		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
 		19005B950963E34200872367 /* scsi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19005B940963E34200872367 /* scsi.cc */; };
 		19023C8908E3E96000BA702E /* uef.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19023C8808E3E96000BA702E /* uef.cc */; };
 		1907F0690AA32D4D0098CA99 /* serialdevices.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1907F0680AA32D4D0098CA99 /* serialdevices.cc */; };
@@ -48,8 +50,6 @@
 		19E9FA23086B5C85008741A6 /* via.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA12086B5C85008741A6 /* via.cc */; };
 		19E9FA24086B5C85008741A6 /* video.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA13086B5C85008741A6 /* video.cc */; };
 		19E9FA29086B5CA6008741A6 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E9FA28086B5CA6008741A6 /* CoreAudio.framework */; };
-		19E9FA31086B5CC1008741A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E9FA30086B5CC1008741A6 /* Carbon.framework */; };
-		19ECCC8A13CAD5FE00621B30 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 19ECCC8813CAD5FE00621B30 /* main.xib */; };
 		19F3FF6108895EC900E9828E /* beebem.icns in Resources */ = {isa = PBXBuildFile; fileRef = 19F3FF6008895EC900E9828E /* beebem.icns */; };
 		8D0C4E8D0486CD37000505A6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
@@ -94,6 +94,9 @@
 		0867D6ABFE840B52C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
+		179F7C8F2487F4F600A4D164 /* BeebEm4-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BeebEm4-Bridging-Header.h"; path = "Src/BeebEm4-Bridging-Header.h"; sourceTree = "<group>"; };
+		179F7C902487F4F600A4D164 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftUIView.swift; path = Src/SwiftUIView.swift; sourceTree = "<group>"; };
+		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
 		19005B940963E34200872367 /* scsi.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = scsi.cc; path = Src/scsi.cc; sourceTree = "<group>"; };
 		19023C8808E3E96000BA702E /* uef.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = uef.cc; path = Src/uef.cc; sourceTree = "<group>"; };
 		1907F0680AA32D4D0098CA99 /* serialdevices.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = serialdevices.cc; path = Src/serialdevices.cc; sourceTree = "<group>"; };
@@ -137,8 +140,6 @@
 		19E9FA12086B5C85008741A6 /* via.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = via.cc; path = Src/via.cc; sourceTree = "<group>"; };
 		19E9FA13086B5C85008741A6 /* video.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = video.cc; path = Src/video.cc; sourceTree = "<group>"; };
 		19E9FA28086B5CA6008741A6 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
-		19E9FA30086B5CC1008741A6 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
-		19ECCC8913CAD5FE00621B30 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/main.xib; sourceTree = "<group>"; };
 		19F3FF6008895EC900E9828E /* beebem.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = beebem.icns; path = Resources/beebem.icns; sourceTree = "<group>"; };
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		4A9504C8FFE6A3BC11CA0CBA /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -186,7 +187,6 @@
 			files = (
 				8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */,
 				19E9FA29086B5CA6008741A6 /* CoreAudio.framework in Frameworks */,
-				19E9FA31086B5CC1008741A6 /* Carbon.framework in Frameworks */,
 				194EFCF8090E7EBE0060F3BD /* QuickTime.framework in Frameworks */,
 				191656C10B39BBAE00C4FA44 /* IOKit.framework in Frameworks */,
 			);
@@ -210,7 +210,6 @@
 				C14463B021409DF000E90AC2 /* Config */,
 				194EFCF7090E7EBE0060F3BD /* QuickTime.framework */,
 				191656C00B39BBAE00C4FA44 /* IOKit.framework */,
-				19E9FA30086B5CC1008741A6 /* Carbon.framework */,
 				19E9FA28086B5CA6008741A6 /* CoreAudio.framework */,
 				20286C2AFDCF999611CA2CEA /* Sources */,
 				20286C2CFDCF999611CA2CEA /* Resources */,
@@ -265,7 +264,9 @@
 				190C57C508A55D5A007CD57E /* z80dis.cc */,
 				190C57C308A55D5A007CD57E /* z80_support.cc */,
 				19E0F8FD0871C86800EFCF2D /* defines.h */,
-				19ECCC8813CAD5FE00621B30 /* main.xib */,
+				179F7C902487F4F600A4D164 /* SwiftUIView.swift */,
+				179F7C922487F56B00A4D164 /* MainWindow.xib */,
+				179F7C8F2487F4F600A4D164 /* BeebEm4-Bridging-Header.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -378,6 +379,7 @@
 				ORGANIZATIONNAME = "Jon Welch";
 				TargetAttributes = {
 					8D0C4E890486CD37000505A6 = {
+						LastSwiftMigration = 1150;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -405,10 +407,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D0C4E8D0486CD37000505A6 /* InfoPlist.strings in Resources */,
+				179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */,
 				19F3FF6108895EC900E9828E /* beebem.icns in Resources */,
 				19CAF4AF0C1046FE0031E354 /* DFS image.icns in Resources */,
 				19CAF4B10C10470A0031E354 /* Z Random BBC file.icns in Resources */,
-				19ECCC8A13CAD5FE00621B30 /* main.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,6 +449,7 @@
 				19005B950963E34200872367 /* scsi.cc in Sources */,
 				19172C4009653728006A4ED9 /* sasi.cc in Sources */,
 				19368F9B098397E300B05B51 /* teletext.cc in Sources */,
+				179F7C912487F4F600A4D164 /* SwiftUIView.swift in Sources */,
 				191CA3A509A11734006B6614 /* i86.cc in Sources */,
 				191CA3A609A11734006B6614 /* i386dasm.cc in Sources */,
 				190C3A110AA211B500DF468A /* csw.cc in Sources */,
@@ -470,15 +473,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		19ECCC8813CAD5FE00621B30 /* main.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				19ECCC8913CAD5FE00621B30 /* English */,
-			);
-			name = main.xib;
-			path = Src;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -487,6 +481,7 @@
 			baseConfigurationReference = C170E2BB214098EB00A4221B /* Debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -501,12 +496,16 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PREBINDING = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.g7jjf.beebem;
 				PRODUCT_NAME = BeebEm4;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "BeebEm4-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -517,6 +516,7 @@
 			baseConfigurationReference = C1903D4421409181003BE0C2 /* Release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = YES;
@@ -529,6 +529,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PREBINDING = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.g7jjf.beebem;
@@ -536,6 +537,8 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "BeebEm4-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
