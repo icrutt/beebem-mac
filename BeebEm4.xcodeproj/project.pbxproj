@@ -529,7 +529,7 @@
 				PRODUCT_NAME = BeebEm4;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = "BeebEm4-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Src/BeebEm4-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
@@ -563,7 +563,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = "BeebEm4-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Src/BeebEm4-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
