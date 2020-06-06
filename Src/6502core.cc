@@ -47,7 +47,6 @@
 #define INLINE inline
 
 int CPUDebug=0;
-int BeginDump=0;
 FILE *InstrLog;
 FILE *osclilog; //=fopen("/oscli.log","wt");
 

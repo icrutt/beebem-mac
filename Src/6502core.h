@@ -58,7 +58,6 @@ typedef enum PSR_Flags
 extern int trace;
 extern int trace_186;
 extern int IgnoreIllegalInstructions;
-extern int BeginDump;
 
 extern unsigned char intStatus;
 extern unsigned char NMIStatus;

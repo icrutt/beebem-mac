@@ -24,8 +24,8 @@
 
 #include <Carbon/Carbon.h>
 #include <string.h>
-#include <QuickTime/QuickTime.h>
-#include <QuickTime/QTML.h>
+/* #include <QuickTime/QuickTime.h> */
+/* #include <QuickTime/QTML.h> */
 
 #include "port.h"
 #include "video.h"
