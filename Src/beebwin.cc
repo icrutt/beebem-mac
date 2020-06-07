@@ -455,7 +455,7 @@ BeebWin::BeebWin()
 
   // Create a Nib reference passing the name of the nib file (without the .nib extension)
   // CreateNibReference only searches into the application bundle.
-  err = CreateNibReference(CFSTR("main"), &nibRef);
+  //err = CreateNibReference(CFSTR("main"), &nibRef);
   if (err)
   {
 	fprintf(stderr, "CreateNibReference : %ld\n", err);
@@ -463,7 +463,7 @@ BeebWin::BeebWin()
     
   // Once the nib reference is created, set the menu bar. "MainMenu" is the name of the menu bar
   // object. This name is set in InterfaceBuilder when the nib is created.
-  err = SetMenuBarFromNib(nibRef, CFSTR("MenuBar"));
+  //err = SetMenuBarFromNib(nibRef, CFSTR("MenuBar"));
   if (err)
   {
 	fprintf(stderr, "SetMenuBarFromNib : %ld\n", err);
@@ -471,22 +471,22 @@ BeebWin::BeebWin()
 
   // Then create a window. "MainWindow" is the name of the window object. This name is set in 
   // InterfaceBuilder when the nib is created.
-  err = CreateWindowFromNib(nibRef, CFSTR("MainWindow"), &mWindow);
+  //err = CreateWindowFromNib(nibRef, CFSTR("MainWindow"), &mWindow);
   if (err)
   {
 	fprintf(stderr, "CreateWindowFromNib : %ld\n", err);
   }
 
   // We don't need the nib reference anymore.
-  DisposeNibReference(nibRef);
+  //DisposeNibReference(nibRef);
 	  
-  SetPortWindowPort(mWindow);
+  //SetPortWindowPort(mWindow);
 
   DataSize=640*512;
   m_screen = (char *) malloc(800 * 512);
   m_screen_blur = (char *) malloc(800 * 512);
 
-  fprintf(stderr, "Base Address = %08x\n", (unsigned int) m_screen);
+  //fprintf(stderr, "Base Address = %08x\n", (unsigned int) m_screen);
 
   mBitMap.baseAddr = m_screen;
   mBitMap.rowBytes = 800 | 0x8000;
@@ -511,7 +511,7 @@ BeebWin::BeebWin()
 
   UpdatePalette(RGB);
   
-  ShowWindow(mWindow);
+  //ShowWindow(mWindow);
 
 CantCreateWindow:
 CantSetMenuBar:
@@ -639,7 +639,7 @@ CGrafPtr mWin;
 	if (quitNow) return;		// Don't repaint if shutting down program
 
 	if (m_FreezeWhenInactive)
-		if (IsWindowCollapsed(mWindow)) return;	// Don't repaint if minimised
+		//if (IsWindowCollapsed(mWindow)) return;	// Don't repaint if minimised
 	
 	bufferblit(starty, nlines); 
 	return;
@@ -651,9 +651,9 @@ CGrafPtr mWin;
     Rect destR;
     Rect srcR;
 
-	mWin = GetWindowPort(mWindow);
-	SetPortWindowPort(mWindow);
-	GetPortBounds(mWin, &destR);
+	//mWin = GetWindowPort(mWindow);
+	//SetPortWindowPort(mWindow);
+	//GetPortBounds(mWin, &destR);
 
 	srcR.left = 0;
 	srcR.right = 640;
@@ -669,7 +669,7 @@ CGrafPtr mWin;
 		srcR.bottom = starty + nlines;
 	}
 	
-	CopyBits ( (BitMap *) &mBitMap, GetPortBitMapForCopyBits(mWin), &srcR, &destR, srcCopy, nil);
+	//CopyBits ( (BitMap *) &mBitMap, GetPortBitMapForCopyBits(mWin), &srcR, &destR, srcCopy, nil);
 
 }; /* BeebWin::updateLines */
 
@@ -741,9 +741,9 @@ void BeebWin::bufferblit1(int starty, int nlines)
     Rect destR;
     Rect srcR;
 	
-	mWin = GetWindowPort(mWindow);
-	SetPortWindowPort(mWindow);
-	GetPortBounds(mWin, &destR);
+	//mWin = GetWindowPort(mWindow);
+	//SetPortWindowPort(mWindow);
+	//GetPortBounds(mWin, &destR);
 	
 	srcR.left = 0;
 	srcR.right = 640;
@@ -767,13 +767,13 @@ void BeebWin::bufferblit1(int starty, int nlines)
 	PixMapHandle	pmh;
 	int				bpp;
 	
-	LockPortBits(mWin);
-	pmh = GetPortPixMap(mWin);
-	LockPixels(pmh);
-	bpp = GetPixDepth(pmh);
+	//LockPortBits(mWin);
+	//pmh = GetPortPixMap(mWin);
+	//LockPixels(pmh);
+	//bpp = GetPixDepth(pmh);
 
-	UnlockPixels(pmh);
-	UnlockPortBits(mWin);
+	//UnlockPixels(pmh);
+	//UnlockPortBits(mWin);
 
 	myBitmapContext = MyCreateBitmapContext(srcR.right - srcR.left, srcR.bottom - srcR.top, bpp);
 	
@@ -808,7 +808,7 @@ void BeebWin::bufferblit1(int starty, int nlines)
 	CGContextRef myContext;
 	CGImageRef myImage;
 	
-	QDBeginCGContext(mWin, &myContext);
+	///QDBeginCGContext(mWin, &myContext);
 	
 	myImage = CGBitmapContextCreateImage(myBitmapContext);
 	
@@ -819,7 +819,7 @@ void BeebWin::bufferblit1(int starty, int nlines)
 	CGContextRelease(myBitmapContext);
 	CGImageRelease(myImage);
 	
-	QDEndCGContext(mWin, &myContext);
+	//QDEndCGContext(mWin, &myContext);
 	
 }
 
@@ -836,9 +836,9 @@ char *p;
     Rect destR;
     Rect srcR;
 
-	mWin = GetWindowPort(mWindow);
-	SetPortWindowPort(mWindow);
-	GetPortBounds(mWin, &destR);
+	//mWin = GetWindowPort(mWindow);
+	//SetPortWindowPort(mWindow);
+	//GetPortBounds(mWin, &destR);
 
 	srcR.left = 0;
 	srcR.right = 640;
@@ -905,7 +905,7 @@ int w, h;
 
 CGContextRef myContext;
 
-	QDBeginCGContext(mWin, &myContext);
+	//QDBeginCGContext(mWin, &myContext);
 
 	CGContextDrawImage(myContext, CGRectMake(destR.left, destR.top, destR.right, destR.bottom), imageRef);
 
@@ -915,7 +915,7 @@ CGContextRef myContext;
 
 	CGDataProviderRelease(provider);
 
-	QDEndCGContext(mWin, &myContext);
+	//QDEndCGContext(mWin, &myContext);
 
 	DisposePtr(dataPtr);
 	
@@ -971,15 +971,15 @@ int width, height;
 
 	if (m_isFullScreen)
 	{
-		mWin = GetWindowPort(m_FullScreenWindow);
-		SetPortWindowPort(m_FullScreenWindow);
+		//mWin = GetWindowPort(m_FullScreenWindow);
+		//SetPortWindowPort(m_FullScreenWindow);
 	}
 	else
 	{
-		mWin = GetWindowPort(mWindow);
-		SetPortWindowPort(mWindow);
+		//mWin = GetWindowPort(mWindow);
+		//SetPortWindowPort(mWindow);
 	}
-	GetPortBounds(mWin, &destR);
+	//GetPortBounds(mWin, &destR);
 	
 	width = destR.right;
 	height = destR.bottom;
@@ -1043,19 +1043,19 @@ int				ppr;
 Rect			rect;
 int				bpp;
 
-	LockPortBits(mWin);
+	//LockPortBits(mWin);
 
-	pmh = GetPortPixMap(mWin);
+	//pmh = GetPortPixMap(mWin);
 
-	LockPixels(pmh);
+	//LockPixels(pmh);
 
-	bpr = GetPixRowBytes(pmh);
-	buffer = GetPixBaseAddr(pmh);
-	bpp = GetPixDepth(pmh);
+	//bpr = GetPixRowBytes(pmh);
+	//buffer = GetPixBaseAddr(pmh);
+	//bpp = GetPixDepth(pmh);
 
 //	fprintf(stderr, "bpp = %d\n", bpp);
 	
-	GetPixBounds(pmh, &rect);
+	//GetPixBounds(pmh, &rect);
 
 	if (bpp == 32)
 	{
@@ -1198,7 +1198,7 @@ OSErr err;
 	}
 	
 	
-	if (m_pMovie)
+	/*if (m_pMovie)
 	{
 
 		if (m_firstFrame)
@@ -1245,8 +1245,8 @@ OSErr err;
 
 			err = AddMediaSample(m_pMedia, m_compressedData, 0,  m_frameSize, m_frameDuration,
 								 (SampleDescriptionHandle) m_imageDesc, 
-								 1,  /* one sample */
-								 mediaSampleNotSync,  /* self-contained samples */
+								 1,  // one sample
+								 mediaSampleNotSync,  // self-contained samples
 								 nil);
 			
 			if (err != noErr) 
@@ -1264,7 +1264,7 @@ OSErr err;
 		err = AddMediaSample(m_sMedia, m_soundBuffer, 0, m_soundBufferLen, 
 					 1,
 					 (SampleDescriptionHandle) m_soundDesc, 
-					 m_soundBufferLen,  /* samples per sec */
+					 m_soundBufferLen,  // samples per sec
 					 mediaSampleNotSync,
 					 nil);
 
@@ -1276,12 +1276,12 @@ OSErr err;
 		
 		m_soundBufferLen = 0;
 
-	}
+	}*/
 	
 bye: ;
 	
-	UnlockPixels(pmh);
-	UnlockPortBits(mWin);
+	//UnlockPixels(pmh);
+	//UnlockPortBits(mWin);
 	
 // Start a thread to flush buffer to screen ?
 
@@ -1292,11 +1292,11 @@ bye: ;
 
 RgnHandle reg;
 
-	reg = NewRgn();
+	//reg = NewRgn();
 	
-	SetRectRgn(reg, destR.left, destR.top, destR.right, destR.bottom);
+	//SetRectRgn(reg, destR.left, destR.top, destR.right, destR.bottom);
 
-	QDFlushPortBuffer(mWin, reg);
+	//QDFlushPortBuffer(mWin, reg);
 
 }
 
@@ -1307,7 +1307,7 @@ int i, j, x, y1, y2, s, c;
 char *p;
 char FileName[256];
 	
-	SystemSoundPlay(0);
+	//SystemSoundPlay(0);
 		
 	p = m_screen;
 	x = 640;
@@ -1494,14 +1494,14 @@ CGrafPtr mWin;
 
     Rect destR;
 
-	mWin = GetWindowPort(mainWin->mWindow);
-	SetPortWindowPort(mainWin->mWindow);
-	GetPortBounds(mWin, &destR);
+	//mWin = GetWindowPort(mainWin->mWindow);
+	//SetPortWindowPort(mainWin->mWindow);
+	//GetPortBounds(mWin, &destR);
 
-	reg = NewRgn();
-	SetRectRgn(reg, destR.left, destR.top, destR.right, destR.bottom);
+	//reg = NewRgn();
+	//SetRectRgn(reg, destR.left, destR.top, destR.right, destR.bottom);
 
-	QDFlushPortBuffer(mWin, reg);
+	//QDFlushPortBuffer(mWin, reg);
 	return noErr;
 }
 
@@ -1621,13 +1621,13 @@ OSStatus		err;
 		if (Title[2] == 0)
 			strcpy(&Title[2], "Empty");
 
-		err = GetIndMenuItemWithCommandID(nil, 'roma' + i, 1, &menu, &j);
+//		err = GetIndMenuItemWithCommandID(nil, 'roma' + i, 1, &menu, &j);
 		if (!err)
 		{
 
 			CFStringRef pTitle;
 			pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Title, kCFStringEncodingASCII);
-			err = SetMenuItemTextWithCFString(menu, j, pTitle);
+//			err = SetMenuItemTextWithCFString(menu, j, pTitle);
 
 			if (err)
 			{
@@ -1744,13 +1744,13 @@ char			Title[100];
 	strncat(Title, fname, 99 - strlen(Title));
 	Title[99] = 0;
 	
-	err = GetIndMenuItemWithCommandID(nil, 'ejd0' + Drive, 1, &menu, &j);
+//	err = GetIndMenuItemWithCommandID(nil, 'ejd0' + Drive, 1, &menu, &j);
 	if (!err)
 	{
 			
 		CFStringRef pTitle;
 		pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Title, kCFStringEncodingASCII);
-		err = SetMenuItemTextWithCFString(menu, j, pTitle);
+//		err = SetMenuItemTextWithCFString(menu, j, pTitle);
 			
 		if (err)
 		{
@@ -1775,13 +1775,13 @@ char			Title[100];
 
 	sprintf(Title, "Eject Disc %d", Drive);
 	
-	err = GetIndMenuItemWithCommandID(nil, 'ejd0' + Drive, 1, &menu, &j);
+//	err = GetIndMenuItemWithCommandID(nil, 'ejd0' + Drive, 1, &menu, &j);
 	if (!err)
 	{
 		
 		CFStringRef pTitle;
 		pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Title, kCFStringEncodingASCII);
-		err = SetMenuItemTextWithCFString(menu, j, pTitle);
+//		err = SetMenuItemTextWithCFString(menu, j, pTitle);
 		
 		if (err)
 		{
@@ -2542,9 +2542,9 @@ void BeebWin::TranslateWindowSize(int size)
 		m_YWinSize = 1200;
 		break;
 	}
-
-	SizeWindow(mWindow, m_XWinSize, m_YWinSize, false);
-	RepositionWindow(mWindow, NULL, kWindowCenterOnMainScreen);
+//
+//	SizeWindow(mWindow, m_XWinSize, m_YWinSize, false);
+//	RepositionWindow(mWindow, NULL, kWindowCenterOnMainScreen);
 
 }
 
@@ -2564,7 +2564,7 @@ void BeebWin::ReadDisc(int drive)
 OSErr err = noErr;
 char path[256];
 
-	err = GetOneFileWithPreview(path, DiscFilterProc);
+//	err = GetOneFileWithPreview(path, DiscFilterProc);
 	if (err) return;
 	LoadDisc(drive, path);
 }
@@ -2574,7 +2574,7 @@ void BeebWin::LoadTape()
 	OSErr err = noErr;
 	char path[256];
 	
-	err = GetOneFileWithPreview(path, UEFFilterProc);
+//	err = GetOneFileWithPreview(path, UEFFilterProc);
 	if (err) return;
 	LoadTapeFromPath(path);
 }
@@ -2791,7 +2791,7 @@ CFStringRef pTitle;
 
 		pTitle = CFStringCreateWithCString (kCFAllocatorDefault, m_szTitle, kCFStringEncodingASCII);
 
-		SetWindowTitleWithCFString(mWindow, pTitle);
+//		SetWindowTitleWithCFString(mWindow, pTitle);
 		
 		CFRelease(pTitle);
 
@@ -2929,13 +2929,13 @@ void BeebWin::InitMenu(void)
 	MenuItemIndex	j;
 	OSStatus		err;
 
-	err = GetIndMenuItemWithCommandID(nil, 'pfle', 1, &menu, &j);
+//	err = GetIndMenuItemWithCommandID(nil, 'pfle', 1, &menu, &j);
 	if (!err)
 	{
 		CFStringRef pTitle;
 		sprintf(Title, "File: %s", m_PrinterFileName);
 		pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Title, kCFStringEncodingASCII);
-		err = SetMenuItemTextWithCFString(menu, j, pTitle);
+//		err = SetMenuItemTextWithCFString(menu, j, pTitle);
 		if (err) fprintf(stderr, "SetMenuTitle returned err code %d\n", (int) err);
 		CFRelease(pTitle);
 	}
@@ -3043,10 +3043,10 @@ void BeebWin::SetMenuCommandIDCheck(UInt32 commandID, bool check)
 	MenuItemIndex	i;
 	OSStatus		err;
 	
-	err = GetIndMenuItemWithCommandID(nil, commandID, 1, &menu, &i);
+//	err = GetIndMenuItemWithCommandID(nil, commandID, 1, &menu, &i);
 	if (!err)
 	{
-		CheckMenuItem(menu,i,check);
+//		CheckMenuItem(menu,i,check);
 	}
 	else
 	{
@@ -3129,15 +3129,15 @@ float r, g, b;
 
   mBitMap.pmTable = &mCT;
 
-PaletteHandle gPalette;
-
-  gPalette = NewPalette( LED_COL_BASE + 4,  &mCT, pmExplicit + pmTolerant, 0 );
-
-  SetPortWindowPort(mWindow);
-  SetPalette (mWindow, gPalette, true);
-
-
-  CTabChanged(mBitMap.pmTable);
+//PaletteHandle gPalette;
+//
+//  gPalette = NewPalette( LED_COL_BASE + 4,  &mCT, pmExplicit + pmTolerant, 0 );
+//
+//  SetPortWindowPort(mWindow);
+//  SetPalette (mWindow, gPalette, true);
+//
+//
+//  CTabChanged(mBitMap.pmTable);
 
   UpdateMonitorMenu();
 
@@ -3175,7 +3175,7 @@ OSStatus err = noErr;
 
 				CFStringRef pTitle;
 				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, WindowTitle, kCFStringEncodingASCII);
-				SetWindowTitleWithCFString(mWindow, pTitle);
+//				SetWindowTitleWithCFString(mWindow, pTitle);
 				CFRelease(pTitle);
 			}
 			else
@@ -3505,12 +3505,12 @@ OSStatus err = noErr;
 			{
 				short width = m_XWinSize;
 				short height = m_YWinSize;
-				BeginFullScreen(&m_RestoreState, nil, &width, &height, &m_FullScreenWindow, nil, fullScreenHideCursor);
+//				BeginFullScreen(&m_RestoreState, nil, &width, &height, &m_FullScreenWindow, nil, fullScreenHideCursor);
 				fprintf(stderr, "Actual screen dimensions %d, %d\n", width, height);
 			}
 			else
 			{
-				EndFullScreen(m_RestoreState, nil);
+//				EndFullScreen(m_RestoreState, nil);
 			}
 			break;
 		case 'vmar':
@@ -3766,13 +3766,13 @@ OSStatus err = noErr;
 				MenuItemIndex	j;
 				OSStatus		err;
 
-				err = GetIndMenuItemWithCommandID(nil, 'pfle', 1, &menu, &j);
+//				err = GetIndMenuItemWithCommandID(nil, 'pfle', 1, &menu, &j);
 				if (!err)
 				{
 					CFStringRef pTitle;
 					sprintf(Title, "File: %s", m_PrinterFileName);
 					pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Title, kCFStringEncodingASCII);
-					err = SetMenuItemTextWithCFString(menu, j, pTitle);
+//					err = SetMenuItemTextWithCFString(menu, j, pTitle);
 					if (err) fprintf(stderr, "SetMenuTitle returned err code %ld\n", err);
 					CFRelease(pTitle);
 				}
@@ -4055,10 +4055,10 @@ OSStatus err = noErr;
 			char buff[256];
 			
 			sprintf(buff, "MacBeebEm Ver %s", Version);
-			CopyCStringToPascal(buff, S1);
+//			CopyCStringToPascal(buff, S1);
 			sprintf(buff, "Mac Conversion By Jon Welch\n\njon@g7jjf.com\nhttp://www.g7jjf.com\n%s", VersionDate);
-			CopyCStringToPascal(buff, S2);
-			StandardAlert( kAlertNoteAlert, S1, S2, NULL, &r);
+//			CopyCStringToPascal(buff, S2);
+//			StandardAlert( kAlertNoteAlert, S1, S2, NULL, &r);
 			
 			break;
 			
@@ -4540,7 +4540,7 @@ void BeebWin::RestoreState()
 char path[256];  
 OSErr err = noErr;
 
-	err = GetOneFileWithPreview(path, UEFFilterProc);
+//	err = GetOneFileWithPreview(path, UEFFilterProc);
 	if (err) return;
 	LoadUEFState(path);
 }
@@ -4643,7 +4643,7 @@ void BeebWin::LoadUserKeyMap ()
 	OSErr err = noErr;
 	char path[256];
 	
-	err = GetOneFileWithPreview(path, KeyboardFilterProc);
+//	err = GetOneFileWithPreview(path, KeyboardFilterProc);
 	if (err != noErr) return;
 	
 	LoadUserKeyboard(path);
@@ -4772,8 +4772,8 @@ void BeebWin::CaptureVideo()
 	OSErr err = noErr;
 	char path[256];  
 	
-	if (m_pMovie)
-		EndCaptureVideo();
+//	if (m_pMovie)
+//		EndCaptureVideo();
 
 	*path = 0;
 	err = SaveFileMov(path, &fileSpec);
@@ -4792,7 +4792,7 @@ void MacQTOpenVideoComponent(ComponentInstance *rci)
 	OSStatus			err;
 	ComponentInstance	ci;
 	
-	ci = OpenDefaultComponent(StandardCompressionType, StandardCompressionSubType);
+//	ci = OpenDefaultComponent(StandardCompressionType, StandardCompressionSubType);
 	
 	CFDataRef	data;
 	
@@ -4808,7 +4808,7 @@ void MacQTOpenVideoComponent(ComponentInstance *rci)
 		{	
 			HLock(hdl);
 			CFDataGetBytes(data, CFRangeMake(0, len), (unsigned char *) *hdl);
-			err = SCSetInfo(ci, scSettingsStateType, &hdl);
+//			err = SCSetInfo(ci, scSettingsStateType, &hdl);
 			
 			DisposeHandle(hdl);
 		}
@@ -4832,13 +4832,13 @@ void BeebWin::StartRecordingVideo(char *path, FSSpec *fs)
 	FSSpec fileSpec;
 	Str255 FileName;
 	
-	if (m_pMovie)
-		EndCaptureVideo();
+//	if (m_pMovie)
+//		EndCaptureVideo();
 	
 	if (fs == nil)
 	{
-		CopyCStringToPascal(path, FileName);
-		err = FSMakeFSSpec(0, 0, FileName, &fileSpec);
+//		CopyCStringToPascal(path, FileName);
+//		err = FSMakeFSSpec(0, 0, FileName, &fileSpec);
 	}
 	else
 	{
@@ -4849,34 +4849,34 @@ void BeebWin::StartRecordingVideo(char *path, FSSpec *fs)
 	
 	long	flag;
 	
-	flag = scListEveryCodec | scAllowZeroKeyFrameRate | scDisableFrameRateItem;
-	err = SCSetInfo(m_ci, scPreferenceFlagsType, &flag);
+//	flag = scListEveryCodec | scAllowZeroKeyFrameRate | scDisableFrameRateItem;
+//	err = SCSetInfo(m_ci, scPreferenceFlagsType, &flag);
 	
 	CGrafPtr mWin;
 	PixMapHandle	pmh;
 	
-	mWin = GetWindowPort(mWindow);
-	SetPortWindowPort(mWindow);
-	
-	LockPortBits(mWin);
-	
-	pmh = GetPortPixMap(mWin);
-	
-	LockPixels(pmh);
-
-	err = SCSetTestImagePixMap(m_ci, pmh, nil, scPreferScaling);
-	
-	err = SCRequestSequenceSettings(m_ci);
-
-	UnlockPixels(pmh);
-	UnlockPortBits(mWin);
+//	mWin = GetWindowPort(mWindow);
+//	SetPortWindowPort(mWindow);
+//
+//	LockPortBits(mWin);
+//
+//	pmh = GetPortPixMap(mWin);
+//
+//	LockPixels(pmh);
+//
+//	err = SCSetTestImagePixMap(m_ci, pmh, nil, scPreferScaling);
+//
+//	err = SCRequestSequenceSettings(m_ci);
+//
+//	UnlockPixels(pmh);
+//	UnlockPortBits(mWin);
 
 	if (err == noErr)
 	{
 		CFDataRef	data;
 		Handle		hdl;
 		
-		err = SCGetInfo(m_ci, scSettingsStateType, &hdl);
+//		err = SCGetInfo(m_ci, scSettingsStateType, &hdl);
 		if (err == noErr)
 		{
 			HLock(hdl);
@@ -4897,20 +4897,20 @@ void BeebWin::StartRecordingVideo(char *path, FSSpec *fs)
 	
 	MacQTOpenVideoComponent(&m_ci);
 	
-	SCTemporalSettings	ts;
+//	SCTemporalSettings	ts;
 	
-	err = SCGetInfo(m_ci, scTemporalSettingsType, &ts);
-	ts.frameRate = FixRatio( (long) m_FramesPerSecond, 1);
-	if (ts.keyFrameRate < 1)
-		ts.keyFrameRate = (long) m_FramesPerSecond;
-	m_keyFrame  = m_keyFrameCount  = ts.keyFrameRate;
+//	err = SCGetInfo(m_ci, scTemporalSettingsType, &ts);
+//	ts.frameRate = FixRatio( (long) m_FramesPerSecond, 1);
+//	if (ts.keyFrameRate < 1)
+//		ts.keyFrameRate = (long) m_FramesPerSecond;
+//	m_keyFrame  = m_keyFrameCount  = ts.keyFrameRate;
 	m_frameSkip = m_frameSkipCount = m_skip;					// Miss out every other frame
-	err = SCSetInfo(m_ci, scTemporalSettingsType, &ts);
+//	err = SCSetInfo(m_ci, scTemporalSettingsType, &ts);
 
-	err = EnterMovies();
+//	err = EnterMovies();
 	
-	err = CreateMovieFile(&fileSpec, FOUR_CHAR_CODE('TVOD'), smCurrentScript, createMovieFileDeleteCurFile | createMovieFileDontCreateResFile,
-						  &m_resRefNum, &m_pMovie);
+//	err = CreateMovieFile(&fileSpec, FOUR_CHAR_CODE('TVOD'), smCurrentScript, createMovieFileDeleteCurFile | createMovieFileDontCreateResFile,
+//						  &m_resRefNum, &m_pMovie);
 	
 	if (err != noErr)
 	{
@@ -4927,42 +4927,42 @@ void BeebWin::StartRecordingVideo(char *path, FSSpec *fs)
 	switch (m_captureresolution)
 	{
 		case 1 :
-			m_pTrack = NewMovieTrack(m_pMovie, FixRatio(768, 1), FixRatio(576, 1), 0);
+//			m_pTrack = NewMovieTrack(m_pMovie, FixRatio(768, 1), FixRatio(576, 1), 0);
 			break;
 		case 2 :
-			m_pTrack = NewMovieTrack(m_pMovie, FixRatio(m_XWinSize, 1), FixRatio(m_YWinSize, 1), 0);
+//			m_pTrack = NewMovieTrack(m_pMovie, FixRatio(m_XWinSize, 1), FixRatio(m_YWinSize, 1), 0);
 			break;
 		case 3 :
-			m_pTrack = NewMovieTrack(m_pMovie, FixRatio(m_XWinSize / 2, 1), FixRatio(m_YWinSize / 2, 1), 0);
+//			m_pTrack = NewMovieTrack(m_pMovie, FixRatio(m_XWinSize / 2, 1), FixRatio(m_YWinSize / 2, 1), 0);
 			break;
 		case 4 :
-			m_pTrack = NewMovieTrack(m_pMovie, FixRatio(m_XWinSize / 4, 1), FixRatio(m_YWinSize / 4, 1), 0);
+//			m_pTrack = NewMovieTrack(m_pMovie, FixRatio(m_XWinSize / 4, 1), FixRatio(m_YWinSize / 4, 1), 0);
 			break;
 	}
 	
-	m_pMedia = NewTrackMedia(m_pTrack, VideoMediaType, 44100, nil, 0);
+//	m_pMedia = NewTrackMedia(m_pTrack, VideoMediaType, 44100, nil, 0);
 	
 	// sound
 	
-	m_soundDesc = (SoundDescriptionHandle) NewHandleClear(sizeof(SoundDescription));
-	
-	(**m_soundDesc).descSize    = sizeof(SoundDescription);
-	(**m_soundDesc).dataFormat  = k8BitOffsetBinaryFormat;
-	(**m_soundDesc).numChannels = 1;
-	(**m_soundDesc).sampleSize  = 8;
-	(**m_soundDesc).sampleRate  = (UnsignedFixed) FixRatio(44100, 1);
+//	m_soundDesc = (SoundDescriptionHandle) NewHandleClear(sizeof(SoundDescription));
+//
+//	(**m_soundDesc).descSize    = sizeof(SoundDescription);
+//	(**m_soundDesc).dataFormat  = k8BitOffsetBinaryFormat;
+//	(**m_soundDesc).numChannels = 1;
+//	(**m_soundDesc).sampleSize  = 8;
+//	(**m_soundDesc).sampleRate  = (UnsignedFixed) FixRatio(44100, 1);
 	
 	m_soundBuffer = NewHandle(32768);
-	MoveHHi(m_soundBuffer);
+//	MoveHHi(m_soundBuffer);
 	HLock(m_soundBuffer);
 	m_soundBufferPtr = *m_soundBuffer;
 	m_soundBufferLen = 0;
 
-	m_sTrack = NewMovieTrack(m_pMovie, 0, 0, kFullVolume);
-	m_sMedia = NewTrackMedia(m_sTrack, SoundMediaType, 44100, nil, 0);
+//	m_sTrack = NewMovieTrack(m_pMovie, 0, 0, kFullVolume);
+//	m_sMedia = NewTrackMedia(m_sTrack, SoundMediaType, 44100, nil, 0);
 	
-	err = BeginMediaEdits(m_pMedia);
-	err = BeginMediaEdits(m_sMedia);
+//	err = BeginMediaEdits(m_pMedia);
+//	err = BeginMediaEdits(m_sMedia);
 	
 }
 
@@ -4970,32 +4970,32 @@ void BeebWin::EndCaptureVideo()
 
 {
 OSErr err;
-short resId =movieInDataForkResID;
+//short resId =movieInDataForkResID;
 	
-	if (m_pMovie == NULL) return;
+//	if (m_pMovie == NULL) return;
 	
 	SetMenuCommandIDCheck('vidc', false);
 
-	err = SCCompressSequenceEnd(m_ci);
+//	err = SCCompressSequenceEnd(m_ci);
 	if (err != noErr) fprintf(stderr, "SCCompressSequenceEnd error %d\n", err);
 		
-	if (m_pMedia) EndMediaEdits(m_pMedia);
-	if (m_pTrack) InsertMediaIntoTrack(m_pTrack, 0, 0, GetMediaDuration(m_pMedia), fixed1);
-
-	if (m_sMedia) EndMediaEdits(m_sMedia);
-	if (m_sTrack) InsertMediaIntoTrack(m_sTrack, 0, 0, GetMediaDuration(m_sMedia), fixed1);
-
-	if (m_pMovie) AddMovieResource(m_pMovie, m_resRefNum, &resId, NULL);
-	
-	if (m_resRefNum != 0) CloseMovieFile(m_resRefNum);
-	
+//	if (m_pMedia) EndMediaEdits(m_pMedia);
+//	if (m_pTrack) InsertMediaIntoTrack(m_pTrack, 0, 0, GetMediaDuration(m_pMedia), fixed1);
+//
+//	if (m_sMedia) EndMediaEdits(m_sMedia);
+//	if (m_sTrack) InsertMediaIntoTrack(m_sTrack, 0, 0, GetMediaDuration(m_sMedia), fixed1);
+//
+//	if (m_pMovie) AddMovieResource(m_pMovie, m_resRefNum, &resId, NULL);
+//
+//	if (m_resRefNum != 0) CloseMovieFile(m_resRefNum);
+//
 	MacQTCloseVideoComponent(m_ci);
 	
-	if (m_soundDesc)
-	{
-		DisposeHandle( (Handle) m_soundDesc);
-		m_soundDesc = NULL;
-	}
+//	if (m_soundDesc)
+//	{
+//		DisposeHandle( (Handle) m_soundDesc);
+//		m_soundDesc = NULL;
+//	}
 	
 	if (m_soundBuffer)
 	{
@@ -5003,16 +5003,16 @@ short resId =movieInDataForkResID;
 		m_soundBuffer = NULL;
 	}
 
-	if (m_pMovie)
-	{
-		DisposeMovie(m_pMovie);
-		m_pMovie = NULL;
-	}
-	
-	ExitMovies();
-	
-	m_pMovie = NULL;
-	
+//	if (m_pMovie)
+//	{
+//		DisposeMovie(m_pMovie);
+//		m_pMovie = NULL;
+//	}
+//
+//	ExitMovies();
+//
+//	m_pMovie = NULL;
+//
 }
 
 void BeebWin::doCopy()
@@ -5145,9 +5145,9 @@ void MyDrawIntoPDFPage(CGContextRef pdfContext, PMRect pageRect, int starty, int
     Rect destR;
     Rect srcR;
 	
-	mWin = GetWindowPort(mainWin->mWindow);
-	SetPortWindowPort(mainWin->mWindow);
-	GetPortBounds(mWin, &destR);
+//	mWin = GetWindowPort(mainWin->mWindow);
+//	SetPortWindowPort(mainWin->mWindow);
+//	GetPortBounds(mWin, &destR);
 	
 	srcR.left = 0;
 	srcR.right = ActualScreenWidth;
@@ -5172,13 +5172,13 @@ void MyDrawIntoPDFPage(CGContextRef pdfContext, PMRect pageRect, int starty, int
 	int				bpp;
 	char			col;
 	
-	LockPortBits(mWin);
-	pmh = GetPortPixMap(mWin);
-	LockPixels(pmh);
-	bpp = GetPixDepth(pmh);
-	
-	UnlockPixels(pmh);
-	UnlockPortBits(mWin);
+//	LockPortBits(mWin);
+//	pmh = GetPortPixMap(mWin);
+//	LockPixels(pmh);
+//	bpp = GetPixDepth(pmh);
+//
+//	UnlockPixels(pmh);
+//	UnlockPortBits(mWin);
 	
 	myBitmapContext = MyCreateBitmapContext(srcR.right - srcR.left, srcR.bottom - srcR.top, bpp);
 	
@@ -5564,7 +5564,7 @@ void BeebWin::ImportDiscFiles(int menuId)
 	}
 	
 	// Get list of files to import
-	err = GetOneFileWithPreview(path, IFDFilterProc);
+//	err = GetOneFileWithPreview(path, IFDFilterProc);
 	if (err) return;
 	
 	// Parse the file selection string

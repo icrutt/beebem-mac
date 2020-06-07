@@ -263,16 +263,16 @@ public:
 	void StartRecordingVideo(char *path, FSSpec *fs);
 	void EndCaptureVideo();
 
-	Track	m_pTrack;
-	Media	m_pMedia;
-	Movie	m_pMovie;
+//	Track	m_pTrack;
+//	Media	m_pMedia;
+//	Movie	m_pMovie;
 	short	m_resRefNum;
 	Handle	m_compressedData;
 	Ptr		m_compressedDataPtr;
-	ImageDescriptionHandle m_imageDesc;
-	SoundDescriptionHandle m_soundDesc;
-	Track	m_sTrack;
-	Media	m_sMedia;
+//	ImageDescriptionHandle m_imageDesc;
+//	SoundDescriptionHandle m_soundDesc;
+//	Track	m_sTrack;
+//	Media	m_sMedia;
 	Rect	m_trackFrame;
 	Handle	m_soundBuffer;
 	Ptr		m_soundBufferPtr;

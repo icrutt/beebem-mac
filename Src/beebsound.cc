@@ -361,11 +361,11 @@ void PlayUpTil(double DestTime) {
 
 	    audev_play_buff(SoundBuf, bufptr);
 
-		if (mainWin->m_pMovie)
-		{
-			memcpy(mainWin->m_soundBufferPtr + mainWin->m_soundBufferLen, SoundBuf, bufptr);
-			mainWin->m_soundBufferLen += bufptr; 
-		}
+		//if (mainWin->m_pMovie)
+		//{
+		//	memcpy(mainWin->m_soundBufferPtr + mainWin->m_soundBufferLen, SoundBuf, bufptr);
+		//	mainWin->m_soundBufferLen += bufptr;
+		//}
 	  
 	  }
  /*   fprintf(stderr,"PlayUpTil: After write: bufptr=%d OurTime=%f\n",bufptr,OurTime);*/

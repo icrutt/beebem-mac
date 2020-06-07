@@ -358,7 +358,7 @@ OSStatus DebugWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef eve
     OSStatus err = noErr;
     err = GetEventParameter(event, kEventParamDirectObject,
 							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    require_noerr (err, CantGetParameter);
+//    require_noerr (err, CantGetParameter);
 	
 	err = noErr;
 
@@ -481,7 +481,7 @@ CFStringRef pTitle;
 			case 'TEXT' :
 				strcpy(temp, debug_log[itemID - 1]);
 				pTitle =CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				status = SetDataBrowserItemDataText(itemData, pTitle);
 				CFRelease(pTitle);
 				break;
 
@@ -493,7 +493,7 @@ CFStringRef pTitle;
 					sprintf(temp, "%04X-%04X", Breakpoints[itemID - 1].start, Breakpoints[itemID - 1].end);
 				}
 				pTitle =CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				status = SetDataBrowserItemDataText(itemData, pTitle);
 				CFRelease(pTitle);
 				break;
 
@@ -526,20 +526,20 @@ void DebugOpenDialog()
 	{
 		// Create a Nib reference passing the name of the nib file (without the .nib extension)
 		// CreateNibReference only searches into the application bundle.
-		CreateNibReference(CFSTR("main"), &nibRef);
-		CreateWindowFromNib(nibRef, CFSTR("Window2"), &mDebugWindow);
-		DisposeNibReference(nibRef);
-		ShowWindow(mDebugWindow);
-		
-		InstallWindowEventHandler(mDebugWindow, 
-							  NewEventHandlerUPP (DebugWindowCommandHandler), 
-							  GetEventTypeCount(DebugCommands), DebugCommands, 
-							  mDebugWindow, NULL);
-		
-		InstallWindowEventHandler (mDebugWindow, 
-								   NewEventHandlerUPP (DebugWindowEventHandler), 
-								   GetEventTypeCount(DebugEvents), DebugEvents, 
-								   mDebugWindow, NULL);
+//		CreateNibReference(CFSTR("main"), &nibRef);
+//		CreateWindowFromNib(nibRef, CFSTR("Window2"), &mDebugWindow);
+//		DisposeNibReference(nibRef);
+//		ShowWindow(mDebugWindow);
+//
+//		InstallWindowEventHandler(mDebugWindow,
+//							  NewEventHandlerUPP (DebugWindowCommandHandler),
+//							  GetEventTypeCount(DebugCommands), DebugCommands,
+//							  mDebugWindow, NULL);
+//
+//		InstallWindowEventHandler (mDebugWindow,
+//								   NewEventHandlerUPP (DebugWindowEventHandler),
+//								   GetEventTypeCount(DebugEvents), DebugEvents,
+//								   mDebugWindow, NULL);
 		
 		debug_lines = 0;
 		memset(debug_log, 0, sizeof(debug_log));
@@ -548,13 +548,13 @@ void DebugOpenDialog()
 		ControlRef dbControl;
 		DataBrowserCallbacks dbCallbacks;
 		
-		GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//		GetControlByID (mDebugWindow, &dbControlID, &dbControl);
 		dbCallbacks.version = kDataBrowserLatestCallbacks;
-		InitDataBrowserCallbacks(&dbCallbacks);
+//		InitDataBrowserCallbacks(&dbCallbacks);
 		dbCallbacks.u.v1.itemDataCallback =
 			NewDataBrowserItemDataUPP( (DataBrowserItemDataProcPtr) DebugWindowCallback);
-		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
-		SetAutomaticControlDragTrackingEnabledForWindow(mDebugWindow, true);
+//		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
+//		SetAutomaticControlDragTrackingEnabledForWindow(mDebugWindow, true);
 	
 		SetCheckBoxValue('dbbr', 1);
 		SetCheckBoxValue('dbdh', 1);
@@ -563,16 +563,16 @@ void DebugOpenDialog()
 		DebugHost = GetCheckBoxValue('dbdh');
 		
 		Str255 Family;
-		CopyCStringToPascal("Courier New", Family);
+//		CopyCStringToPascal("Courier New", Family);
 		
-		FMFontFamily id = FMGetFontFamilyFromName(Family);
-		ControlFontStyleRec style = {kControlUseFontMask | kControlUseSizeMask | kControlUseFaceMask | kControlAddToMetaFontMask, id, 12, 1};
-		SetControlFontStyle(dbControl, &style);
+//		FMFontFamily id = FMGetFontFamilyFromName(Family);
+//		ControlFontStyleRec style = {kControlUseFontMask | kControlUseSizeMask | kControlUseFaceMask | kControlAddToMetaFontMask, id, 12, 1};
+//		SetControlFontStyle(dbControl, &style);
 
 		dbControlID.signature = 'BLST';
-		GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
-		SetControlFontStyle(dbControl, &style);
+//		GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
+//		SetControlFontStyle(dbControl, &style);
 		
 	}
 }
@@ -581,8 +581,8 @@ void DebugCloseDialog()
 {
 	if (mDebugWindow)
 	{
-		HideWindow(mDebugWindow);
-		DisposeWindow(mDebugWindow);
+//		HideWindow(mDebugWindow);
+//		DisposeWindow(mDebugWindow);
 	}
 	mDebugWindow = NULL;
 	DebugEnabled = FALSE;
@@ -622,24 +622,24 @@ static int max = 0;
 	const ControlID dbControlID = { 'HDIS', 0 };
 	ControlRef dbControl;
 	
-	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
 
 	if (debug_lines == MAX_LINES)
 	{
 		memmove(debug_log[0], debug_log[1], (MAX_LINES - 1) * 101);
 		strcpy(debug_log[debug_lines - 1], info);
 
-		RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
-		AddDataBrowserItems(dbControl, kDataBrowserNoItem, debug_lines, NULL, kDataBrowserItemNoProperty);
+//		RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
+//		AddDataBrowserItems(dbControl, kDataBrowserNoItem, debug_lines, NULL, kDataBrowserItemNoProperty);
 	}
 	else
 	{
 		strcpy(debug_log[debug_lines++], info);
-		AddDataBrowserItems(dbControl, kDataBrowserNoItem, 1, (DataBrowserItemID *) &debug_lines, kDataBrowserItemNoProperty);
+//		AddDataBrowserItems(dbControl, kDataBrowserNoItem, 1, (DataBrowserItemID *) &debug_lines, kDataBrowserItemNoProperty);
 	}
 	
-	SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &debug_lines, kDataBrowserItemsAssign);
-	RevealDataBrowserItem(dbControl, debug_lines, kDataBrowserNoItem, kDataBrowserRevealOnly);
+//	SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &debug_lines, kDataBrowserItemsAssign);
+//	RevealDataBrowserItem(dbControl, debug_lines, kDataBrowserNoItem, kDataBrowserRevealOnly);
 }
 
 int GetCheckBoxValue(OSType box)
@@ -651,8 +651,8 @@ int ret;
 
 	dbControlID.signature = box;
 	dbControlID.id = 0;
-	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-	ret = GetControlValue(dbControl);
+//	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//	ret = GetControlValue(dbControl);
 	return ret;
 }
 
@@ -663,8 +663,8 @@ void SetCheckBoxValue(OSType box, int State)
 	
 	dbControlID.signature = box;
 	dbControlID.id = 0;
-	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-	SetControlValue(dbControl, State);
+//	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//	SetControlValue(dbControl, State);
 }
 
 void DebugDisplayTrace(DebugType type, bool host, const char *info)
@@ -891,8 +891,8 @@ void DebugExecuteCommand()
     ControlID kCmd = { 'dcmd', 0 };
     ControlRef Cmd;
     CFStringRef cmd_text;
-    GetControlByID(mDebugWindow, &kCmd, &Cmd);
-    GetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text, NULL);
+//    GetControlByID(mDebugWindow, &kCmd, &Cmd);
+//    GetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text, NULL);
 
 	CFStringGetCString (cmd_text, command, MAX_COMMAND_LEN + 1, kCFStringEncodingASCII);
 	
@@ -932,7 +932,7 @@ void DebugExecuteCommand()
 			if (DumpAddress > 0xffff)
 				DumpAddress = 0;
 			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "m" : "mp");
-			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
+//			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
 			CFRelease (cmd_text);
 			break;
 			
@@ -949,7 +949,7 @@ void DebugExecuteCommand()
 			sscanf(&command[i], "%x %x", &addr, &data);
 			DebugWriteMem(addr, data, host);
 			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "e" : "ep");
-			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
+//			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
 			CFRelease (cmd_text);
 			break;
 			
@@ -972,7 +972,7 @@ void DebugExecuteCommand()
 			if (DisAddress > 0xffff)
 				DisAddress = 0;
 			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "d" : "dp");
-			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
+//			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
 			CFRelease (cmd_text);
 			break;
 			
@@ -1011,9 +1011,9 @@ void DebugExecuteCommand()
 								const ControlID dbControlID = { 'BLST', 0 };
 								ControlRef dbControl;
 								
-								GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-								RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
-								if (BPCount != 0) AddDataBrowserItems(dbControl, kDataBrowserNoItem, BPCount, NULL, kDataBrowserItemNoProperty);
+//								GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//								RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
+//								if (BPCount != 0) AddDataBrowserItems(dbControl, kDataBrowserNoItem, BPCount, NULL, kDataBrowserItemNoProperty);
 							}
 						}
 					}
@@ -1035,14 +1035,14 @@ void DebugExecuteCommand()
 						const ControlID dbControlID = { 'BLST', 0 };
 						ControlRef dbControl;
 						
-						GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-						AddDataBrowserItems(dbControl, kDataBrowserNoItem, 1, (DataBrowserItemID *) &BPCount, kDataBrowserItemNoProperty);
-						SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &BPCount, kDataBrowserItemsAssign);
-						RevealDataBrowserItem(dbControl, BPCount, kDataBrowserNoItem, kDataBrowserRevealOnly);
+//						GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//						AddDataBrowserItems(dbControl, kDataBrowserNoItem, 1, (DataBrowserItemID *) &BPCount, kDataBrowserItemNoProperty);
+//						SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &BPCount, kDataBrowserItemsAssign);
+//						RevealDataBrowserItem(dbControl, BPCount, kDataBrowserNoItem, kDataBrowserRevealOnly);
 					}
 					
 					cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR(""));
-					SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
+//					SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
 					CFRelease (cmd_text);
 				}
 			}

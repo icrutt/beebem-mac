@@ -127,7 +127,7 @@ static OSStatus MainWindowEventHandler(
     {
         case kEventWindowClosed: 
 			quitNow = true;
-            QuitApplicationEventLoop();
+            //QuitApplicationEventLoop();
             break;
         default:
             err = eventNotHandledErr;
@@ -145,7 +145,7 @@ static OSStatus MainWindowCommandHandler(
     OSStatus err = noErr;
     err = GetEventParameter(event, kEventParamDirectObject,
         typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    require_noerr (err, CantGetParameter);
+    //require_noerr (err, CantGetParameter);
 
 	err = mainWin->HandleCommand(command.commandID);
     
@@ -180,7 +180,7 @@ static int NewCmd = 0;
 //			fprintf(stderr, "cmd-Z pressed, NewCmd = %d\n", NewCmd);
 			if (mainWin->m_isFullScreen)
 			{
-				EndFullScreen(mainWin->m_RestoreState, nil);
+				//EndFullScreen(mainWin->m_RestoreState, nil);
 				mainWin->m_isFullScreen = 0;
 				mainWin->SetMenuCommandIDCheck('vfsc', false);
 			}
@@ -402,25 +402,25 @@ static pascal OSStatus EventLoopEventHandler(EventHandlerCallRef inHandlerCallRe
                 ReleaseEvent(theEvent);
             }
 
-			if ( (mainWin->m_FreezeWhenInactive) && (IsWindowCollapsed(mainWin->mWindow)) )
-			{
-				usleep(1000 * 500);		// sleep for 0.5 secs
-			}
-			else
-			{
-				int c;
-				c = 20;
+			//if ( (mainWin->m_FreezeWhenInactive) && (IsWindowCollapsed(mainWin->mWindow)) )
+			//{
+			//	usleep(1000 * 500);		// sleep for 0.5 secs
+			//}
+			//else
+			//{
+			//	int c;
+			//	c = 20;
 
 // Menu GUI more responsive if running less than real time
 				
-				if ( (mainWin->m_RealTimeTarget != 0) && (mainWin->m_RealTimeTarget < 1) )
-				{
-					c = c * mainWin->m_RealTimeTarget;
-				}
-				
-				for (int i = 0; i < c; ++i) 
-					if (!quitNow) Exec6502Instruction();
-			}
+			//	if ( (mainWin->m_RealTimeTarget != 0) && (mainWin->m_RealTimeTarget < 1) )
+			//	{
+			//		c = c * mainWin->m_RealTimeTarget;
+			//	}
+			//
+			//	for (int i = 0; i < c; ++i)
+			//		if (!quitNow) Exec6502Instruction();
+			//}
 			
 //			Point p;
 //			GetMouse(&p);
@@ -499,7 +499,7 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
                                   kEventPriorityHigh);
             }
             if (err == noErr) {
-                RunApplicationEventLoop();
+                //RunApplicationEventLoop();
             }
 
             junk = RemoveEventHandler(installedHandler);
@@ -571,7 +571,7 @@ int i;
                                 7, eventTypes,
                                 NULL, NULL);
 
-  AEInstallEventHandler(kCoreEventClass, kAEOpenDocuments, NewAEEventHandlerUPP(AEodoc), 0, false);
+  //AEInstallEventHandler(kCoreEventClass, kAEOpenDocuments, NewAEEventHandlerUPP(AEodoc), 0, false);
 
   EventTypeSpec events[] = {
 		{ kEventClassWindow, kEventWindowClosed }
@@ -581,15 +581,15 @@ int i;
         { kEventClassCommand, kEventCommandProcess }
   };
 
-  InstallWindowEventHandler (mainWin->mWindow, 
-		   NewEventHandlerUPP (MainWindowEventHandler), 
-		   GetEventTypeCount(events), events, 
-		   mainWin->mWindow, NULL);
+  //InstallWindowEventHandler (mainWin->mWindow,
+//		   NewEventHandlerUPP (MainWindowEventHandler),
+//		   GetEventTypeCount(events), events,
+//		   mainWin->mWindow, NULL);
 
-  InstallWindowEventHandler(mainWin->mWindow, 
-            NewEventHandlerUPP (MainWindowCommandHandler), 
-            GetEventTypeCount(commands), commands, 
-            mainWin->mWindow, NULL);
+//  InstallWindowEventHandler(mainWin->mWindow,
+ //           NewEventHandlerUPP (MainWindowCommandHandler),
+  //          GetEventTypeCount(commands), commands,
+   //         mainWin->mWindow, NULL);
 
 
 //  mainWin->StartRecordingVideo("jon.mov", nil);

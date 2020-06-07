@@ -578,8 +578,8 @@ void CloseUEF(void) {
 			const ControlID dbControlID = { 'SLST', 0 };
 			ControlRef dbControl;
 			
-			GetControlByID (mTCWindow, &dbControlID, &dbControl);
-			RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
+//			GetControlByID (mTCWindow, &dbControlID, &dbControl);
+//			RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
 		}
 		
 	}
@@ -804,7 +804,7 @@ OSStatus TCWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event,
     OSStatus err = noErr;
     err = GetEventParameter(event, kEventParamDirectObject,
 							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    require_noerr (err, CantGetParameter);
+//    require_noerr (err, CantGetParameter);
 	
 	err = noErr;
 	switch (command.commandID)
@@ -855,10 +855,10 @@ OSStatus TCWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event,
 				if (UEFOpen)
 				{
 
-					CopyCStringToPascal("Append to current tape file :", S1);
-					CopyCStringToPascal(UEFTapeName, S2);
-					
-					StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
+//					CopyCStringToPascal("Append to current tape file :", S1);
+//					CopyCStringToPascal(UEFTapeName, S2);
+//
+//					StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
 					
 					if (r == 1)		// OK
 					{
@@ -867,8 +867,8 @@ OSStatus TCWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event,
 						const ControlID dbControlID = { 'SLST', 0 };
 						ControlRef dbControl;
 						
-						GetControlByID (mTCWindow, &dbControlID, &dbControl);
-						SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &map_lines, kDataBrowserItemsAssign);
+//						GetControlByID (mTCWindow, &dbControlID, &dbControl);
+//						SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &map_lines, kDataBrowserItemsAssign);
 						
 					}
 				}
@@ -885,9 +885,9 @@ OSStatus TCWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event,
 						{
 							fclose(fd);
 
-							CopyCStringToPascal("File already exists", S1);
-							CopyCStringToPascal("Overwrite file ?", S2);
-							StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
+//							CopyCStringToPascal("File already exists", S1);
+//							CopyCStringToPascal("Overwrite file ?", S2);
+//							StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
 						}
 						
 						if (r == 1)		// OK
@@ -899,10 +899,10 @@ OSStatus TCWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event,
 							}
 							else
 							{
-								CopyCStringToPascal("Error creating tape file:", S1);
-								CopyCStringToPascal(UEFTapeName, S2);
+//								CopyCStringToPascal("Error creating tape file:", S1);
+//								CopyCStringToPascal(UEFTapeName, S2);
 								alertParameters.cancelButton	= 0;
-								StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
+//								StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
 								
 								UEFTapeName[0] = 0;
 								r = 2;			// Cancel
@@ -967,7 +967,7 @@ CFStringRef pTitle;
 				strcpy(temp, map_desc[itemID - 1]);
 				temp[12] = 0;
 				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				status = SetDataBrowserItemDataText(itemData, pTitle);
 				CFRelease(pTitle);
 				
 				break;
@@ -977,7 +977,7 @@ CFStringRef pTitle;
 				strcpy(temp, map_desc[itemID - 1] + 13);
 				temp[2] = 0;
 				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				status = SetDataBrowserItemDataText(itemData, pTitle);
 				CFRelease(pTitle);
 				
 				break;
@@ -986,7 +986,7 @@ CFStringRef pTitle;
 				
 				strcpy(temp, map_desc[itemID - 1] + 16);
 				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				status = SetDataBrowserItemDataText(itemData, pTitle);
 				CFRelease(pTitle);
 				
 				break;
@@ -1040,32 +1040,32 @@ void TapeControlOpenDialog()
 	{
 		// Create a Nib reference passing the name of the nib file (without the .nib extension)
 		// CreateNibReference only searches into the application bundle.
-		CreateNibReference(CFSTR("main"), &nibRef);
-		CreateWindowFromNib(nibRef, CFSTR("Window"), &mTCWindow);
-		DisposeNibReference(nibRef);
-		ShowWindow(mTCWindow);
-		
-		InstallWindowEventHandler(mTCWindow, 
-							  NewEventHandlerUPP (TCWindowCommandHandler), 
-							  GetEventTypeCount(TCcommands), TCcommands, 
-							  mTCWindow, NULL);
-		
-		InstallWindowEventHandler (mTCWindow, 
-								   NewEventHandlerUPP (TCWindowEventHandler), 
-								   GetEventTypeCount(TCevents), TCevents, 
-								   mTCWindow, NULL);
+//		CreateNibReference(CFSTR("main"), &nibRef);
+//		CreateWindowFromNib(nibRef, CFSTR("Window"), &mTCWindow);
+//		DisposeNibReference(nibRef);
+//		ShowWindow(mTCWindow);
+//
+//		InstallWindowEventHandler(mTCWindow,
+//							  NewEventHandlerUPP (TCWindowCommandHandler),
+//							  GetEventTypeCount(TCcommands), TCcommands,
+//							  mTCWindow, NULL);
+//
+//		InstallWindowEventHandler (mTCWindow,
+//								   NewEventHandlerUPP (TCWindowEventHandler),
+//								   GetEventTypeCount(TCevents), TCevents,
+//								   mTCWindow, NULL);
 		
 		const ControlID dbControlID = { 'SLST', 0 };
 		ControlRef dbControl;
 		DataBrowserCallbacks dbCallbacks;
 		
-		GetControlByID (mTCWindow, &dbControlID, &dbControl);
+//		GetControlByID (mTCWindow, &dbControlID, &dbControl);
 		dbCallbacks.version = kDataBrowserLatestCallbacks;
-		InitDataBrowserCallbacks(&dbCallbacks);
+//		InitDataBrowserCallbacks(&dbCallbacks);
 		dbCallbacks.u.v1.itemDataCallback =
 			NewDataBrowserItemDataUPP( (DataBrowserItemDataProcPtr) TCWindowCallback);
-		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
-		SetAutomaticControlDragTrackingEnabledForWindow(mTCWindow, true);
+//		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
+//		SetAutomaticControlDragTrackingEnabledForWindow(mTCWindow, true);
 		
 		if (UEFOpen)
 		{
@@ -1091,8 +1091,8 @@ void TapeControlCloseDialog()
 {
 	if (mTCWindow)
 	{
-		HideWindow(mTCWindow);
-		DisposeWindow(mTCWindow);
+//		HideWindow(mTCWindow);
+//		DisposeWindow(mTCWindow);
 	}
 	mTCWindow = NULL;
 	TapeControlEnabled = FALSE;
@@ -1117,9 +1117,9 @@ void TapeControlOpenFile(char *UEFName)
 		const ControlID dbControlID = { 'SLST', 0 };
 		ControlRef dbControl;
 			
-		GetControlByID (mTCWindow, &dbControlID, &dbControl);
-		RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
-		AddDataBrowserItems(dbControl, kDataBrowserNoItem, map_lines, NULL, kDataBrowserItemNoProperty);
+//		GetControlByID (mTCWindow, &dbControlID, &dbControl);
+//		RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
+//		AddDataBrowserItems(dbControl, kDataBrowserNoItem, map_lines, NULL, kDataBrowserItemNoProperty);
 
 		TapeControlUpdateCounter(0);
 
@@ -1144,10 +1144,10 @@ void TapeControlUpdateCounter(int tape_time)
 		const ControlID dbControlID = { 'SLST', 0 };
 		ControlRef dbControl;
 		
-		GetControlByID (mTCWindow, &dbControlID, &dbControl);
+//		GetControlByID (mTCWindow, &dbControlID, &dbControl);
 		j = i + 1;
-		SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &j, kDataBrowserItemsAssign);
-		RevealDataBrowserItem(dbControl, j, kDataBrowserNoItem, kDataBrowserRevealOnly);
+//		SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &j, kDataBrowserItemsAssign);
+//		RevealDataBrowserItem(dbControl, j, kDataBrowserNoItem, kDataBrowserRevealOnly);
 	}
 }
 

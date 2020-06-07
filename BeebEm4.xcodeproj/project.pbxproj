@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		179F7C912487F4F600A4D164 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179F7C902487F4F600A4D164 /* SwiftUIView.swift */; };
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
 		19005B950963E34200872367 /* scsi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19005B940963E34200872367 /* scsi.cc */; };
 		19023C8908E3E96000BA702E /* uef.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19023C8808E3E96000BA702E /* uef.cc */; };
@@ -24,7 +23,6 @@
 		1933BC890952FA1900C45D5A /* serial.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1933BC880952FA1900C45D5A /* serial.cc */; };
 		19368F9B098397E300B05B51 /* teletext.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19368F9A098397E300B05B51 /* teletext.cc */; };
 		1939747F08E6E5A900486851 /* userkybd.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1939747E08E6E5A900486851 /* userkybd.cc */; };
-		194EFCF8090E7EBE0060F3BD /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 194EFCF7090E7EBE0060F3BD /* QuickTime.framework */; };
 		195825A80D19A79F0026D58C /* printing.cc in Sources */ = {isa = PBXBuildFile; fileRef = 195825A70D19A79F0026D58C /* printing.cc */; };
 		197E630009605023008AA155 /* econet.cc in Sources */ = {isa = PBXBuildFile; fileRef = 197E62FF09605023008AA155 /* econet.cc */; };
 		1991931D0BF5D4D20025F5A0 /* ArmDisassembler.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1991931B0BF5D4D20025F5A0 /* ArmDisassembler.cc */; };
@@ -94,8 +92,6 @@
 		0867D6ABFE840B52C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
-		179F7C8F2487F4F600A4D164 /* BeebEm4-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BeebEm4-Bridging-Header.h"; path = "Src/BeebEm4-Bridging-Header.h"; sourceTree = "<group>"; };
-		179F7C902487F4F600A4D164 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftUIView.swift; path = Src/SwiftUIView.swift; sourceTree = "<group>"; };
 		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
 		17E47C132488FE9C0073DF2D /* ArchitectureNotes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArchitectureNotes.txt; sourceTree = "<group>"; };
 		17E47C15248901090073DF2D /* Arm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Arm.h; path = Src/Arm.h; sourceTree = "<group>"; };
@@ -121,7 +117,6 @@
 		1933BC880952FA1900C45D5A /* serial.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = serial.cc; path = Src/serial.cc; sourceTree = "<group>"; };
 		19368F9A098397E300B05B51 /* teletext.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = teletext.cc; path = Src/teletext.cc; sourceTree = "<group>"; };
 		1939747E08E6E5A900486851 /* userkybd.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = userkybd.cc; path = Src/userkybd.cc; sourceTree = "<group>"; };
-		194EFCF7090E7EBE0060F3BD /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/../../../../../../../../../System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		195825A70D19A79F0026D58C /* printing.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = printing.cc; path = Src/printing.cc; sourceTree = "<group>"; };
 		197E62FF09605023008AA155 /* econet.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = econet.cc; path = Src/econet.cc; sourceTree = "<group>"; };
 		1991931B0BF5D4D20025F5A0 /* ArmDisassembler.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ArmDisassembler.cc; path = Src/ArmDisassembler.cc; sourceTree = "<group>"; };
@@ -196,7 +191,6 @@
 			files = (
 				8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */,
 				19E9FA29086B5CA6008741A6 /* CoreAudio.framework in Frameworks */,
-				194EFCF8090E7EBE0060F3BD /* QuickTime.framework in Frameworks */,
 				191656C10B39BBAE00C4FA44 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -226,7 +220,6 @@
 				17E47C122488FE4D0073DF2D /* Dev Docs */,
 				C14C1AAC2145FE7D00946B2B /* Install */,
 				C14463B021409DF000E90AC2 /* Config */,
-				194EFCF7090E7EBE0060F3BD /* QuickTime.framework */,
 				191656C00B39BBAE00C4FA44 /* IOKit.framework */,
 				19E9FA28086B5CA6008741A6 /* CoreAudio.framework */,
 				20286C2AFDCF999611CA2CEA /* Sources */,
@@ -252,7 +245,6 @@
 				19E9FA06086B5C85008741A6 /* audev-macosx.cc */,
 				17E47C1A2489012F0073DF2D /* audev.h */,
 				19AC0F76139C06D4003679A1 /* BeebEm4_Prefix.pch */,
-				179F7C8F2487F4F600A4D164 /* BeebEm4-Bridging-Header.h */,
 				19E9FA0A086B5C85008741A6 /* beebmem.cc */,
 				17E47C192489012F0073DF2D /* beebmem.h */,
 				19E9FA0B086B5C85008741A6 /* beebsound.cc */,
@@ -280,7 +272,6 @@
 				1933BC880952FA1900C45D5A /* serial.cc */,
 				1907F0680AA32D4D0098CA99 /* serialdevices.cc */,
 				19E90D7D095B395C0004AD96 /* speech.cc */,
-				179F7C902487F4F600A4D164 /* SwiftUIView.swift */,
 				19E9FA10086B5C85008741A6 /* sysvia.cc */,
 				19368F9A098397E300B05B51 /* teletext.cc */,
 				19E9FA03086B5C85008741A6 /* tube.cc */,
@@ -475,7 +466,6 @@
 				19005B950963E34200872367 /* scsi.cc in Sources */,
 				19172C4009653728006A4ED9 /* sasi.cc in Sources */,
 				19368F9B098397E300B05B51 /* teletext.cc in Sources */,
-				179F7C912487F4F600A4D164 /* SwiftUIView.swift in Sources */,
 				191CA3A509A11734006B6614 /* i86.cc in Sources */,
 				191CA3A609A11734006B6614 /* i386dasm.cc in Sources */,
 				190C3A110AA211B500DF468A /* csw.cc in Sources */,

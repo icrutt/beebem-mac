@@ -115,11 +115,11 @@ CFStringRef pTitle;
 	const ControlID dbControlID = { 'ass ', 0 };
 	ControlRef dbControl;
 	
-	GetControlByID (mUKWindow, &dbControlID, &dbControl);
+	//GetControlByID (mUKWindow, &dbControlID, &dbControl);
 
 	pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Keys, kCFStringEncodingASCII);
 
-    SetControlData(dbControl, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &pTitle);
+    //SetControlData(dbControl, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &pTitle);
 	
 	CFRelease(pTitle);
 	if ( (LastButton != 0) && (LastButton != key) )
@@ -130,8 +130,8 @@ CFStringRef pTitle;
 		dbKeyID.signature = LastButton;
 		dbKeyID.id = 0;
 		
-		GetControlByID (mUKWindow, &dbKeyID, &dbControl);
-		SetControlValue(dbControl, 0);
+		//GetControlByID (mUKWindow, &dbKeyID, &dbControl);
+		//SetControlValue(dbControl, 0);
 	}
 	LastButton = key;
 }
@@ -145,7 +145,7 @@ OSStatus UKWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event,
     OSStatus err = noErr;
     err = GetEventParameter(event, kEventParamDirectObject,
 							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    require_noerr (err, CantGetParameter);
+    //require_noerr (err, CantGetParameter);
 	
 	err = noErr;
 
@@ -233,20 +233,20 @@ void UserKeyboardOpenDialog()
 	{
 		// Create a Nib reference passing the name of the nib file (without the .nib extension)
 		// CreateNibReference only searches into the application bundle.
-		CreateNibReference(CFSTR("main"), &nibRef);
-		CreateWindowFromNib(nibRef, CFSTR("Window1"), &mUKWindow);
-		DisposeNibReference(nibRef);
-		ShowWindow(mUKWindow);
+		//CreateNibReference(CFSTR("main"), &nibRef);
+		//CreateWindowFromNib(nibRef, CFSTR("Window1"), &mUKWindow);
+		//DisposeNibReference(nibRef);
+		//ShowWindow(mUKWindow);
 		
-		InstallWindowEventHandler(mUKWindow, 
-							  NewEventHandlerUPP (UKWindowCommandHandler), 
-							  GetEventTypeCount(UKcommands), UKcommands, 
-							  mUKWindow, NULL);
+		//InstallWindowEventHandler(mUKWindow,
+		//					  NewEventHandlerUPP (UKWindowCommandHandler),
+		//					  GetEventTypeCount(UKcommands), UKcommands,
+		//					  mUKWindow, NULL);
 		
-		InstallWindowEventHandler (mUKWindow, 
-								   NewEventHandlerUPP (UKWindowEventHandler), 
-								   GetEventTypeCount(UKevents), UKevents, 
-								   mUKWindow, NULL);
+		//InstallWindowEventHandler (mUKWindow,
+		//						   NewEventHandlerUPP (UKWindowEventHandler),
+		//						   GetEventTypeCount(UKevents), UKevents,
+		//						   mUKWindow, NULL);
 		
 	}
 }
@@ -255,8 +255,8 @@ void UserKeyboardCloseDialog()
 {
 	if (mUKWindow)
 	{
-		HideWindow(mUKWindow);
-		DisposeWindow(mUKWindow);
+		//HideWindow(mUKWindow);
+		//DisposeWindow(mUKWindow);
 	}
 	mUKWindow = NULL;
 }

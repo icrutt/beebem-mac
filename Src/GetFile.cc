@@ -6,7 +6,7 @@
 
   Author:    based on code from QTShell sample
 
-  Copyright:   © Copyright 2000 Apple Computer, Inc. All rights reserved.
+  Copyright:   ï¿½ Copyright 2000 Apple Computer, Inc. All rights reserved.
   
   Disclaimer:  IMPORTANT:  This Apple software is supplied to you by Apple Computer, Inc.
         ("Apple") in consideration of your agreement to the following terms, and your
@@ -66,17 +66,17 @@
 // filter to return false if a file is to be displayed.
 //
 //////////
-OSErr GetOneFileWithPreview (char *path, NavObjectFilterUPP myFilterProc)
+/*OSErr GetOneFileWithPreview (char *path, NavObjectFilterUPP myFilterProc)
 {
-  NavReplyRecord    myReply;
-  NavDialogOptions  myDialogOptions;
-  NavEventUPP       myEventUPP = NewNavEventUPP(HandleNavEvent);
+  //NavReplyRecord    myReply;
+  //NavDialogOptions  myDialogOptions;
+  //NavEventUPP       myEventUPP = NewNavEventUPP(HandleNavEvent);
   OSErr				myErr = noErr;
   
   // specify the options for the dialog box
   NavGetDefaultDialogOptions(&myDialogOptions);
-  myDialogOptions.dialogOptionFlags -= kNavNoTypePopup;
-  myDialogOptions.dialogOptionFlags -= kNavAllowMultipleFiles;
+  //myDialogOptions.dialogOptionFlags -= kNavNoTypePopup;
+  //myDialogOptions.dialogOptionFlags -= kNavAllowMultipleFiles;
   
   // prompt the user for a file
 
@@ -106,14 +106,14 @@ OSErr GetOneFileWithPreview (char *path, NavObjectFilterUPP myFilterProc)
  
   return(myErr);
 }
-
+*/
 //////////
 //
 // HandleNavEvent
 // A callback procedure that handles events while a Navigation Service dialog box is displayed.
 //
 //////////
-PASCAL_RTN void HandleNavEvent(NavEventCallbackMessage theCallBackSelector, NavCBRecPtr theCallBackParms, void *theCallBackUD)
+/*PASCAL_RTN void HandleNavEvent(NavEventCallbackMessage theCallBackSelector, NavCBRecPtr theCallBackParms, void *theCallBackUD)
 {
 #pragma unused(theCallBackUD)
   
@@ -129,16 +129,16 @@ PASCAL_RTN void HandleNavEvent(NavEventCallbackMessage theCallBackSelector, NavC
         break;
     }
   }
-}
+}*/
 
-unsigned pascal char DiscFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode)
+/*unsigned pascal char DiscFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode)
 {
 Boolean display = true;
 NavFileOrFolderInfo *theInfo;
 FSRef ref;
 LSItemInfoRecord outInfo;
 
-	theInfo = (NavFileOrFolderInfo *) info;
+	//theInfo = (NavFileOrFolderInfo *) info;
 
 	if (theInfo->isFolder == true) return true;
 	
@@ -167,16 +167,16 @@ LSItemInfoRecord outInfo;
 	}
 	
 	return display;
-}
+} */
 
-unsigned pascal char UEFFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode)
+/*unsigned pascal char UEFFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode)
 {
 Boolean display = true;
 NavFileOrFolderInfo *theInfo;
 FSRef ref;
 LSItemInfoRecord outInfo;
 
-	theInfo = (NavFileOrFolderInfo *) info;
+	//theInfo = (NavFileOrFolderInfo *) info;
 
 	if (theInfo->isFolder == true) return true;
 	
@@ -200,16 +200,16 @@ LSItemInfoRecord outInfo;
 	}
 	
 	return display;
-}
+}*/
 
-unsigned pascal char IFDFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode)
+/*unsigned pascal char IFDFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode)
 {
 	Boolean display = true;
 	NavFileOrFolderInfo *theInfo;
 	FSRef ref;
 	LSItemInfoRecord outInfo;
 	
-	theInfo = (NavFileOrFolderInfo *) info;
+	//theInfo = (NavFileOrFolderInfo *) info;
 	
 	if (theInfo->isFolder == true) return true;
 	
@@ -236,17 +236,17 @@ unsigned pascal char IFDFilterProc(AEDesc *theItem, void *info, void *callBackUD
 	}
 	
 	return display;
-}
+}*/
 
 
-unsigned pascal char KeyboardFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode)
+/*unsigned pascal char KeyboardFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode)
 {
 	Boolean display = true;
 	NavFileOrFolderInfo *theInfo;
 	FSRef ref;
 	LSItemInfoRecord outInfo;
 	
-	theInfo = (NavFileOrFolderInfo *) info;
+	//theInfo = (NavFileOrFolderInfo *) info;
 	
 	if (theInfo->isFolder == true) return true;
 	
@@ -269,25 +269,25 @@ unsigned pascal char KeyboardFilterProc(AEDesc *theItem, void *info, void *callB
 	}
 	
 	return display;
-}
+}*/
 
 OSErr SaveFile(char *path, FSSpec *fs) 
 {
-NavReplyRecord    myReply;
-NavDialogOptions    myDialogOptions;
-NavEventUPP    myEventUPP = NULL;
+//NavReplyRecord    myReply;
+//NavDialogOptions    myDialogOptions;
+//NavEventUPP    myEventUPP = NULL;
 OSErr        myErr = noErr;
 OSType	fileTypeToSave = 'TEXT', fileCreator = 'jjf0';
 
   // specify the options for the dialog box
-  NavGetDefaultDialogOptions(&myDialogOptions);
-  myDialogOptions.dialogOptionFlags += kNavNoTypePopup;
-  myDialogOptions.dialogOptionFlags += kNavDontAutoTranslate;
+  //NavGetDefaultDialogOptions(&myDialogOptions);
+  //myDialogOptions.dialogOptionFlags += kNavNoTypePopup;
+  //myDialogOptions.dialogOptionFlags += kNavDontAutoTranslate;
   
   // prompt the user for a file
-  myErr = NavPutFile(NULL, &myReply, &myDialogOptions, myEventUPP, fileTypeToSave, fileCreator, NULL);
+  //myErr = NavPutFile(NULL, &myReply, &myDialogOptions, myEventUPP, fileTypeToSave, fileCreator, NULL);
 
-  if ((myErr == noErr) && myReply.validRecord) {
+  /*if ((myErr == noErr) && myReply.validRecord) {
     AEKeyword    myKeyword;
     DescType    myActualType;
     Size      myActualSize = 0;
@@ -309,30 +309,30 @@ OSType	fileTypeToSave = 'TEXT', fileCreator = 'jjf0';
 	}
 		
     NavDisposeReply(&myReply);
-  }
+  }*/
 
-  DisposeNavEventUPP(myEventUPP);
+  //DisposeNavEventUPP(myEventUPP);
 
   return (myErr);
 }
 
 OSErr SaveFileMov(char *path, FSSpec *fs) 
 {
-	NavReplyRecord    myReply;
-	NavDialogOptions    myDialogOptions;
-	NavEventUPP    myEventUPP = NULL;
+	//NavReplyRecord    myReply;
+	//NavDialogOptions    myDialogOptions;
+	//NavEventUPP    myEventUPP = NULL;
 	OSErr        myErr = noErr;
 	OSType	fileTypeToSave = 'MooV', fileCreator = 'TVOD';
 	
 	// specify the options for the dialog box
-	NavGetDefaultDialogOptions(&myDialogOptions);
-	myDialogOptions.dialogOptionFlags += kNavNoTypePopup;
-	myDialogOptions.dialogOptionFlags += kNavDontAutoTranslate;
+	//NavGetDefaultDialogOptions(&myDialogOptions);
+	//myDialogOptions.dialogOptionFlags += kNavNoTypePopup;
+	//myDialogOptions.dialogOptionFlags += kNavDontAutoTranslate;
 	
 	// prompt the user for a file
-	myErr = NavPutFile(NULL, &myReply, &myDialogOptions, myEventUPP, fileTypeToSave, fileCreator, NULL);
+	//myErr = NavPutFile(NULL, &myReply, &myDialogOptions, myEventUPP, fileTypeToSave, fileCreator, NULL);
 	
-	if ((myErr == noErr) && myReply.validRecord) {
+	/*if ((myErr == noErr) && myReply.validRecord) {
 		AEKeyword    myKeyword;
 		DescType    myActualType;
 		Size      myActualSize = 0;
@@ -354,9 +354,9 @@ OSErr SaveFileMov(char *path, FSSpec *fs)
 		}
 		
 		NavDisposeReply(&myReply);
-	}
+	}*/
 	
-	DisposeNavEventUPP(myEventUPP);
+	//DisposeNavEventUPP(myEventUPP);
 	
 	return (myErr);
 }

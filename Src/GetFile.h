@@ -61,7 +61,7 @@ typedef const OSTypePtr TypeListPtr;
 #if TARGET_OS_MAC
   typedef MenuHandle      MenuReference;
   typedef WindowPtr      WindowReference;
-  typedef NavObjectFilterUPP  QTFrameFileFilterUPP;
+  //typedef NavObjectFilterUPP  QTFrameFileFilterUPP;
 #endif
 
 
@@ -75,14 +75,14 @@ typedef const OSTypePtr TypeListPtr;
 
 // Prototypes
 //------------------------------------------------------------------------------
-OSErr GetOneFileWithPreview (char *path, NavObjectFilterUPP myFilterProc);
+//OSErr GetOneFileWithPreview (char *path, NavObjectFilterUPP myFilterProc);
 OSErr SaveFile(char *path, FSSpec *fs);
 OSErr SaveFileMov(char *path, FSSpec *fs);
-PASCAL_RTN void HandleNavEvent(NavEventCallbackMessage theCallBackSelector, NavCBRecPtr theCallBackParms, void *theCallBackUD);
+//PASCAL_RTN void HandleNavEvent(NavEventCallbackMessage theCallBackSelector, NavCBRecPtr theCallBackParms, void *theCallBackUD);
 
-unsigned pascal char DiscFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);
-unsigned pascal char UEFFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);
-unsigned pascal char KeyboardFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);
-unsigned pascal char IFDFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);
+//unsigned pascal char DiscFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);
+//unsigned pascal char UEFFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);
+//unsigned pascal char KeyboardFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);
+//unsigned pascal char IFDFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);
 
 #endif // __VIDEO_FRAME_TO_GWORLD__

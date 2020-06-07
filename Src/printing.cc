@@ -39,7 +39,7 @@ static OSStatus DoPageSetupDialog(PMPrintSession printSession, PMPageFormat* pag
     if (status == noErr)            //	Display the Page Setup dialog
     {
         Boolean accepted;
-        status = PMSessionPageSetupDialog(printSession, *pageFormat, &accepted);
+        //status = PMSessionPageSetupDialog(printSession, *pageFormat, &accepted);
         if (status == noErr && !accepted)
             status = kPMCancel;		// user clicked Cancel button
     }	
@@ -48,7 +48,7 @@ static OSStatus DoPageSetupDialog(PMPrintSession printSession, PMPageFormat* pag
     if ((status == noErr) && (flattendedPageFormat != NULL))
     {
 //        status = FlattenAndSavePageFormat(*pageFormat);
-        status = PMFlattenPageFormat(*pageFormat, flattendedPageFormat);
+        //status = PMFlattenPageFormat(*pageFormat, flattendedPageFormat);
     }
     
     return status;
@@ -59,7 +59,7 @@ static OSStatus	DetermineNumberOfPagesInDoc(PMPageFormat pageFormat, UInt32* num
 {
     PMRect	pageRect;
     OSStatus	status  = PMGetAdjustedPageRect(pageFormat, &pageRect);
-    check(status == noErr);
+    //check(status == noErr);
 
     *numPages = 1;  // will do better some time in the future ...
 
@@ -78,9 +78,9 @@ static OSStatus DoPrintLoop(PMPrintSession printSession, PMPageFormat pageFormat
                     lastPage;
     CFStringRef     jobName;    // use window title
 
-    status = CopyWindowTitleAsCFString(mainWin->mWindow, &jobName);
+    //status = CopyWindowTitleAsCFString(mainWin->mWindow, &jobName);
 
-    status = PMSetJobNameCFString(printSettings, jobName);
+    //status = PMSetJobNameCFString(printSettings, jobName);
     CFRelease (jobName);
 
     //	Get the user's Print dialog selection for first and last pages to print.
@@ -115,14 +115,14 @@ static OSStatus DoPrintLoop(PMPrintSession printSession, PMPageFormat pageFormat
     {
         CFStringRef s[1] = { kPMGraphicsContextCoreGraphics };
         CFArrayRef  graphicsContextsArray = CFArrayCreate(NULL, (const void**)s, 1, &kCFTypeArrayCallBacks);
-        PMSessionSetDocumentFormatGeneration(printSession, kPMDocumentFormatPDF, graphicsContextsArray, NULL);
+        //PMSessionSetDocumentFormatGeneration(printSession, kPMDocumentFormatPDF, graphicsContextsArray, NULL);
         CFRelease(graphicsContextsArray);
     }
     
     if (status == noErr)
     {
-        status = PMSessionBeginDocument(printSession, printSettings, pageFormat);
-        check(status == noErr);
+        //status = PMSessionBeginDocument(printSession, printSettings, pageFormat);
+        //check(status == noErr);
         if (status == noErr)
         {
             pageNumber = firstPage;
@@ -132,13 +132,13 @@ static OSStatus DoPrintLoop(PMPrintSession printSession, PMPageFormat pageFormat
             // any previous iteration of the print loop, we break out of the loop.
             while ( (pageNumber <= lastPage) && (status == noErr) && (PMSessionError(printSession) == noErr) )
             {
-                status = PMSessionBeginPage(printSession, pageFormat, NULL);
+                //status = PMSessionBeginPage(printSession, pageFormat, NULL);
 
-				check(status == noErr);
+				//check(status == noErr);
                 if (status == noErr)
                 {
-                    status = PMSessionGetGraphicsContext(printSession, kPMGraphicsContextCoreGraphics, (void**)&printingCtx);
-                    check(status == noErr);
+                    //status = PMSessionGetGraphicsContext(printSession, kPMGraphicsContextCoreGraphics, (void**)&printingCtx);
+                    //check(status == noErr);
                     if (status == noErr) 
                     {
 						PMRect       pageRect;
@@ -147,7 +147,7 @@ static OSStatus DoPrintLoop(PMPrintSession printSession, PMPageFormat pageFormat
 						MyDrawIntoPDFPage(printingCtx, pageRect, starty, nlines);
                     }
                                     
-                    tempErr = PMSessionEndPage(printSession);
+                    //tempErr = PMSessionEndPage(printSession);
                     if(status == noErr)
                        status = tempErr;
 					
@@ -156,7 +156,7 @@ static OSStatus DoPrintLoop(PMPrintSession printSession, PMPageFormat pageFormat
             } // end while loop
                     
             // Close the print job.  This dismisses the progress dialog on Mac OS X.
-            tempErr = PMSessionEndDocument(printSession);
+            //tempErr = PMSessionEndDocument(printSession);
             if (status == noErr)
                 status = tempErr;
         }
@@ -192,18 +192,18 @@ static OSStatus DoPrintDialog(PMPrintSession printSession, PMPageFormat pageForm
     if (*printSettings == kPMNoPrintSettings)
     {
         status = PMCreatePrintSettings(printSettings);	
-        check(status == noErr);
+        //check(status == noErr);
         // Note that PMPrintSettings is not session-specific, but calling
         // PMSessionDefaultPrintSettings assigns values specific to the printer
         // associated with the current printing session.
         if ((status == noErr) && (*printSettings != kPMNoPrintSettings))
             status = PMSessionDefaultPrintSettings(printSession, *printSettings);
-        check(status == noErr);
+        //check(status == noErr);
     }
     else
     {
         status = PMSessionValidatePrintSettings(printSession, *printSettings, kPMDontWantBoolean);
-        check(status == noErr);
+        //check(status == noErr);
     }
     
     // Before displaying the Print dialog, we calculate the number of pages in the
@@ -219,13 +219,13 @@ static OSStatus DoPrintDialog(PMPrintSession printSession, PMPageFormat pageForm
     // Set a valid page range before displaying the Print dialog
     if (status == noErr)
         status = PMSetPageRange(*printSettings, 1, realNumberOfPagesinDoc);
-    check(status == noErr);
+    //check(status == noErr);
 
     //	Display the Print dialog.
     if (status == noErr)
     {
-        status = PMSessionPrintDialog(printSession, *printSettings, pageFormat, &accepted);
-        check(status == noErr);
+        //status = PMSessionPrintDialog(printSession, *printSettings, pageFormat, &accepted);
+        //check(status == noErr);
         if (status == noErr && !accepted)
             status = kPMCancel;		// user clicked Cancel button
     }

@@ -648,7 +648,7 @@ OSStatus BreakOutWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef 
     OSStatus err = noErr;
     err = GetEventParameter(event, kEventParamDirectObject,
 							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    require_noerr (err, CantGetParameter);
+    //require_noerr (err, CantGetParameter);
 	
 	err = noErr;
 
@@ -791,20 +791,20 @@ void BreakOutOpenDialog()
 	{
 		// Create a Nib reference passing the name of the nib file (without the .nib extension)
 		// CreateNibReference only searches into the application bundle.
-		CreateNibReference(CFSTR("main"), &nibRef);
-		CreateWindowFromNib(nibRef, CFSTR("Window3"), &mBreakOutWindow);
-		DisposeNibReference(nibRef);
-		ShowWindow(mBreakOutWindow);
+		//CreateNibReference(CFSTR("main"), &nibRef);
+		//CreateWindowFromNib(nibRef, CFSTR("Window3"), &mBreakOutWindow);
+		//DisposeNibReference(nibRef);
+		//ShowWindow(mBreakOutWindow);
 		
-		InstallWindowEventHandler(mBreakOutWindow, 
-							  NewEventHandlerUPP (BreakOutWindowCommandHandler), 
-							  GetEventTypeCount(BreakOutCommands), BreakOutCommands, 
-							  mBreakOutWindow, NULL);
+		//InstallWindowEventHandler(mBreakOutWindow,
+		//					  NewEventHandlerUPP (BreakOutWindowCommandHandler),
+		//					  GetEventTypeCount(BreakOutCommands), BreakOutCommands,
+		//					  mBreakOutWindow, NULL);
 		
-		InstallWindowEventHandler (mBreakOutWindow, 
-								   NewEventHandlerUPP (BreakOutWindowEventHandler), 
-								   GetEventTypeCount(BreakOutEvents), BreakOutEvents, 
-								   mBreakOutWindow, NULL);
+		//InstallWindowEventHandler (mBreakOutWindow,
+		//						   NewEventHandlerUPP (BreakOutWindowEventHandler),
+		//						   GetEventTypeCount(BreakOutEvents), BreakOutEvents,
+		//						   mBreakOutWindow, NULL);
 		
 		ShowInputs( (UserVIAState.orb & UserVIAState.ddrb) | (UserVIAState.irb & (~UserVIAState.ddrb)) );
 		ShowOutputs(UserVIAState.orb);
@@ -826,8 +826,8 @@ void BreakOutCloseDialog()
 {
 	if (mBreakOutWindow)
 	{
-		HideWindow(mBreakOutWindow);
-		DisposeWindow(mBreakOutWindow);
+		//HideWindow(mBreakOutWindow);
+		//DisposeWindow(mBreakOutWindow);
 	}
 	mBreakOutWindow = NULL;
 	mainWin->SetMenuCommandIDCheck('upbo', false);
@@ -842,8 +842,8 @@ int GetValue(OSType box)
 	
 	dbControlID.signature = box;
 	dbControlID.id = 0;
-	GetControlByID (mBreakOutWindow, &dbControlID, &dbControl);
-	ret = GetControlValue(dbControl);
+	//GetControlByID (mBreakOutWindow, &dbControlID, &dbControl);
+	//ret = GetControlValue(dbControl);
 	return ret;
 }
 
@@ -854,8 +854,8 @@ void SetValue(OSType box, int State)
 	
 	dbControlID.signature = box;
 	dbControlID.id = 0;
-	GetControlByID (mBreakOutWindow, &dbControlID, &dbControl);
-	SetControlValue(dbControl, State);
+	//GetControlByID (mBreakOutWindow, &dbControlID, &dbControl);
+	//SetControlValue(dbControl, State);
 }
 
 void ShowOutputs(unsigned char data)
@@ -919,11 +919,11 @@ CFStringRef pTitle;
 	dbKeyID.signature = ctrlID;
 	dbKeyID.id = 0;
 	
-	GetControlByID (mBreakOutWindow, &dbKeyID, &dbControl);
+	//GetControlByID (mBreakOutWindow, &dbKeyID, &dbControl);
 
 	pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Keys, kCFStringEncodingASCII);
 
-    SetControlTitleWithCFString(dbControl, pTitle);
+    //SetControlTitleWithCFString(dbControl, pTitle);
 	
 	CFRelease(pTitle);
 
@@ -935,9 +935,9 @@ CFStringRef pTitle;
 		dbKeyID.signature = LastBitButton;
 		dbKeyID.id = 0;
 		
-		GetControlByID (mBreakOutWindow, &dbKeyID, &dbControl);
+		//GetControlByID (mBreakOutWindow, &dbKeyID, &dbControl);
 
-		SetControlValue(dbControl, 0);
+		//SetControlValue(dbControl, 0);
 	}
 
 	LastBitButton = ctrlID;

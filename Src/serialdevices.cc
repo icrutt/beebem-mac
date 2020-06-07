@@ -83,8 +83,8 @@ void DeactControl(OSType box)
 	const ControlID dbControlID = { box, 0 };
 	ControlRef dbControl;
 	
-	GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
-    DeactivateControl(dbControl);
+	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
+    //DeactivateControl(dbControl);
 }
 
 void ActControl(OSType box)
@@ -92,8 +92,8 @@ void ActControl(OSType box)
 	const ControlID dbControlID = { box, 0 };
 	ControlRef dbControl;
 	
-	GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
-    ActivateControl(dbControl);
+	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
+    //ActivateControl(dbControl);
 }
 
 void SetEPText(OSType box, char *text)
@@ -103,11 +103,11 @@ void SetEPText(OSType box, char *text)
 	const ControlID dbControlID = { box, 0 };
 	ControlRef dbControl;
 	
-	GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
+	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
 	
 	pTitle = CFStringCreateWithCString (kCFAllocatorDefault, text, kCFStringEncodingASCII);
 	
-    SetControlData(dbControl, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &pTitle);
+    //SetControlData(dbControl, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &pTitle);
 	
 	CFRelease(pTitle);
 }
@@ -121,8 +121,8 @@ void GetEPText(OSType box, char *text)
 
     *text = 0;
 	
-	GetControlByID(mEthernetPortWindow, &kCmd, &Cmd);
-    GetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text, NULL);
+	//GetControlByID(mEthernetPortWindow, &kCmd, &Cmd);
+    //GetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text, NULL);
 	CFStringGetCString (cmd_text, text, 32, kCFStringEncodingASCII);
 	
 	CFRelease (cmd_text);
@@ -137,8 +137,8 @@ int GetEPValue(OSType box)
 	
 	dbControlID.signature = box;
 	dbControlID.id = 0;
-	GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
-	ret = GetControlValue(dbControl);
+	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
+	//ret = GetControlValue(dbControl);
 	return ret;
 }
 
@@ -149,8 +149,8 @@ void SetEPValue(OSType box, int State)
 	
 	dbControlID.signature = box;
 	dbControlID.id = 0;
-	GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
-	SetControlValue(dbControl, State);
+	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
+	//SetControlValue(dbControl, State);
 }
 
 //*******************************************************************
@@ -163,7 +163,7 @@ OSStatus EthernetPortWindowCommandHandler(EventHandlerCallRef nextHandler, Event
 	
     err = GetEventParameter(event, kEventParamDirectObject,
 							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    require_noerr (err, CantGetParameter);
+    //require_noerr (err, CantGetParameter);
 	
 	err = noErr;
 	
@@ -275,20 +275,20 @@ void EthernetPortOpenDialog()
 	{
 		// Create a Nib reference passing the name of the nib file (without the .nib extension)
 		// CreateNibReference only searches into the application bundle.
-		CreateNibReference(CFSTR("main"), &nibRef);
-		CreateWindowFromNib(nibRef, CFSTR("Window5"), &mEthernetPortWindow);
-		DisposeNibReference(nibRef);
-		ShowWindow(mEthernetPortWindow);
+		//CreateNibReference(CFSTR("main"), &nibRef);
+		//CreateWindowFromNib(nibRef, CFSTR("Window5"), &mEthernetPortWindow);
+		//DisposeNibReference(nibRef);
+		//ShowWindow(mEthernetPortWindow);
 		
-		InstallWindowEventHandler(mEthernetPortWindow, 
-								  NewEventHandlerUPP (EthernetPortWindowCommandHandler), 
-								  GetEventTypeCount(EthernetPortcommands), EthernetPortcommands, 
-								  mEthernetPortWindow, NULL);
+		//InstallWindowEventHandler(mEthernetPortWindow,
+		//						  NewEventHandlerUPP (EthernetPortWindowCommandHandler),
+		//						  GetEventTypeCount(EthernetPortcommands), EthernetPortcommands,
+		//						  mEthernetPortWindow, NULL);
 		
-		InstallWindowEventHandler (mEthernetPortWindow, 
-								   NewEventHandlerUPP (EthernetPortWindowEventHandler), 
-								   GetEventTypeCount(EthernetPortevents), EthernetPortevents, 
-								   mEthernetPortWindow, NULL);
+		//InstallWindowEventHandler (mEthernetPortWindow,
+		//						   NewEventHandlerUPP (EthernetPortWindowEventHandler),
+		//						   GetEventTypeCount(EthernetPortevents), EthernetPortevents,
+		//						   mEthernetPortWindow, NULL);
 		
 		SetEPValue('ceps', !mMode);
 		SetEPValue('cepc', mMode);
@@ -312,8 +312,8 @@ void EthernetPortCloseDialog()
 {
 	if (mEthernetPortWindow)
 	{
-		HideWindow(mEthernetPortWindow);
-		DisposeWindow(mEthernetPortWindow);
+		//HideWindow(mEthernetPortWindow);
+		//DisposeWindow(mEthernetPortWindow);
 	}
 	mEthernetPortWindow = NULL;
 }
@@ -920,7 +920,7 @@ OSStatus SerialPortWindowCommandHandler(EventHandlerCallRef nextHandler, EventRe
 	
     err = GetEventParameter(event, kEventParamDirectObject,
 							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    require_noerr (err, CantGetParameter);
+    //require_noerr (err, CantGetParameter);
 	
 	err = noErr;
 
@@ -928,7 +928,7 @@ OSStatus SerialPortWindowCommandHandler(EventHandlerCallRef nextHandler, EventRe
 	{
 		case 'ok  ':
 
-			a = GetControl32BitValue(mPopup);
+			//a = GetControl32BitValue(mPopup);
 
             fprintf(stderr, "Selected Serial Port %d, '%s', '%s'\n", a, mBSDName[a - 1], mPortName[a - 1]);
 
@@ -1005,21 +1005,21 @@ void SerialPortOpenDialog()
 	{
 		// Create a Nib reference passing the name of the nib file (without the .nib extension)
 		// CreateNibReference only searches into the application bundle.
-		CreateNibReference(CFSTR("main"), &nibRef);
-		CreateWindowFromNib(nibRef, CFSTR("Window4"), &mSerialPortWindow);
-		DisposeNibReference(nibRef);
-		ShowWindow(mSerialPortWindow);
-		
-		InstallWindowEventHandler(mSerialPortWindow, 
-							  NewEventHandlerUPP (SerialPortWindowCommandHandler), 
-							  GetEventTypeCount(SerialPortcommands), SerialPortcommands, 
-							  mSerialPortWindow, NULL);
-		
-		InstallWindowEventHandler (mSerialPortWindow, 
-								   NewEventHandlerUPP (SerialPortWindowEventHandler), 
-								   GetEventTypeCount(SerialPortevents), SerialPortevents, 
-								   mSerialPortWindow, NULL);
-		
+//		CreateNibReference(CFSTR("main"), &nibRef);
+//		CreateWindowFromNib(nibRef, CFSTR("Window4"), &mSerialPortWindow);
+//		DisposeNibReference(nibRef);
+//		ShowWindow(mSerialPortWindow);
+//
+//		InstallWindowEventHandler(mSerialPortWindow,
+//							  NewEventHandlerUPP (SerialPortWindowCommandHandler),
+//							  GetEventTypeCount(SerialPortcommands), SerialPortcommands,
+//							  mSerialPortWindow, NULL);
+//
+//		InstallWindowEventHandler (mSerialPortWindow,
+//								   NewEventHandlerUPP (SerialPortWindowEventHandler),
+//								   GetEventTypeCount(SerialPortevents), SerialPortevents,
+//								   mSerialPortWindow, NULL);
+//
 
 		Rect r;
 		io_iterator_t	serialPortIterator;
@@ -1032,16 +1032,16 @@ void SerialPortOpenDialog()
 		r.right = r.left + 184;
 		r.bottom = r.top + 20;
 		
-		CreatePopupButtonControl (mSerialPortWindow, &r, NULL, 
-								  -12345,	// DON'T GET MENU FROM RESOURCE mMenuID,!!!
-								  FALSE,	// variableWidth, 
-								  0,		// titleWidth, 
-								  0,		// titleJustification, 
-								  0,		// titleStyle, 
-								  &mPopup);
-		
+//		CreatePopupButtonControl (mSerialPortWindow, &r, NULL,
+//								  -12345,	// DON'T GET MENU FROM RESOURCE mMenuID,!!!
+//								  FALSE,	// variableWidth,
+//								  0,		// titleWidth,
+//								  0,		// titleJustification,
+//								  0,		// titleStyle,
+//								  &mPopup);
+
 		MenuRef menuRef;
-		CreateNewMenu(1, 0, &menuRef);
+//		CreateNewMenu(1, 0, &menuRef);
 		
 		classesToMatch = IOServiceMatching(kIOSerialBSDServiceValue);
 		if (classesToMatch == NULL)
@@ -1083,7 +1083,7 @@ void SerialPortOpenDialog()
 					if (bsdPathAsCFString)
 					{
 
-						AppendMenuItemTextWithCFString (menuRef, (CFStringRef) bsdPathAsCFString, 0, 0, 0);
+//						AppendMenuItemTextWithCFString (menuRef, (CFStringRef) bsdPathAsCFString, 0, 0, 0);
 
 						CFStringGetCString((CFStringRef) bsdPathAsCFString, mPortName[i], 100, kCFStringEncodingUTF8);
 
@@ -1112,11 +1112,11 @@ void SerialPortOpenDialog()
 		
 		}
 		
-		SetControlData(mPopup, 0, kControlPopupButtonMenuRefTag, sizeof(menuRef), &menuRef);
-		
-		SetControl32BitMaximum (mPopup, i);				// Set number of menu items
-
-		SetControl32BitValue (mPopup, 1);				// Set default menu item
+//		SetControlData(mPopup, 0, kControlPopupButtonMenuRefTag, sizeof(menuRef), &menuRef);
+//
+//		SetControl32BitMaximum (mPopup, i);				// Set number of menu items
+//
+//		SetControl32BitValue (mPopup, 1);				// Set default menu item
 
 	}
 
@@ -1126,8 +1126,8 @@ void SerialPortCloseDialog()
 {
 	if (mSerialPortWindow)
 	{
-		HideWindow(mSerialPortWindow);
-		DisposeWindow(mSerialPortWindow);
+//		HideWindow(mSerialPortWindow);
+//		DisposeWindow(mSerialPortWindow);
 	}
 	mSerialPortWindow = NULL;
 }
