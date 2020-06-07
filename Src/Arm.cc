@@ -14,6 +14,7 @@
 
 #include "Arm.h"
 #include "ArmDisassembler.h"	// gives access to disassembler
+#include "BeebEmLog.hpp"
 
 int Enable_Arm = 0;
 int ArmTube = 0;
@@ -84,7 +85,7 @@ CArm::CArm()
 	prefetchInvalid = TRUE;
 	conditionFlags = 0;
 
-	WriteLog("init_arm()\n");
+	BeebEmLog::writeLog("init_arm()\n");
 	
 	// load file into test memory
 	FILE *testFile;
@@ -102,7 +103,7 @@ CArm::CArm()
 	}
 	else
 	{
-		WriteLog(">>>>>>>>> ROM file %s not found!\n", path);
+		BeebEmLog::writeLog(">>>>>>>>> ROM file %s not found!\n", path);
 	}
 	
 	memset(ramMemory, 0, 0x400000);
@@ -154,11 +155,11 @@ void CArm::exec(int count)
 
 			}
 
-			WriteLog(" r0 = %08x r1 = %08x r2 = %08x r3 = %08x r4 = %08x r5 = %08x r6 = %08x r7 = %08x r8 = %08x : ",
+			BeebEmLog::writeLog(" r0 = %08x r1 = %08x r2 = %08x r3 = %08x r4 = %08x r5 = %08x r6 = %08x r7 = %08x r8 = %08x : ",
 					 getRegister(0), getRegister(1), getRegister(2), getRegister(3), getRegister(4), 
 					 getRegister(5), getRegister(6), getRegister(7), getRegister(8));
 
-			WriteLog("%s : %08x : %s\n", addressS, val, disassembly);
+			BeebEmLog::writeLog("%s : %08x : %s\n", addressS, val, disassembly);
 
 			trace--;
 		}
@@ -2648,7 +2649,7 @@ void CArm::run()
 			}
 			
 			default :	// ??? DISPLAY ERROR MESSAGE - I'VE MISSED OUT AN INSTRUCTION CASE
-						WriteLog("ERROR UNKNOWN OPCODE %02x\n", getField(currentInstruction, 20, 27) );
+						BeebEmLog::writeLog("ERROR UNKNOWN OPCODE %02x\n", getField(currentInstruction, 20, 27) );
 						break;
 		} // end instruction decoding switch
 	} // end conditional execution
@@ -2684,7 +2685,7 @@ void CArm::run()
 	{
 		if (processorMode != FIQ_MODE)
 		{
-//			WriteLog("Entering FIQ Mode\n");
+//			BeebEmLog::writeLog("Entering FIQ Mode\n");
 			exceptionFastInterruptRequest();
 		}
 	}
@@ -2692,7 +2693,7 @@ void CArm::run()
 	{
 		if (processorMode != IRQ_MODE)
 		{
-//			WriteLog("Entering IRQ Mode\n");
+//			BeebEmLog::writeLog("Entering IRQ Mode\n");
 			exceptionInterruptRequest();
 		}
 	}
@@ -2700,7 +2701,7 @@ void CArm::run()
 	{
 		if (processorMode != IRQ_MODE)
 		{
-//			WriteLog("Entering IRQ Mode\n");
+//			BeebEmLog::writeLog("Entering IRQ Mode\n");
 			exceptionInterruptRequest();
 		}
 	}
@@ -3590,7 +3591,7 @@ inline bool CArm::performDataTransferLoadWord(uint32 address, uint32 &destinatio
 			// in ARM610 datasheet and tested on Risc PC.
 			if( address & 3 )
 			{
-				WriteLog("LoadWord from non word aligned address %08x, pc = %08x\n", address, pc);
+				BeebEmLog::writeLog("LoadWord from non word aligned address %08x, pc = %08x\n", address, pc);
 				destination = rorOperator(destination, (address & 3)<<3 );
 			}
 
@@ -3677,7 +3678,7 @@ inline bool CArm::readWord(uint32 address, uint32& destination)
 
 	if ((address & ~0x1f) == 0x1000000)
 	{
-//		WriteLog("Read word from tube %08x, reg %d\n", address, (address & 0x1c) >> 2);
+//		BeebEmLog::writeLog("Read word from tube %08x, reg %d\n", address, (address & 0x1c) >> 2);
 		destination = 0xff;
 		return TRUE;
 	}
@@ -3692,7 +3693,7 @@ inline bool CArm::readWord(uint32 address, uint32& destination)
 		return TRUE;
 	}
 
-	WriteLog("Bad ARM read word from %08x\n", address);
+	BeebEmLog::writeLog("Bad ARM read word from %08x\n", address);
 	destination = 0xff;
 	return FALSE;
 }
@@ -3711,11 +3712,11 @@ inline bool CArm::writeWord(uint32 address, uint32 data)
 
 	if ((address & ~0x1f) == 0x1000000)
 	{
-//		WriteLog("Write word %08x to tube %08x, reg %d\n", data, address, (address & 0x1c) >> 2);
+//		BeebEmLog::writeLog("Write word %08x to tube %08x, reg %d\n", data, address, (address & 0x1c) >> 2);
 		return TRUE;
 	}
 
-	WriteLog("Bad ARM write word %08x to %08x\n", data, address);
+	BeebEmLog::writeLog("Bad ARM write word %08x to %08x\n", data, address);
 	return FALSE;
 
 }
@@ -3736,7 +3737,7 @@ inline bool CArm::readByte(uint32 address, uint8 &destination)
 	if ((address & ~0x1f) == 0x1000000)
 	{
 		destination = ReadTubeFromParasiteSide((address & 0x1c) >> 2);
-//		WriteLog("Read byte from tube %08x, reg %d returned %d\n", address, (address & 0x1c) >> 2, destination);
+//		BeebEmLog::writeLog("Read byte from tube %08x, reg %d returned %d\n", address, (address & 0x1c) >> 2, destination);
 		return TRUE;
 	}
 
@@ -3747,7 +3748,7 @@ inline bool CArm::readByte(uint32 address, uint8 &destination)
 		return TRUE;
 	}
 
-	WriteLog("Bad ARM read byte from %08x\n", address);
+	BeebEmLog::writeLog("Bad ARM read byte from %08x\n", address);
 	destination = 0xff;
 	return FALSE;
 }
@@ -3764,7 +3765,7 @@ inline bool CArm::writeByte(uint32 address, uint8 value)
 			uint32 val;
 			readWord(0xc500, val);
 	
-			WriteLog("Write 0 to 0xc501 - %08x\n", val);
+			BeebEmLog::writeLog("Write 0 to 0xc501 - %08x\n", val);
 			trace = 10;
 		}
 */
@@ -3773,7 +3774,7 @@ inline bool CArm::writeByte(uint32 address, uint8 value)
 
 //		if ((value & 0xff) == 255)
 //		{
-//			WriteLog("Write byte %02x to %08x\n", value, address);
+//			BeebEmLog::writeLog("Write byte %02x to %08x\n", value, address);
 //			trace = 1;
 //		}
 
@@ -3782,14 +3783,14 @@ inline bool CArm::writeByte(uint32 address, uint8 value)
 
 	if ((address & ~0x1f) == 0x1000000)
 	{
-//		WriteLog("Write byte %02x (%c) to tube %08x, reg %d\n", value, 
+//		BeebEmLog::writeLog("Write byte %02x (%c) to tube %08x, reg %d\n", value, 
 //			((value & 127) > 31) && ((value & 127) != 127) ? value & 127 : '.',
 //			address, (address & 0x1c) >> 2);
         WriteTubeFromParasiteSide((address & 0x1c) >> 2, value);
 		return TRUE;
 	}
 
-	WriteLog("Bad ARM write byte %02x to %08x\n", value, address);
+	BeebEmLog::writeLog("Bad ARM write byte %02x to %08x\n", value, address);
 	return FALSE;
 
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
+		17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */; };
 		19005B950963E34200872367 /* scsi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19005B940963E34200872367 /* scsi.cc */; };
 		19023C8908E3E96000BA702E /* uef.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19023C8808E3E96000BA702E /* uef.cc */; };
 		1907F0690AA32D4D0098CA99 /* serialdevices.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1907F0680AA32D4D0098CA99 /* serialdevices.cc */; };
@@ -93,6 +94,8 @@
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
 		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
 		17BEDF8B248D161500A1C002 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeebEmLog.cpp; path = Src/BeebEmLog.cpp; sourceTree = "<group>"; };
+		17BEDF8D248D194800A1C002 /* BeebEmLog.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = BeebEmLog.hpp; path = Src/BeebEmLog.hpp; sourceTree = "<group>"; };
 		17E47C132488FE9C0073DF2D /* ArchitectureNotes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArchitectureNotes.txt; sourceTree = "<group>"; };
 		17E47C15248901090073DF2D /* Arm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Arm.h; path = Src/Arm.h; sourceTree = "<group>"; };
 		17E47C16248901150073DF2D /* ArmDisassembler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArmDisassembler.h; path = Src/ArmDisassembler.h; sourceTree = "<group>"; };
@@ -284,6 +287,8 @@
 				190C57C308A55D5A007CD57E /* z80_support.cc */,
 				190C57C408A55D5A007CD57E /* z80.cc */,
 				190C57C508A55D5A007CD57E /* z80dis.cc */,
+				17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */,
+				17BEDF8D248D194800A1C002 /* BeebEmLog.hpp */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -440,6 +445,7 @@
 			files = (
 				19E9FA14086B5C85008741A6 /* tube.cc in Sources */,
 				19E9FA15086B5C85008741A6 /* disc1770.cc in Sources */,
+				17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */,
 				19E9FA17086B5C85008741A6 /* audev-macosx.cc in Sources */,
 				19E9FA18086B5C85008741A6 /* atodconv.cc in Sources */,
 				19E9FA19086B5C85008741A6 /* debug.cc in Sources */,

@@ -120,7 +120,7 @@ void SCSIWrite(int Address, int Value)
 	if (!HardDriveEnabled)
 		return;
 
-//	WriteLog("SCSIWrite Address = 0x%02x, Value = 0x%02x, Phase = %d, PC = 0x%04x\n", Address, Value, scsi.phase, ProgramCounter);
+//	BeebEmLog::writeLog("SCSIWrite Address = 0x%02x, Value = 0x%02x, Phase = %d, PC = 0x%04x\n", Address, Value, scsi.phase, ProgramCounter);
 	
     switch (Address)
     {
@@ -142,13 +142,13 @@ void SCSIWrite(int Address, int Value)
 				scsi.irq = true;
 				intStatus |= (1<<hdc);
 				scsi.status = 0x00;
-//				WriteLog("Setting HDC Interrupt\n");
+//				BeebEmLog::writeLog("Setting HDC Interrupt\n");
 			}
 			else
 			{
 				scsi.irq = false;
 				intStatus &= ~(1<<hdc);
-//				WriteLog("Clearing HDC Interrupt\n");
+//				BeebEmLog::writeLog("Clearing HDC Interrupt\n");
 			}
 				
 			break;
@@ -182,7 +182,7 @@ int data = 0xff;
         break;
     }
 
-//	WriteLog("SCSIRead Address = 0x%02x, Value = 0x%02x, Phase = %d, PC = 0x%04x\n", Address, data, scsi.phase, ProgramCounter);
+//	BeebEmLog::writeLog("SCSIRead Address = 0x%02x, Value = 0x%02x, Phase = %d, PC = 0x%04x\n", Address, data, scsi.phase, ProgramCounter);
 	
     return data;
 }
@@ -191,7 +191,7 @@ int ReadData(void)
 {
 	int data;
 	
-//	WriteLog("ReadData - Phase = %d, PC = 0x%04x\n", scsi.phase, ProgramCounter);
+//	BeebEmLog::writeLog("ReadData - Phase = %d, PC = 0x%04x\n", scsi.phase, ProgramCounter);
 
 	switch (scsi.phase)
 	{
@@ -280,7 +280,7 @@ void WriteData(int data)
 			
 		case s_write :
 
-//			WriteLog("Adding %d to buffer at offset %d, length remaining %d\n", data, scsi.offset, scsi.length - 1);
+//			BeebEmLog::writeLog("Adding %d to buffer at offset %d, length remaining %d\n", data, scsi.offset, scsi.length - 1);
 			
 			scsi.buffer[scsi.offset] = data;
 			scsi.offset++;
@@ -304,7 +304,7 @@ void WriteData(int data)
 			switch (scsi.cmd[0]) {
 				case 0x0a :
 
-//					WriteLog("Buffer now full, writing sector\n");
+//					BeebEmLog::writeLog("Buffer now full, writing sector\n");
 
 					if (!WriteSector(scsi.buffer, scsi.next - 1)) {
 						scsi.status = (scsi.lun << 5) | 0x02;
@@ -325,7 +325,7 @@ void WriteData(int data)
 				
 			scsi.blocks--;
 			
-//			WriteLog("Blocks remaining %d\n", scsi.blocks);
+//			BeebEmLog::writeLog("Blocks remaining %d\n", scsi.blocks);
 
 			if (scsi.blocks == 0) {
 				Status();
@@ -382,10 +382,10 @@ void Execute(void)
 	scsi.phase = execute;
 	
 //	if (scsi.cmd[0] <= 0x1f) {
-//		WriteLog("Execute 0x%02x, Param 1=0x%02x, Param 2=0x%02x, Param 3=0x%02x, Param 4=0x%02x, Param 5=0x%02x, Phase = %d, PC = 0x%04x\n", 
+//		BeebEmLog::writeLog("Execute 0x%02x, Param 1=0x%02x, Param 2=0x%02x, Param 3=0x%02x, Param 4=0x%02x, Param 5=0x%02x, Phase = %d, PC = 0x%04x\n", 
 //				scsi.cmd[0], scsi.cmd[1], scsi.cmd[2], scsi.cmd[3], scsi.cmd[4], scsi.cmd[5], scsi.phase, ProgramCounter);
 //	} else {
-//		WriteLog("Execute 0x%02x, Param 1=0x%02x, Param 2=0x%02x, Param 3=0x%02x, Param 4=0x%02x, Param 5=0x%02x, Param 6=0x%02x, Param 7=0x%02x, Param 8=0x%02x, Param 9=0x%02x, Phase = %d, PC = 0x%04x\n", 
+//		BeebEmLog::writeLog("Execute 0x%02x, Param 1=0x%02x, Param 2=0x%02x, Param 3=0x%02x, Param 4=0x%02x, Param 5=0x%02x, Param 6=0x%02x, Param 7=0x%02x, Param 8=0x%02x, Param 9=0x%02x, Phase = %d, PC = 0x%04x\n", 
 //				scsi.cmd[0], scsi.cmd[1], scsi.cmd[2], scsi.cmd[3], scsi.cmd[4], scsi.cmd[5], scsi.cmd[6], scsi.cmd[7], scsi.cmd[8], scsi.cmd[9], scsi.phase, ProgramCounter);
 //	}
 	

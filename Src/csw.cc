@@ -21,6 +21,7 @@
 #include "beebwin.h"
 #include "debug.h"
 #include "uefstate.h"
+#include "BeebEmLog.hpp"
 
 FILE *csw_file;
 unsigned char file_buf[BUFFER_LEN];
@@ -54,7 +55,7 @@ void LoadCSW(char *file)
 
 	if (csw_file == NULL)
 	{
-		WriteLog("Failed to open file\n");
+		BeebEmLog::writeLog("Failed to open file\n");
 		return;
 	}
 	
@@ -63,12 +64,12 @@ void LoadCSW(char *file)
 		strncmp((const char*)file_buf, "Compressed Square Wave", 0x16) != 0 ||
 		file_buf[0x16] != 0x1a)
 	{
-		WriteLog("Not a valid CSW file\n");
+		BeebEmLog::writeLog("Not a valid CSW file\n");
 		fclose(csw_file);
 		return;
 	}
 	
-	WriteLog("CSW version: %d.%d\n", (int)file_buf[0x17], (int)file_buf[0x18]);
+	BeebEmLog::writeLog("CSW version: %d.%d\n", (int)file_buf[0x17], (int)file_buf[0x18]);
 	
 	int sample_rate = file_buf[0x19] + (file_buf[0x1a] << 8) + (file_buf[0x1b] << 16) + (file_buf[0x1c] << 24);
 	int total_samples = file_buf[0x1d] + (file_buf[0x1e] << 8) + (file_buf[0x1f] << 16) + (file_buf[0x20] << 24);
@@ -76,19 +77,19 @@ void LoadCSW(char *file)
 	int flags = file_buf[0x22];
 	unsigned int header_ext = file_buf[0x23];
 	
-	WriteLog("Sample rate: %d\n", sample_rate);
-	WriteLog("Total Samples: %d\n", total_samples);
-	WriteLog("Compressing: %d\n", compression_type);
-	WriteLog("Flags: %x\n", flags);
-	WriteLog("Header ext: %d\n", header_ext);
+	BeebEmLog::writeLog("Sample rate: %d\n", sample_rate);
+	BeebEmLog::writeLog("Total Samples: %d\n", total_samples);
+	BeebEmLog::writeLog("Compressing: %d\n", compression_type);
+	BeebEmLog::writeLog("Flags: %x\n", flags);
+	BeebEmLog::writeLog("Header ext: %d\n", header_ext);
 	
 	file_buf[0x33] = 0;
-	WriteLog("Enc appl: %s\n", &file_buf[0x24]);
+	BeebEmLog::writeLog("Enc appl: %s\n", &file_buf[0x24]);
 	
 	/* Read header extension bytes */
 	if (fread(file_buf, 1, header_ext, csw_file) != header_ext)
 	{
-		WriteLog("Failed to read header extension\n");
+		BeebEmLog::writeLog("Failed to read header extension\n");
 		fclose(csw_file);
 		return;
 	}
@@ -109,8 +110,8 @@ void LoadCSW(char *file)
 	
 	free(sourcebuff);
 	
-	WriteLog("Source Size = %d\n", sourcesize);
-	WriteLog("Uncompressed Size = %d\n", csw_bufflen);
+	BeebEmLog::writeLog("Source Size = %d\n", sourcesize);
+	BeebEmLog::writeLog("Uncompressed Size = %d\n", csw_bufflen);
 	
 	CSW_CYCLES = 2000000 / sample_rate - 1;
 	csw_state = 0;
@@ -172,7 +173,7 @@ char info[80];
 			sprintf(info+strlen(info), "%c", v);
 		}
 		
-		WriteLog("%s\n", info);
+		BeebEmLog::writeLog("%s\n", info);
 	}
 	
 }
@@ -219,7 +220,7 @@ again : ;
 		if ( (last_state == 2) && (csw_state == 0) && (block_ptr > 0) )
 		{
 
-//			WriteLog("Decoded Block of length %d, starting at %d\n", block_ptr, start_time);
+//			BeebEmLog::writeLog("Decoded Block of length %d, starting at %d\n", block_ptr, start_time);
 //			HexDump(block, block_ptr);
 
 			if ( (block_ptr == 1) && (block[0] == 0x80) && (Clk_Divide != 64) )		// 300 baud block ?
@@ -227,7 +228,7 @@ again : ;
 				Clk_Divide = 64;
 				csw_ptr = last_tone;
 				csw_state = 1;
-//				WriteLog("Detected 300 baud block, resetting ptr to %d\n", csw_ptr);
+//				BeebEmLog::writeLog("Detected 300 baud block, resetting ptr to %d\n", csw_ptr);
 				goto again;
 			}
 
@@ -236,7 +237,7 @@ again : ;
 				Clk_Divide = 16;
 				csw_ptr = last_tone;
 				csw_state = 1;
-//				WriteLog("Detected 1200 baud block, resetting ptr to %d\n", csw_ptr);
+//				BeebEmLog::writeLog("Detected 1200 baud block, resetting ptr to %d\n", csw_ptr);
 				goto again;
 			}
 						
@@ -315,7 +316,7 @@ again : ;
 	}
 
 //	for (int i = 0; i < map_lines; i++)
-//		WriteLog("%s, %d\n", map_desc[i], map_time[i]);
+//		BeebEmLog::writeLog("%s, %d\n", map_desc[i], map_time[i]);
 
 	csw_state = 0;
 	csw_bit = 0;
@@ -339,7 +340,7 @@ static int last = -1;
 
     if (last != Clk_Divide)
 	{
-//		WriteLog("Baud Rate changed to %s\n", (Clk_Divide == 16) ? "1200" : "300");
+//		BeebEmLog::writeLog("Baud Rate changed to %s\n", (Clk_Divide == 16) ? "1200" : "300");
 		last = Clk_Divide;
 	}
 	
@@ -382,7 +383,7 @@ static int last = -1;
 		t = t + csw_pulselen;
 	}
 	
-//	WriteLog("Pulse %d, duration %d\n", csw_pulsecount, csw_pulselen);
+//	BeebEmLog::writeLog("Pulse %d, duration %d\n", csw_pulsecount, csw_pulselen);
 	
 	return t / j;
 	
@@ -412,7 +413,7 @@ int ret;
 		return ret;
 	}
 	
-//	WriteLog("csw_pulsecount %d, csw_bit %d\n", csw_pulsecount, csw_bit);
+//	BeebEmLog::writeLog("csw_pulsecount %d, csw_bit %d\n", csw_pulsecount, csw_bit);
 	
 	switch (csw_state)
 	{
@@ -423,7 +424,7 @@ int ret;
 				csw_tonecount++;
 				if (csw_tonecount > 20)					/* Arbitary figure */
 				{
-//					WriteLog("Detected tone at %d\n", csw_pulsecount);
+//					BeebEmLog::writeLog("Detected tone at %d\n", csw_pulsecount);
 					csw_state = 1;
 				}
 			} else {
@@ -440,7 +441,7 @@ int ret;
 			} else
 			if ( (csw_pulselen > 0x0d) && (csw_pulselen < 0x14) )			/* Not in tone any more - data start bit */
 			{
-//				WriteLog("Entered data at %d\n", csw_pulsecount);
+//				BeebEmLog::writeLog("Entered data at %d\n", csw_pulsecount);
 				
 				if (Clk_Divide == 64) { csw_data();  csw_data(); csw_data(); } 	// Skip 300 baud data
 
@@ -481,7 +482,7 @@ int ret;
 					if (csw_bit == 8)
 					{
 						ret = csw_byte;
-//						WriteLog("Returned data byte of %02x at %d\n", ret, csw_pulsecount);
+//						BeebEmLog::writeLog("Returned data byte of %02x at %d\n", ret, csw_pulsecount);
 						csw_datastate = 1;				/* Stop bits */
 					}
 					break;
@@ -516,7 +517,7 @@ int ret;
 
 					if (csw_pulselen <= 0x0d)			/* Back in tone again */
 					{
-//						WriteLog("Back in tone again at %d\n", csw_pulsecount);
+//						BeebEmLog::writeLog("Back in tone again at %d\n", csw_pulsecount);
 						csw_state = 0;
 						csw_tonecount = 0;
 						csw_bit = 0;

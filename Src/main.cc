@@ -40,12 +40,12 @@
 #include "z80.h"
 #include "speech.h"
 #include "main.h"
+#include "BeebEmLog.hpp"
 
 extern void * PushSymbolicHotKeyMode(OptionBits inOptions) __attribute__((weak_import));
 extern void PopSymbolicHotKeyMode(void * inToken)          __attribute__((weak_import));
 
 
-FILE *tlog;
 int trace;
 int DumpAfterEach=0;
 int done = 0;
@@ -118,8 +118,7 @@ static pascal OSErr AEodoc(const AppleEvent *theEvent, AppleEvent *theReply, lon
 	return err;
 }
 
-static OSStatus MainWindowEventHandler(
-   EventHandlerCallRef nextHandler, EventRef event, void *userData)
+static OSStatus MainWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
 {
     OSStatus err = noErr;
 
@@ -137,8 +136,7 @@ static OSStatus MainWindowEventHandler(
     return err;
 }
 
-static OSStatus MainWindowCommandHandler(
-    EventHandlerCallRef nextHandler, EventRef event, void *userData)
+static OSStatus MainWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
 {
     HICommand command; 
 //    WindowRef window = (WindowRef) userData;
@@ -153,8 +151,7 @@ CantGetParameter:
     return err;
 }
 
-static OSStatus EventHandler (
-    EventHandlerCallRef handler, EventRef event, void *data)
+static OSStatus EventHandler (EventHandlerCallRef handler, EventRef event, void *data)
 {
 char charCode;
 int keycode;
@@ -234,7 +231,7 @@ static int NewCmd = 0;
 
   case kEventClassMouse:
 
-//	WriteLog("Key Event Kind %d\n", GetEventKind(event));
+//	BeebEmLog::writeLog("Key Event Kind %d\n", GetEventKind(event));
 	
 	Point posn;
 	EventMouseButton btn;
@@ -246,7 +243,7 @@ static int NewCmd = 0;
         GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
         GetEventParameter(event, kEventParamMouseButton, typeMouseButton, NULL, sizeof(EventMouseButton), NULL, &btn);
         GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
-//        WriteLog("Mouse Down : Screen X = %d, Screen Y = %d, Button = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, btn, wposn.x, wposn.y);
+//        BeebEmLog::writeLog("Mouse Down : Screen X = %d, Screen Y = %d, Button = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, btn, wposn.x, wposn.y);
 		if ( (wposn.x > 0) && (wposn.y > 0) )
 		{
 			switch (btn)
@@ -268,7 +265,7 @@ static int NewCmd = 0;
         GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
         GetEventParameter(event, kEventParamMouseButton, typeMouseButton, NULL, sizeof(EventMouseButton), NULL, &btn);
         GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
-//        WriteLog("Mouse Up : Screen X = %d, Screen Y = %d, Button = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, btn, wposn.x, wposn.y);
+//        BeebEmLog::writeLog("Mouse Up : Screen X = %d, Screen Y = %d, Button = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, btn, wposn.x, wposn.y);
 		if ( (wposn.x > 0) && (wposn.y > 0) )
 			switch (btn)
 			{
@@ -287,7 +284,7 @@ static int NewCmd = 0;
       case kEventMouseMoved:
         GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
         GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
-//        WriteLog("Mouse Moved : Screen X = %d, Screen Y = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, wposn.x, wposn.y);
+//        BeebEmLog::writeLog("Mouse Moved : Screen X = %d, Screen Y = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, wposn.x, wposn.y);
 			if ( (wposn.x > 0) && (wposn.y > 20) )
 			{
 				mainWin->ScaleMousestick( (int) wposn.x, (int) wposn.y - 21);
@@ -297,7 +294,7 @@ static int NewCmd = 0;
       case kEventMouseDragged:
 		  GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
 		  GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
-//          WriteLog("Mouse Dragged : Screen X = %d, Screen Y = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, wposn.x, wposn.y);
+//          BeebEmLog::writeLog("Mouse Dragged : Screen X = %d, Screen Y = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, wposn.x, wposn.y);
 		  if ( (wposn.x > 0) && (wposn.y > 20) )
 		  {
 			  mainWin->ScaleMousestick( (int) wposn.x, (int) wposn.y - 21);
@@ -320,8 +317,7 @@ extern SInt32 gNumberOfRunningThreads;
 
 static EventHandlerUPP gQuitEventHandlerUPP;   // -> QuitEventHandler
 
-static pascal OSStatus QuitEventHandler(EventHandlerCallRef inHandlerCallRef,
-                                        EventRef inEvent, void *inUserData)
+static pascal OSStatus QuitEventHandler(EventHandlerCallRef inHandlerCallRef,EventRef inEvent, void *inUserData)
     // This event handler is used to override the kEventClassApplication/
     // kEventAppQuit event while inside our event loop (EventLoopEventHandler).
     // It simply calls through to the next handler and, if that handler returns
@@ -340,8 +336,7 @@ static pascal OSStatus QuitEventHandler(EventHandlerCallRef inHandlerCallRef,
 
 static EventHandlerUPP gEventLoopEventHandlerUPP;   // -> EventLoopEventHandler
 
-static pascal OSStatus EventLoopEventHandler(EventHandlerCallRef inHandlerCallRef,
-                                             EventRef inEvent, void *inUserData)
+static pascal OSStatus EventLoopEventHandler(EventHandlerCallRef inHandlerCallRef,EventRef inEvent, void *inUserData)
     // This code contains the standard Carbon event dispatch loop,
     // as per "Inside Macintosh: Handling Carbon Events", Listing 3-10,
     // except:
@@ -424,7 +419,7 @@ static pascal OSStatus EventLoopEventHandler(EventHandlerCallRef inHandlerCallRe
 			
 //			Point p;
 //			GetMouse(&p);
-//			WriteLog("Mouse At : Window X = %d, Window Y = %d\n", p.h, p.v);
+//			BeebEmLog::writeLog("Mouse At : Window X = %d, Window Y = %d\n", p.h, p.v);
 //			mainWin->ScaleMousestick( p.h, p.v);
 //			mainWin->SetAMXPosition( p.h, p.v);
 
@@ -518,13 +513,10 @@ int main(int argc,char *argv[])
 void *token;
 int i;
 
-//	tlog = fopen("/users/jonwelch/trace.log", "wt");
-  tlog = NULL;
-
-  WriteLog("Version: %s %s\n", Version, VersionDate);
+  BeebEmLog::writeLog("Version: %s %s\n", Version, VersionDate);
 
   for (i = 0; i < argc; ++i)
-	WriteLog("Arg %d = %s\n", i, argv[i]);
+	BeebEmLog::writeLog("Arg %d = %s\n", i, argv[i]);
 
   mainWin=new BeebWin();
 
@@ -598,8 +590,8 @@ int i;
   RunApplicationEventLoopWithCooperativeThreadSupport();
 
   fprintf(stderr, "Shutting Down ...\n");
-  
-  if (tlog) fclose(tlog);
+  BeebEmLog::closeLog();
+
   
   SoundReset();
 	
@@ -610,17 +602,3 @@ int i;
   
   return(0);
 } /* main */
-
-void WriteLog(const char *fmt, ...)
-{
-char buff[512];
-	
-	va_list argptr;
-	
-	va_start(argptr, fmt);
-	vsprintf(buff, fmt, argptr);
-	va_end(argptr);
-
-	if (tlog) fprintf(tlog, "%s", buff);
-	fprintf(stderr, "%s", buff);
-}

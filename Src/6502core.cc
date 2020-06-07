@@ -43,6 +43,7 @@
 #include "z80.h"
 #include "econet.h"
 #include "Arm.h"
+#include "BeebEmLog.hpp"
 
 #define INLINE inline
 
@@ -1121,7 +1122,7 @@ void MemoryDump6502(int addr, int count)
 			sprintf(info+strlen(info), "%c", v);
 		}
 		
-		WriteLog("%s\n", info);
+		BeebEmLog::writeLog("%s\n", info);
 	}
 	
 }
@@ -1160,7 +1161,7 @@ void Exec6502Instruction(void) {
 	  {
 		  char str[128];
 		  Dis6502(str);
-		  WriteLog("%s\n", str);
+		  BeebEmLog::writeLog("%s\n", str);
 		  trace--;
 	  }
 	  
@@ -1170,7 +1171,7 @@ void Exec6502Instruction(void) {
 //	  {
 //		  char str[128];
 //		  Dis6502(str);
-//		  WriteLog("%s\n", str);
+//		  BeebEmLog::writeLog("%s\n", str);
 //		  trace--;
 //	  }
 	  
@@ -1185,7 +1186,7 @@ void Exec6502Instruction(void) {
   {
       char str[128];
       Dis6502(str);
-      WriteLog("%s\n", str);
+      BeebEmLog::writeLog("%s\n", str);
   }
 	  
  Branched=0;

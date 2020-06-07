@@ -50,6 +50,7 @@
 #include "uefstate.h"
 #include "main.h"
 #include "speech.h"
+#include "BeebEmLog.hpp"
 
 
 //  #define DEBUGSOUNDTOFILE
@@ -155,14 +156,14 @@ void PlayUpTil(double DestTime) {
 		int len = (int) (DestTime - OurTime + 1);
 		if (len > MAXBUFSIZE)
 		{
-			WriteLog("Speech Buffer Overflow, len = %d\n", len);
+			BeebEmLog::writeLog("Speech Buffer Overflow, len = %d\n", len);
 			len = MAXBUFSIZE;
 		}
 		tms5220_update(SpeechBuf, len);
 	}
 
 //	if (OurTime > DestTime)
-//		WriteLog("OurTime = %g, DestTime = %g\n", OurTime, DestTime);
+//		BeebEmLog::writeLog("OurTime = %g, DestTime = %g\n", OurTime, DestTime);
 	
 	while (DestTime>OurTime) {
 			
@@ -482,7 +483,7 @@ void SoundTrigger_Real(void) {
 
   SoundTrigger=TotalCycles+SoundAutoTriggerTime;
 
-//	WriteLog(" After : TotalCycles = %d, XtraCycles = %d, SoundTrigger = %d\n", 
+//	BeebEmLog::writeLog(" After : TotalCycles = %d, XtraCycles = %d, SoundTrigger = %d\n", 
 //			 TotalCycles, XtraCycles, SoundTrigger, SoundCycles);
 
 }; /* SoundTrigger_Real */

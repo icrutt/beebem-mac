@@ -31,6 +31,7 @@
 #include "debug.h"
 #include "main.h"
 #include "tube.h"
+#include "BeebEmLog.hpp"
 
 #ifdef WIN32
 #include <windows.h>
@@ -113,7 +114,7 @@ static int last_Value = 0xff;
 						RTC_cmd = (RTC_cmd >> 1) | ((Value & 0x01) << 15);
 						RTC_bit++;
 						
-						WriteLog("RTC Shift cmd : 0x%03x, bit : %d\n", RTC_cmd, RTC_bit);
+						BeebEmLog::writeLog("RTC Shift cmd : 0x%03x, bit : %d\n", RTC_cmd, RTC_bit);
 						
 					} else {
 						
@@ -121,7 +122,7 @@ static int last_Value = 0xff;
 						{
 							RTC_cmd >>= 5;
 							
-							WriteLog("RTC Write cmd : 0x%03x, reg : 0x%02x, data = 0x%02x\n", RTC_cmd, (RTC_cmd & 0x0f) >> 1, RTC_cmd >> 4);
+							BeebEmLog::writeLog("RTC Write cmd : 0x%03x, reg : 0x%02x, data = 0x%02x\n", RTC_cmd, (RTC_cmd & 0x0f) >> 1, RTC_cmd >> 4);
 							
 							RTC_ram[(RTC_cmd & 0x0f) >> 1] = RTC_cmd >> 4;
 						} else {
@@ -161,7 +162,7 @@ static int last_Value = 0xff;
 									break;
 							}
 							
-							WriteLog("RTC Read cmd : 0x%03x, reg : 0x%02x, data : 0x%02x\n", RTC_cmd, (RTC_cmd & 0x0f) >> 1, RTC_data);
+							BeebEmLog::writeLog("RTC Read cmd : 0x%03x, reg : 0x%02x, data : 0x%02x\n", RTC_cmd, (RTC_cmd & 0x0f) >> 1, RTC_data);
 							
 						}
 					}

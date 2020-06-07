@@ -1127,7 +1127,7 @@ void CRTCWrite(int Address, int Value) {
 //		fprintf(crtclog,"%d (%02X) Written to register %d from %04X\n",Value,Value,CRTCControlReg,ProgramCounter);
 //	}
 
-//	WriteLog("%d (0x%02x) Written to register %d from 0x%04x\n", Value, Value, CRTCControlReg, ProgramCounter);
+//	BeebEmLog::writeLog("%d (0x%02x) Written to register %d from 0x%04x\n", Value, Value, CRTCControlReg, ProgramCounter);
 	  
 	if (DebugEnabled && CRTCControlReg<14) {
 		char info[200];
@@ -1385,7 +1385,7 @@ void DebugVideoState()
 		(int)CRTC_VerticalDisplayed,
 		(int)CRTC_VerticalSyncPos);
 	DebugDisplayInfo(info);
-//	WriteLog("%s\n", info);
+//	BeebEmLog::writeLog("%s\n", info);
 	
 	sprintf(info, "CRTC: IntD=%02X SLCh=%02X CurS=%02X CurE=%02X ScrS=%02X%02X CurP=%02X%02X VidULA=%02X",
 		(int)CRTC_InterlaceAndDelay,
@@ -1398,7 +1398,7 @@ void DebugVideoState()
 		(int)CRTC_CursorPosLow,
 		(int)VideoULA_ControlReg);
 	DebugDisplayInfo(info);
-//	WriteLog("%s\n", info);
+//	BeebEmLog::writeLog("%s\n", info);
 }
 
 /*-------------------------------------------------------------------------*/

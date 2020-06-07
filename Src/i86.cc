@@ -11,6 +11,7 @@
 #include "main.h"
 #include "tube.h"
 #include "beebmem.h"
+#include "BeebEmLog.hpp"
 
 #ifdef __BIG_ENDIAN__
 #endif
@@ -205,14 +206,14 @@ static void set_irq_line(int irqline, int state)
     		/* if the IF is set, signal an interrupt */
 	    	if ( (state != CLEAR_LINE) && I.IF)
             {
-//                WriteLog("Entering IRQ\n");
+//                BeebEmLog::writeLog("Entering IRQ\n");
 
 	            I.irq_state = state;
                 PREFIX(_interrupt)(12);
             }
             else
             {
-//                WriteLog("Can't enter IRQ - state = %d, IF = %d\n", state, I.IF);
+//                BeebEmLog::writeLog("Can't enter IRQ - state = %d, IF = %d\n", state, I.IF);
                 I.irq_state = CLEAR_LINE;
             }
         }
@@ -250,7 +251,7 @@ int le, i;
 	}
 
 	sprintf(buff + strlen(buff), "%s", buffer); 
-    WriteLog("%s\n", buff);
+    BeebEmLog::writeLog("%s\n", buff);
 
 }
 
@@ -343,7 +344,7 @@ UINT8 data;
     else
 	{
         data = 0xff;
-//		WriteLog("[0x%05x] Read 0x%04x, 0x%02x\n", I.pc, address, data);
+//		BeebEmLog::writeLog("[0x%05x] Read 0x%04x, 0x%02x\n", I.pc, address, data);
 	}
 
     return data;
@@ -364,13 +365,13 @@ int i;
 
 //    if (address >= 0xff00)
 //    {
-//		WriteLog("[0x%05x] Write I/O 0x%04x, 0x%02x\n", I.pc, address, data);
+//		BeebEmLog::writeLog("[0x%05x] Write I/O 0x%04x, 0x%02x\n", I.pc, address, data);
 //    }
 
     if ( (address >= 0xffc0) && (address <= 0xffcf) )
     {
 
-//		WriteLog("[0x%05x] Write 0x%04x, 0x%02x\n", I.pc, address, data);
+//		BeebEmLog::writeLog("[0x%05x] Write 0x%04x, 0x%02x\n", I.pc, address, data);
         
 //        if ( (I.pc == 0x60966) && (address == 0xffcb) )
 //        {
@@ -435,7 +436,7 @@ int i;
     {
         i = (address - 0x80) / 2;
 
-//        WriteLog("[0x%05x] Tube: Write from para, addr %X value %02X [%c]\n", 
+//        BeebEmLog::writeLog("[0x%05x] Tube: Write from para, addr %X value %02X [%c]\n", 
 //           I.pc, i, data, (data & 0x7f) > 31 ? (data & 0x7f) : '.');
         
         WriteTubeFromParasiteSide( i, data);
@@ -444,7 +445,7 @@ int i;
 
     }
 
-//    WriteLog("[0x%05x] Write Unknown I/O 0x%04x, 0x%02x\n", I.pc, address, data);
+//    BeebEmLog::writeLog("[0x%05x] Write Unknown I/O 0x%04x, 0x%02x\n", I.pc, address, data);
 
 }
 
@@ -507,7 +508,7 @@ void MemoryDump(int addr, int count)
 			sprintf(info+strlen(info), "%c", v);
 		}
 
-		WriteLog("%s\n", info);
+		BeebEmLog::writeLog("%s\n", info);
 	}
 
 }
@@ -523,12 +524,12 @@ UINT8 data;
 
         if (dma_src != 0x8a)
         {
-            WriteLog("DMA_SRC Error = 0x%05x\n", dma_src);
+            BeebEmLog::writeLog("DMA_SRC Error = 0x%05x\n", dma_src);
         }
 
         program_write_byte_8(dma_dst, data);
    
-//	    WriteLog("[0x%05x] DoDMA - Writing %02x [%c] From 0x%05x to 0x%05x]\n", 
+//	    BeebEmLog::writeLog("[0x%05x] DoDMA - Writing %02x [%c] From 0x%05x to 0x%05x]\n", 
 //		    I.pc, data, (data & 0x7f) > 31 ? (data & 0x7f) : '.', dma_src, dma_dst);
 
 		dma_dst++;
@@ -542,11 +543,11 @@ UINT8 data;
 
         if (dma_dst != 0x8a)
         {
-            WriteLog("DMA_DST Error = 0x%05x\n", dma_dst);
+            BeebEmLog::writeLog("DMA_DST Error = 0x%05x\n", dma_dst);
         }
 
         
-//        WriteLog("[0x%05x] DoDMA - Writing %02x [%c] From 0x%05x to 0x%05x]\n", 
+//        BeebEmLog::writeLog("[0x%05x] DoDMA - Writing %02x [%c] From 0x%05x to 0x%05x]\n", 
 //		    I.pc, data, (data & 0x7f) > 31 ? (data & 0x7f) : '.', dma_src, dma_dst);
 
 		dma_src++;

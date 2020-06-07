@@ -434,7 +434,7 @@ static int delay = 0;
 			if ( (TxD > 0) && (TotalCycles >= TapeTrigger) )
 			{
 				
-				//				WriteLog("Ignoring Writes\n");
+				//				BeebEmLog::writeLog("Ignoring Writes\n");
 				
 				TxD=0;
 				SetACIAStatus(1);

@@ -21,6 +21,7 @@
 #include "uservia.h"
 #include "atodconv.h"
 #include "serial.h"
+#include "BeebEmLog.hpp"
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -321,7 +322,7 @@ void EthernetPortCloseDialog()
 void LowerDCD(void)
 
 {
-	WriteLog("Lower DCD\n");
+	BeebEmLog::writeLog("Lower DCD\n");
 	
 	UserVIAWrite(0x0c, 0x00);
 	UserVIAState.ifr |= 0x10;
@@ -331,7 +332,7 @@ void LowerDCD(void)
 void RaiseDCD(void)
 
 {
-	WriteLog("Raise DCD\n");
+	BeebEmLog::writeLog("Raise DCD\n");
 	UserVIAWrite(0x0c, 0x00);
 }
 
@@ -413,7 +414,7 @@ int space;
 					if (i > 0)
 					{
 					
-//						WriteLog("Read %d bytes\n%s\n", i, buff);
+//						BeebEmLog::writeLog("Read %d bytes\n%s\n", i, buff);
 					
 						for (j = 0; j < i; j++)
 						{
@@ -422,10 +423,10 @@ int space;
 					}
 					else
 					{
-//						WriteLog("Read error %d\n", i);
+//						BeebEmLog::writeLog("Read error %d\n", i);
 
 						mStartAgain = true;
-						WriteLog("Remote session disconnected - waiting for a new connection\n");
+						BeebEmLog::writeLog("Remote session disconnected - waiting for a new connection\n");
 						mEthernetPortReadTaskID = NULL;
 						return noErr;
 						
@@ -433,7 +434,7 @@ int space;
 				}
 				else
 				{
-//					WriteLog("Nothing to read %d\n", i);
+//					BeebEmLog::writeLog("Nothing to read %d\n", i);
 				}
 			}
 		}
@@ -454,7 +455,7 @@ top: ;
 	
 	if (mListenHandle <= 0)
 	{
-		WriteLog("Error getting socket - %08x\n", mListenHandle);
+		BeebEmLog::writeLog("Error getting socket - %08x\n", mListenHandle);
 		usleep(1000 * 500);	// Sleep for 0.5 secs
 		goto top;
 	}
@@ -467,7 +468,7 @@ top: ;
 	
 	if (i < 0)
 	{
-		WriteLog("Error Opening Connection on bind - error %08x\n", i);
+		BeebEmLog::writeLog("Error Opening Connection on bind - error %08x\n", i);
 		close(mListenHandle);
 		usleep(1000 * 500);	// Sleep for 0.5 secs
 		goto top;
@@ -477,7 +478,7 @@ top: ;
 	
 	if (i < 0)
 	{
-		WriteLog("Error Opening Connection on listen - %08x\n", i);
+		BeebEmLog::writeLog("Error Opening Connection on listen - %08x\n", i);
 		close(mListenHandle);
 		usleep(1000 * 500);	// Sleep for 0.5 secs
 		goto top;
@@ -489,7 +490,7 @@ top: ;
 	
 	if (mEthernetHandle < 0)
 	{
-		WriteLog("Error Accepting Connection - %08x\n", mEthernetHandle);
+		BeebEmLog::writeLog("Error Accepting Connection - %08x\n", mEthernetHandle);
 		close(mListenHandle);
 		usleep(1000 * 500);	// Sleep for 0.5 secs
 		goto top;
@@ -502,7 +503,7 @@ top: ;
 	MPCreateTask(MyEthernetPortReadThread, nil, 0, nil, nil, nil, 0, &mEthernetPortReadTaskID);
 	MPCreateTask(MyEthernetPortStatusThread, nil, 0, nil, nil, nil, 0, &mEthernetPortStatusTaskID);
 
-	WriteLog("Incoming Connection\n");
+	BeebEmLog::writeLog("Incoming Connection\n");
 
 	mListenTaskID = NULL;
 	return noErr;
@@ -519,7 +520,7 @@ void EthernetPortOpen(void)
 	
 	if (mMode == FALSE)		// Server
 	{
-		WriteLog("Waiting for a connection\n");
+		BeebEmLog::writeLog("Waiting for a connection\n");
 		MPCreateTask(MyListenThread, nil, 0, nil, nil, nil, 0, &mListenTaskID);
 	}
 	else					// Client
@@ -532,12 +533,12 @@ void EthernetPortOpen(void)
 
 		if (i < 0)
 		{
-			WriteLog("Error Opening Connection\n");
+			BeebEmLog::writeLog("Error Opening Connection\n");
 			EthernetPortClose();
 		}
 		else
 		{
-			WriteLog("Connection Opened\n");
+			BeebEmLog::writeLog("Connection Opened\n");
 		}
 	}
 
@@ -558,7 +559,7 @@ int i;
 	
 	if (mStartAgain == true)
 	{
-		WriteLog("Resetting Comms\n");
+		BeebEmLog::writeLog("Resetting Comms\n");
 		mStartAgain = false;
 		EthernetPortClose();
 		EthernetPortOpen();
@@ -584,7 +585,7 @@ int i;
 		i = select(32, NULL, &fds, NULL, &tv);		// Write
 		if (i <= 0)
 		{
-			WriteLog("Select Error %i\n", i);
+			BeebEmLog::writeLog("Select Error %i\n", i);
 		}
 		else
 		{
@@ -592,11 +593,11 @@ int i;
 
 			if (i < bufflen)
 			{
-				WriteLog("Send Error %i\n", i);
+				BeebEmLog::writeLog("Send Error %i\n", i);
 				mStartAgain = true;
 			}
 			
-//			WriteLog("Written %d bytes\n%s\n", bufflen, buff);
+//			BeebEmLog::writeLog("Written %d bytes\n%s\n", bufflen, buff);
 		}
 	}
 	
@@ -611,7 +612,7 @@ int i;
 void EthernetPortWrite(unsigned char data)
 {
 	
-//	WriteLog("EthernetPortWrite 0x%02x\n", data);
+//	BeebEmLog::writeLog("EthernetPortWrite 0x%02x\n", data);
 	// Data to remote end of link
 	
 	if (ts_outlen != TS_BUFF_SIZE)
@@ -623,7 +624,7 @@ void EthernetPortWrite(unsigned char data)
 	}
 	else
 	{
-		WriteLog("EthernetPortWrite output buffer full\n");
+		BeebEmLog::writeLog("EthernetPortWrite output buffer full\n");
 	}
 }
 
@@ -657,10 +658,10 @@ unsigned char EthernetPortRead(void)
 	}
 	else
 	{
-		WriteLog("EthernetPortRead input buffer empty\n");
+		BeebEmLog::writeLog("EthernetPortRead input buffer empty\n");
 	}
 	
-//	WriteLog("EthernetPortRead 0x%02x\n", data);
+//	BeebEmLog::writeLog("EthernetPortRead 0x%02x\n", data);
 	
 	return data;
 }
@@ -675,7 +676,7 @@ void EthernetPortStore(unsigned char data)
 	}
 	else
 	{
-		WriteLog("EthernetPortStore output buffer full\n");
+		BeebEmLog::writeLog("EthernetPortStore output buffer full\n");
 	}
 }
 
@@ -715,7 +716,7 @@ void EthernetPortClose(void)
 	mEthernetPortStatusTaskID = NULL;
 	mEthernetPortReadTaskID = NULL;
 	
-	WriteLog("EthernetPortClose\n");
+	BeebEmLog::writeLog("EthernetPortClose\n");
 }
 
 void TouchScreenOpen(void)
@@ -773,7 +774,7 @@ static int mode = 0;
  * Mode 129 seems to be send current values all time
  */
 				
-				WriteLog("Setting touch screen mode to %d\n", mode);
+				BeebEmLog::writeLog("Setting touch screen mode to %d\n", mode);
 				break;
 
 			case '?' :
@@ -803,7 +804,7 @@ static int mode = 0;
 void TouchScreenWrite(unsigned char data)
 {
 
-//	WriteLog("TouchScreenWrite 0x%02x\n", data);
+//	BeebEmLog::writeLog("TouchScreenWrite 0x%02x\n", data);
 	
 	if (ts_inlen != TS_BUFF_SIZE)
 	{
@@ -814,7 +815,7 @@ void TouchScreenWrite(unsigned char data)
 	}
 	else
 	{
-		WriteLog("TouchScreenWrite input buffer full\n");
+		BeebEmLog::writeLog("TouchScreenWrite input buffer full\n");
 	}
 }
 
@@ -833,10 +834,10 @@ unsigned char data;
 	}
 	else
 	{
-		WriteLog("TouchScreenRead output buffer empty\n");
+		BeebEmLog::writeLog("TouchScreenRead output buffer empty\n");
 	}
 	
-//	WriteLog("TouchScreenRead 0x%02x\n", data);
+//	BeebEmLog::writeLog("TouchScreenRead 0x%02x\n", data);
 
 	return data;
 }
@@ -855,7 +856,7 @@ void TouchScreenStore(unsigned char data)
 	}
 	else
 	{
-		WriteLog("TouchScreenStore output buffer full\n");
+		BeebEmLog::writeLog("TouchScreenStore output buffer full\n");
 	}
 }
 
@@ -870,7 +871,7 @@ static int last_x = -1, last_y = -1, last_m = -1;
 	if ( (last_x != x) || (last_y != y) || (last_m != AMXButtons) || (check == false))
 	{
 
-//		WriteLog("JoystickX = %d, JoystickY = %d, last_x = %d, last_y = %d\n", JoystickX, JoystickY, last_x, last_y);
+//		BeebEmLog::writeLog("JoystickX = %d, JoystickY = %d, last_x = %d, last_y = %d\n", JoystickX, JoystickY, last_x, last_y);
 		
 		if (AMXButtons & AMX_LEFT_BUTTON)
 		{
@@ -879,14 +880,14 @@ static int last_x = -1, last_y = -1, last_m = -1;
 			TouchScreenStore( 64 + ((y & 0xf0) >> 4));
 			TouchScreenStore( 64 + (y & 0x0f));
 			TouchScreenStore('.');
-//			WriteLog("Sending X = %d, Y = %d\n", x, y);
+//			BeebEmLog::writeLog("Sending X = %d, Y = %d\n", x, y);
 		} else {
 			TouchScreenStore(64 + 0x0f);
 			TouchScreenStore(64 + 0x0f);
 			TouchScreenStore(64 + 0x0f);
 			TouchScreenStore(64 + 0x0f);
 			TouchScreenStore('.');
-//			WriteLog("Screen not touched\n");
+//			BeebEmLog::writeLog("Screen not touched\n");
 		}
 		last_x = x;
 		last_y = y;

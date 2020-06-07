@@ -33,6 +33,7 @@ can be determined under normal use".
 #include "z80mem.h"
 #include "z80.h"
 #include "beebsound.h"
+#include "BeebEmLog.hpp"
 
 extern int trace;
 
@@ -181,7 +182,7 @@ void Write1770Register(unsigned char Register, unsigned char Value) {
 	if (!Disc1770Enabled)
 		return;
 	
-//	WriteLog("Write of 0x%02X to Register %d\n", Value, Register);
+//	BeebEmLog::writeLog("Write of 0x%02X to Register %d\n", Value, Register);
 	
 	// Write 1770 Register - NOT the FDC Control register @ &FE24
 	if (Register==0) {
@@ -213,7 +214,7 @@ void Write1770Register(unsigned char Register, unsigned char Value) {
 					SetStatus(7);
 				} else { LoadingCycles=ONE_REV_TIME; }
 				if (DENSITY_MISMATCH) {
-//					WriteLog("Density Mismatch 1\n");
+//					BeebEmLog::writeLog("Density Mismatch 1\n");
 					FDCommand=13; // "Confusion spin"
 					SetStatus(7); SetMotor(CurrentDrive,true);
 					ResetStatus(5); ResetStatus(4); ResetStatus(3); SetStatus(0);
@@ -295,7 +296,7 @@ void Write1770Register(unsigned char Register, unsigned char Value) {
 			} else { LoadingCycles=SectorCycles; }
 			LoadingCycles+=BYTE_TIME;
 			if (DENSITY_MISMATCH) {
-//				WriteLog("Density Mismatch 2\n");
+//				BeebEmLog::writeLog("Density Mismatch 2\n");
 				FDCommand=13; // "Confusion spin"
 				SetStatus(7); SetMotor(CurrentDrive,true);
 				ResetStatus(5); ResetStatus(4); ResetStatus(3); SetStatus(0);
@@ -341,7 +342,7 @@ void Poll1770(int NCycles) {
 	  }
   }
 
-//  if ( (FDCommand != 0) && (FDCommand != 13) && (FDCommand != 11)) WriteLog("FDCommand = %d\n", FDCommand);
+//  if ( (FDCommand != 0) && (FDCommand != 13) && (FDCommand != 11)) BeebEmLog::writeLog("FDCommand = %d\n", FDCommand);
 	
   // This procedure is called from the 6502core to enable the chip to do stuff in the background
   if ((dStatus & 1) && (NMILock==0)) {
@@ -361,7 +362,7 @@ void Poll1770(int NCycles) {
 		ResetStatus(4); ResetStatus(3);
 		if (FDCommand==1) { fseek(CurrentDisc,DiscStrt[CurrentDrive],SEEK_SET);  MyTrack=0; } // Restore
 		if (FDCommand==2) {
-//			WriteLog("Seeking Drive %d, Track %d, = %d", CurrentDrive, Data, DiscStrt[CurrentDrive]+(DiscStep[CurrentDrive]*Data));
+//			BeebEmLog::writeLog("Seeking Drive %d, Track %d, = %d", CurrentDrive, Data, DiscStrt[CurrentDrive]+(DiscStep[CurrentDrive]*Data));
 			fseek(CurrentDisc,DiscStrt[CurrentDrive]+(DiscStep[CurrentDrive]*Data),SEEK_SET); MyTrack=Data;
 		} // Seek
 		if (FDCommand==4) { HeadDir=1; fseek(CurrentDisc,DiscStep[CurrentDrive],SEEK_CUR); MyTrack++;  } // Step In
@@ -454,7 +455,7 @@ void Poll1770(int NCycles) {
 		return;
 	}
 	if ((FDCommand==7) && (DWriteable[CurrentDrive]==0)) {
-		WriteLog("Disc Write Protected\n");
+		BeebEmLog::writeLog("Disc Write Protected\n");
 		SetStatus(6);
 		NMIStatus|=1<<nmi_floppy; 
 		FDCommand=0;
@@ -466,7 +467,7 @@ void Poll1770(int NCycles) {
 		LoadingCycles=45;
 		fseek(CurrentDisc,DiscStrt[CurrentDrive]+(DiscStep[CurrentDrive]*MyTrack)+(Sector*SecSize[CurrentDrive]),SEEK_SET);
 
-//		WriteLog("Seek %d\n", DiscStrt[CurrentDrive]+(DiscStep[CurrentDrive]*MyTrack)+(Sector*SecSize[CurrentDrive]));
+//		BeebEmLog::writeLog("Seek %d\n", DiscStrt[CurrentDrive]+(DiscStep[CurrentDrive]*MyTrack)+(Sector*SecSize[CurrentDrive]));
 
 	}
 	if ((FDCommand>=8) && (*CDiscOpen==0) && (FDCommand<=9)) {
@@ -557,7 +558,7 @@ void Poll1770(int NCycles) {
 								break;
 						}
 						
-//						WriteLog("Address Mark : Track %d, Head %d, Sector %d, Type %d, Length %d\n",
+//						BeebEmLog::writeLog("Address Mark : Track %d, Head %d, Sector %d, Type %d, Length %d\n",
 //								 ptr[0], ptr[1], ptr[2], ptr[3], FormatSize);
 
 					}
@@ -597,7 +598,7 @@ void Poll1770(int NCycles) {
 	}
 	if ((FDCommand==23) && (DWriteable[CurrentDrive]==0)) 
     {
-        WriteLog("Disc Write Protected\n");
+        BeebEmLog::writeLog("Disc Write Protected\n");
 		SetStatus(6);
 		NMIStatus|=1<<nmi_floppy; 
         FDCommand=0;
@@ -610,7 +611,7 @@ void Poll1770(int NCycles) {
 		fseek(CurrentDisc,DiscStrt[CurrentDrive]+(DiscStep[CurrentDrive]*MyTrack),SEEK_SET);
         Sector = 0;
         dByteCount=0; DataPos=ftell(CurrentDisc); HeadPos[CurrentDrive]=DataPos;
-//        WriteLog("Read/Write Track Prepare - Disc = %d, Track = %d\n", CurrentDrive, Track);
+//        BeebEmLog::writeLog("Read/Write Track Prepare - Disc = %d, Track = %d\n", CurrentDrive, Track);
     }
 	if ((FDCommand>=20) && (*CDiscOpen==0) && (FDCommand<=21)) {
         ResetStatus(0);
@@ -663,7 +664,7 @@ void Poll1770(int NCycles) {
   }
   if (FDCommand==14) { // Read Address - just 6 bytes
 
-//      WriteLog("FDCommand = 14, Read Address - Byte Count = %d\n", dByteCount);
+//      BeebEmLog::writeLog("FDCommand = 14, Read Address - Byte Count = %d\n", dByteCount);
       
 	  LoadingCycles-=NCycles; if (LoadingCycles>0) return;
       if ((dStatus & 2)==0) { 
@@ -687,7 +688,7 @@ void Poll1770(int NCycles) {
 
 	    if (dByteCount==0) { 
 
-//		  WriteLog("Read Address Mark - Track = %d, Head = %d, Sector = %d, Size = %d\n", MyTrack, CurrentHead[CurrentDrive], RotSect + 1, DiscType[CurrentDrive]);
+//		  BeebEmLog::writeLog("Read Address Mark - Track = %d, Head = %d, Sector = %d, Size = %d\n", MyTrack, CurrentHead[CurrentDrive], RotSect + 1, DiscType[CurrentDrive]);
 			
           FDCommand=0; 
           ResetStatus(0); 
@@ -836,7 +837,7 @@ void WriteFDCControlReg(unsigned char Value) {
 	// This function writes the control register @ &FE24
 	//fprintf(fdclog,"CTRL REG write of %02X\n",Value);
 	
-//	WriteLog("WriteFDCControlReg = %02x\n", Value);
+//	BeebEmLog::writeLog("WriteFDCControlReg = %02x\n", Value);
 	
 	ExtControl=Value;
 	if ((ExtControl & 1)==1) { CurrentDisc=Disc0; CurrentDrive=0; CDiscOpen=&Disc0Open; }
@@ -853,7 +854,7 @@ void WriteFDCControlReg(unsigned char Value) {
 	}
 	SelectedDensity=(Value & 32)>>5; // Density Select - 0 = Double 1 = Single
 
-//	WriteLog("Selected Density = %d\n", SelectedDensity);
+//	BeebEmLog::writeLog("Selected Density = %d\n", SelectedDensity);
 	
 //	SelectedDensity=1;
 }

@@ -290,7 +290,7 @@ static int SlowDataBusRead(void) {
   }
 	  
  
-//  WriteLog("SlowDataBusReadValue  IC32State = 0x%02x, PC = 0x%04x, result = 0x%02x\n", IC32State, ProgramCounter, result);
+//  BeebEmLog::writeLog("SlowDataBusReadValue  IC32State = 0x%02x, PC = 0x%04x, result = 0x%02x\n", IC32State, ProgramCounter, result);
 
   /* cerr << "SlowDataBusRead giving 0x" << hex << result << dec << "\n"; */
   return(result);

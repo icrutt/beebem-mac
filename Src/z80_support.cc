@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "main.h"
 #include "debug.h"
 #include "z80mem.h"
 #include "z80.h"
 #include "beebmem.h"
+#include "BeebEmLog.hpp"
 
 #include "tube.h"
 
@@ -37,7 +37,7 @@ unsigned char t;
     t = (inROM) ? z80_rom[pc & 0xffff] : z80_ram[pc & 0xffff];
 
 //    if (trace_z80)
-//        WriteLog("Read %02x from %04x in %s\n", t, pc, (inROM) ? "ROM" : "RAM");
+//        BeebEmLog::writeLog("Read %02x from %04x in %s\n", t, pc, (inROM) ? "ROM" : "RAM");
 
     return t;
 
@@ -56,7 +56,7 @@ void WriteZ80Mem(int pc, unsigned char data)
 //    }
 
 //    if (trace_z80)
-//        WriteLog("Writing %02x to %04x\n", data, pc);
+//        BeebEmLog::writeLog("Writing %02x to %04x\n", data, pc);
 
 }
 
@@ -122,7 +122,7 @@ sprintf(str + strlen(str), " BC=%04X DE=%04X HL=%04X", regs[0].bc, regs[0].de, r
 sprintf(str + strlen(str), " IX=%04X I=%02X PC=%04X",ix, ir & 255, pc);
 sprintf(str + strlen(str), ":%02X,%02X,%02X,%02X",ReadZ80Mem(pc),ReadZ80Mem(pc+1),ReadZ80Mem(pc+2),ReadZ80Mem(pc+3));
 
-WriteLog("%s %s\n", str, buff);
+BeebEmLog::writeLog("%s %s\n", str, buff);
 
 sprintf(str, "AF'%04X ",af[1]);
 sprintf(str + strlen(str), (af[1] & 128) ? "M" : "P");
@@ -137,7 +137,7 @@ sprintf(str + strlen(str), " BC'%04X DE'%04X HL'%04X",regs[1].bc,regs[1].de,regs
 sprintf(str + strlen(str), " IY=%04X R=%02x SP=%04X",iy, regs_sel, sp);
 sprintf(str + strlen(str), ":%02X,%02X,%02X,%02X\n",ReadZ80Mem(sp),ReadZ80Mem(sp+1),ReadZ80Mem(sp+2),ReadZ80Mem(sp+3));
 
-WriteLog("%s\n", str);
+BeebEmLog::writeLog("%s\n", str);
 
 }
 
@@ -239,7 +239,7 @@ void init_z80()
 char path[256];
 FILE *f;
 
-    WriteLog("init_z80()\n");
+    BeebEmLog::writeLog("init_z80()\n");
 
 	if (AcornZ80)
 	{
@@ -289,7 +289,7 @@ int s, t, a;
     for (a = 0; a < 512; ++a)
     {
         s = Z80_Disassemble(t, buff);
-        WriteLog("%04x : %s\n", t, buff);
+        BeebEmLog::writeLog("%04x : %s\n", t, buff);
         t += s;
     }
             
@@ -334,7 +334,7 @@ char *p;
         *p = 0;
     }
 
-    WriteLog("%s\n", buff);
+    BeebEmLog::writeLog("%s\n", buff);
 		
 }
 

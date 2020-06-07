@@ -2330,7 +2330,7 @@ void BeebWin::SetDriveControl(unsigned char value)
 
 	unsigned char temp;
 	
-//	WriteLog("SetDriveControl - Type - %d, Value = %02x\n", FDCType, value);
+//	BeebEmLog::writeLog("SetDriveControl - Type - %d, Value = %02x\n", FDCType, value);
 	
 	switch (FDCType)
 	{
@@ -3148,7 +3148,7 @@ float r, g, b;
 
 	m_RGB16[i] = ((( ((mCT->ctTable[i].rgb.red >> 11) << 5)  + (mCT->ctTable[i].rgb.green >> 11)) << 5) + (mCT->ctTable[i].rgb.blue >> 11));
 
-//	WriteLog("RGB32[%d] = %08x, RGB16[%d] = %04x\n", i, m_RGB32[i], i, m_RGB16[i]);
+//	BeebEmLog::writeLog("RGB32[%d] = %08x, RGB16[%d] = %04x\n", i, m_RGB32[i], i, m_RGB16[i]);
   
   }
 
@@ -4674,7 +4674,7 @@ void BeebWin::SetAMXPosition(unsigned int x, unsigned int y)
 		AMXTargetX = (int) (x * (m_AMXXSize * (100.0 + m_AMXAdjust) / 100.0 / m_XWinSize));
 		AMXTargetY = (int) (y * (m_AMXYSize * (100.0 + m_AMXAdjust) / 100.0 / m_YWinSize));
 		
-//		WriteLog("X = %d, Y = %d, B = %d\n", AMXTargetX, AMXTargetY, AMXButtons);
+//		BeebEmLog::writeLog("X = %d, Y = %d, B = %d\n", AMXTargetX, AMXTargetY, AMXButtons);
 		AMXMouseMovement();
 	}
 }
