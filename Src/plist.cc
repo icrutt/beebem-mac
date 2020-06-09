@@ -1,4 +1,5 @@
 #include "plist.h"
+#include "BeebEmLog.hpp"
 
 void WriteMyPropertyListToFile( CFPropertyListRef propertyList,
             CFURLRef fileURL ) 
@@ -24,6 +25,7 @@ CFPropertyListRef CreateMyPropertyListFromFile( CFURLRef fileURL )
    CFDataRef         resourceData;
    Boolean           status;
    SInt32            errorCode;
+    BeebEmLog::writeLog("Debug plist 01\n");
    // Read the XML file.
    status = CFURLCreateDataAndPropertiesFromResource(
                kCFAllocatorDefault,
@@ -32,16 +34,21 @@ CFPropertyListRef CreateMyPropertyListFromFile( CFURLRef fileURL )
                NULL,      
                NULL,
                &errorCode);
+    BeebEmLog::writeLog("Debug plist 02\n");
 
 	if (status == false) return NULL;
-	
+    BeebEmLog::writeLog("Debug plist 03\n");
+
    // Reconstitute the dictionary using the XML data.
    propertyList = CFPropertyListCreateFromXMLData( kCFAllocatorDefault,
                resourceData,
                kCFPropertyListImmutable,
                &errorString);
+    BeebEmLog::writeLog("Debug plist 04\n");
+
    CFRelease( resourceData );
-   return propertyList;
+   BeebEmLog::writeLog("Debug plist 05\n");
+return propertyList;
 }
 
 void AddDictNum(CFMutableDictionaryRef dict, CFStringRef key, int value)

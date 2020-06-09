@@ -1,2 +1,7 @@
 CodeSign.xcconfig
 
+UserData/BeebEm4.build
+UserData/Debug
+UserData/PrecompiledHeaders
+UserData/XCBuildData
+Build

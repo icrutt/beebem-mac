@@ -29,6 +29,8 @@
 
 #include "port.h"
 #include "video.h"
+#include "BeebEmLog.hpp"
+#include <iostream>
 
 typedef union {
 	unsigned char data[8];

@@ -1535,7 +1535,9 @@ bool BeebWin::Initialise(char *home)
         fprintf(stderr, "Unable to get current path\n");
         return false;
     }
-    
+    std::cout << "RomPath:" << RomPath << std::endl;
+    BeebEmLog::writeLog("\nDebug BeebWinInit 01\n");
+
     if (RomPath[strlen(RomPath) - 1] != '/')
     {
         if (strlen(RomPath) == 512) {
@@ -1544,6 +1546,7 @@ bool BeebWin::Initialise(char *home)
         }
         RomPath[strlen(RomPath)] = '/';
     }
+    BeebEmLog::writeLog("Debug BeebWinInit 02\n");
 #else
     fprintf(stderr, "RELEASE\n");
 
@@ -1562,8 +1565,10 @@ bool BeebWin::Initialise(char *home)
     fprintf(stderr, "Home directory is '%s'\n", RomPath);
 
 	strcpy(EconetCfgPath, RomPath);
+    BeebEmLog::writeLog("Debug BeebWinInit 03\n");
 
 	LoadPreferences();
+    BeebEmLog::writeLog("Debug BeebWinInit 04\n");
 
 	// load the default user keymap if it is present
 	char defaultUserKeymapPath [256];
@@ -1574,33 +1579,37 @@ bool BeebWin::Initialise(char *home)
 		m_MenuIdKeyMapping = 1;
 		TranslateKeyMapping();
 	}
-	
+    BeebEmLog::writeLog("Debug BeebWinInit 05\n");
+
 	TouchScreenOpen();
-	
+    BeebEmLog::writeLog("Debug BeebWinInit 06\n");
+
 	IgnoreIllegalInstructions = 1;
+    BeebEmLog::writeLog("Debug BeebWinInit 07\n");
 
 	m_WriteProtectDisc[0] = !IsDiscWritable(0);
 	m_WriteProtectDisc[1] = !IsDiscWritable(1);
+    BeebEmLog::writeLog("Debug BeebWinInit 08\n");
 
 	m_ScreenRefreshCount = 0;
 	m_RelativeSpeed = 1;
 	m_FramesPerSecond = 50;
 	strcpy(m_szTitle, WindowTitle);
-
+    BeebEmLog::writeLog("Debug BeebWinInit 09\n");
 	for(int i = 0; i < LED_COL_BASE + 4; i++)
 		cols[i] = i;
 
 	m_frozen = false;
 
 	MenuOn=true;
-
+    BeebEmLog::writeLog("Debug BeebWinInit 10\n");
 	InitMenu();
 
 	if (PrinterEnabled)
 		PrinterEnable(m_PrinterDevice);
 	else
 		PrinterDisable();
-    
+        BeebEmLog::writeLog("Debug BeebWinInit 11\n");
     return true;
 }
 
@@ -1938,14 +1947,18 @@ int LEDByte;
 
 	// Create a URL that specifies the file we will create to 
 	// hold the XML data.
+    BeebEmLog::writeLog("Debug BeebWinLoadPref 01\n");
 
 	sprintf(path, "%sbeebem.ini", RomPath);
 	pIni = CFStringCreateWithCString (kCFAllocatorDefault, path, kCFStringEncodingASCII);
+    BeebEmLog::writeLog("Debug BeebWinLoadPref 02\n");
 
 	fileURL = CFURLCreateWithFileSystemPath( kCFAllocatorDefault,    
                pIni,       // file path name
                kCFURLPOSIXPathStyle,    // interpret as POSIX path        
                false );                 // is it a directory?
+    BeebEmLog::writeLog("Debug BeebWinLoadPref 03\n");
+    std::cout << "path:" << path << std::endl;
 
 	if (fileURL == NULL)
 	{
@@ -3050,7 +3063,7 @@ void BeebWin::SetMenuCommandIDCheck(UInt32 commandID, bool check)
 	}
 	else
 	{
-		fprintf(stderr, "Cannot find menu id %08x\n", (unsigned int) commandID);
+		//fprintf(stderr, "Cannot find menu id %08x\n", (unsigned int) commandID);
 	}
 }
 

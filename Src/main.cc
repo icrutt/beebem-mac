@@ -519,18 +519,22 @@ int i;
 	BeebEmLog::writeLog("Arg %d = %s\n", i, argv[i]);
 
   mainWin=new BeebWin();
-
+  BeebEmLog::writeLog("Instantiated BeebWin\n");
   atexit(AtExitHandler);
 
+  BeebEmLog::writeLog("Debug Main 01\n");
   if (PushSymbolicHotKeyMode != NULL)
   {
-    token = PushSymbolicHotKeyMode(kHIHotKeyModeAllDisabled);
+    BeebEmLog::writeLog("Debug Main 02\n");
+      token = PushSymbolicHotKeyMode(kHIHotKeyModeAllDisabled);
   }
+    BeebEmLog::writeLog("Debug Main 03\n");
 
   done = 0;
   
   if (!mainWin->Initialise(argv[0]))
       exit(EXIT_FAILURE);
+    BeebEmLog::writeLog("Debug Main 04\n");
 
 //  SoundReset();
   if (SoundEnabled) SoundInit();
@@ -538,9 +542,11 @@ int i;
   mainWin->ResetBeebSystem(MachineType,TubeEnabled,1); 
   mainWin->SetRomMenu();
   mainWin->SetSoundMenu();
+    BeebEmLog::writeLog("Debug Main 05\n");
 
   EventTypeSpec    eventTypes[7];
   EventHandlerUPP  handlerUPP;
+    BeebEmLog::writeLog("Debug Main 06\n");
 
   eventTypes[0].eventClass = kEventClassKeyboard;
   eventTypes[0].eventKind  = 1;
@@ -557,21 +563,25 @@ int i;
   eventTypes[5].eventKind  = kEventMouseMoved;
   eventTypes[6].eventClass = kEventClassMouse;
   eventTypes[6].eventKind  = kEventMouseDragged;
+    BeebEmLog::writeLog("Debug Main 07\n");
 
   handlerUPP = NewEventHandlerUPP(EventHandler);
   InstallApplicationEventHandler (handlerUPP,
                                 7, eventTypes,
                                 NULL, NULL);
+    BeebEmLog::writeLog("Debug Main 08\n");
 
   //AEInstallEventHandler(kCoreEventClass, kAEOpenDocuments, NewAEEventHandlerUPP(AEodoc), 0, false);
 
   EventTypeSpec events[] = {
 		{ kEventClassWindow, kEventWindowClosed }
   };
+    BeebEmLog::writeLog("Debug Main 09\n");
 
   EventTypeSpec commands[] = {
         { kEventClassCommand, kEventCommandProcess }
   };
+    BeebEmLog::writeLog("Debug Main 10\n");
 
   //InstallWindowEventHandler (mainWin->mWindow,
 //		   NewEventHandlerUPP (MainWindowEventHandler),
@@ -587,6 +597,8 @@ int i;
 //  mainWin->StartRecordingVideo("jon.mov", nil);
   
   // Call the event loop
+    BeebEmLog::writeLog("Debug Main 11\n");
+
   RunApplicationEventLoopWithCooperativeThreadSupport();
 
   fprintf(stderr, "Shutting Down ...\n");
