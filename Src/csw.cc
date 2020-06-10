@@ -11,7 +11,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "zlib.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "csw.h"
 
 #include "6502core.h"

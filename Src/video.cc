@@ -33,7 +33,7 @@
 #include "6502core.h"
 #include "beebmem.h"
 #include "beebwin.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "sysvia.h"
 #include "video.h"
 #include "beebsound.h"

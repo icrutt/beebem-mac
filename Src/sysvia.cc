@@ -31,7 +31,7 @@ keyboard emulation - David Alan Gilbert 30/10/94 */
 #include "beebwin.h"
 #include "sysvia.h"
 #include "via.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "viastate.h"
 #include "debug.h"
 #include "speech.h"

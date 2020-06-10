@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "debug.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "beebwin.h"
 #include "tube.h"
 #include "6502core.h"

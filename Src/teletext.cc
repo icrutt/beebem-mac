@@ -16,7 +16,7 @@ Offset  Description                 Access
 #include "teletext.h"
 #include "debug.h"
 #include "6502core.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "beebmem.h"
 #include <sys/types.h>
 #include <sys/socket.h>

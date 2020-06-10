@@ -29,7 +29,7 @@
 #include "6502core.h"
 #include "disc8271.h"
 
-#include "main.h"
+#include "BeebEm-main.h"
 #include "beebmem.h"
 #include "disc1770.h"
 #include "uefstate.h"

@@ -10,7 +10,7 @@
 #include "video.h"
 #include "via.h"
 #include "beebwin.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "beebsound.h"
 #include "disc8271.h"
 #include "disc1770.h"

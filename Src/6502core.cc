@@ -33,7 +33,7 @@
 #include "uservia.h"
 #include "video.h"
 #include "atodconv.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "disc1770.h"
 #include "serial.h"
 #include "tube.h"

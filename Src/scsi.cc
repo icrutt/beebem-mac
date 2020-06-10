@@ -15,7 +15,7 @@ Offset  Description                 Access
 #include <stdio.h>
 #include <stdlib.h>
 #include "6502core.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "scsi.h"
 #include "beebmem.h"
 

@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#include "main.h"
+#include "BeebEm-main.h"
 #include "printing.h"
 
 //-----------------------------------------------------------------------------------------------------------------------

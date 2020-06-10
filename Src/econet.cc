@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include "main.h"
+#include "BeebEm-main.h"
 #include "beebwin.h"
 #include "econet.h"
 #include "debug.h"

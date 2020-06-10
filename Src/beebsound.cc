@@ -48,7 +48,7 @@
 #include "common.h"
 #include "audev.h"
 #include "uefstate.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "speech.h"
 #include "BeebEmLog.hpp"
 

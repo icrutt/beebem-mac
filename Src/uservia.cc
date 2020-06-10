@@ -29,13 +29,13 @@
 #include "via.h"
 #include "viastate.h"
 #include "debug.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "tube.h"
 #include "BeebEmLog.hpp"
 
 #ifdef WIN32
 #include <windows.h>
-#include "main.h"
+#include "BeebEm-main.h"
 #endif
 
 int RTC_bit = 0;

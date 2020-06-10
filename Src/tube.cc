@@ -26,7 +26,7 @@
 #include <stdlib.h>
 
 #include "6502core.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "beebmem.h"
 #include "tube.h"
 #include "debug.h"

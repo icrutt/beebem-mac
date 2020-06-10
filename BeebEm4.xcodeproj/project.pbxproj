@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		178BCCAC2490E1DC0099EB8A /* TestGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA72490E1DC0099EB8A /* TestGlue.cpp */; };
+		178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA82490E1DC0099EB8A /* TestClass.cpp */; };
+		178BCCAE2490E1DC0099EB8A /* TestClassWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCAA2490E1DC0099EB8A /* TestClassWrapper.cpp */; };
+		178BCCB02490E1FD0099EB8A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCAF2490E1FD0099EB8A /* main.m */; };
+		178BCCB52490E58E0099EB8A /* MyModelObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCB42490E58E0099EB8A /* MyModelObject.mm */; };
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
 		17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */; };
 		19005B950963E34200872367 /* scsi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19005B940963E34200872367 /* scsi.cc */; };
@@ -43,7 +48,7 @@
 		19E9FA1B086B5C85008741A6 /* beebmem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA0A086B5C85008741A6 /* beebmem.cc */; };
 		19E9FA1C086B5C85008741A6 /* beebsound.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA0B086B5C85008741A6 /* beebsound.cc */; };
 		19E9FA1E086B5C85008741A6 /* disc8271.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA0D086B5C85008741A6 /* disc8271.cc */; };
-		19E9FA1F086B5C85008741A6 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA0E086B5C85008741A6 /* main.cc */; };
+		19E9FA1F086B5C85008741A6 /* BeebEm-main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA0E086B5C85008741A6 /* BeebEm-main.cc */; };
 		19E9FA21086B5C85008741A6 /* sysvia.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA10086B5C85008741A6 /* sysvia.cc */; };
 		19E9FA22086B5C85008741A6 /* uservia.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA11086B5C85008741A6 /* uservia.cc */; };
 		19E9FA23086B5C85008741A6 /* via.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19E9FA12086B5C85008741A6 /* via.cc */; };
@@ -92,6 +97,18 @@
 /* Begin PBXFileReference section */
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
+		178BCCA52490E1DC0099EB8A /* TestClassWrapper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestClassWrapper.hpp; sourceTree = "<group>"; };
+		178BCCA62490E1DC0099EB8A /* GlueInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlueInterface.h; sourceTree = "<group>"; };
+		178BCCA72490E1DC0099EB8A /* TestGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestGlue.cpp; sourceTree = "<group>"; };
+		178BCCA82490E1DC0099EB8A /* TestClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestClass.cpp; sourceTree = "<group>"; };
+		178BCCA92490E1DC0099EB8A /* TestGlue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestGlue.hpp; sourceTree = "<group>"; };
+		178BCCAA2490E1DC0099EB8A /* TestClassWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestClassWrapper.cpp; sourceTree = "<group>"; };
+		178BCCAB2490E1DC0099EB8A /* TestClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestClass.hpp; sourceTree = "<group>"; };
+		178BCCAF2490E1FD0099EB8A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		178BCCB12490E2880099EB8A /* MyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
+		178BCCB22490E2900099EB8A /* MyDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyDelegate.h; sourceTree = "<group>"; };
+		178BCCB32490E58E0099EB8A /* MyModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyModelObject.h; sourceTree = "<group>"; };
+		178BCCB42490E58E0099EB8A /* MyModelObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyModelObject.mm; sourceTree = "<group>"; };
 		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
 		17BEDF8B248D161500A1C002 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeebEmLog.cpp; path = Src/BeebEmLog.cpp; sourceTree = "<group>"; };
@@ -104,7 +121,7 @@
 		17E47C192489012F0073DF2D /* beebmem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = beebmem.h; path = Src/beebmem.h; sourceTree = "<group>"; };
 		17E47C1A2489012F0073DF2D /* audev.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = audev.h; path = Src/audev.h; sourceTree = "<group>"; };
 		17E47C1B2489012F0073DF2D /* atodconv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = atodconv.h; path = Src/atodconv.h; sourceTree = "<group>"; };
-		17E47C1C24890C130073DF2D /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = main.h; path = Src/main.h; sourceTree = "<group>"; };
+		17E47C1C24890C130073DF2D /* BeebEm-main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BeebEm-main.h"; path = "Src/BeebEm-main.h"; sourceTree = "<group>"; };
 		19005B940963E34200872367 /* scsi.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = scsi.cc; path = Src/scsi.cc; sourceTree = "<group>"; };
 		19023C8808E3E96000BA702E /* uef.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = uef.cc; path = Src/uef.cc; sourceTree = "<group>"; };
 		1907F0680AA32D4D0098CA99 /* serialdevices.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = serialdevices.cc; path = Src/serialdevices.cc; sourceTree = "<group>"; };
@@ -141,7 +158,7 @@
 		19E9FA0A086B5C85008741A6 /* beebmem.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = beebmem.cc; path = Src/beebmem.cc; sourceTree = "<group>"; };
 		19E9FA0B086B5C85008741A6 /* beebsound.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = beebsound.cc; path = Src/beebsound.cc; sourceTree = "<group>"; };
 		19E9FA0D086B5C85008741A6 /* disc8271.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = disc8271.cc; path = Src/disc8271.cc; sourceTree = "<group>"; };
-		19E9FA0E086B5C85008741A6 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = Src/main.cc; sourceTree = "<group>"; };
+		19E9FA0E086B5C85008741A6 /* BeebEm-main.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = "BeebEm-main.cc"; path = "Src/BeebEm-main.cc"; sourceTree = "<group>"; };
 		19E9FA10086B5C85008741A6 /* sysvia.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = sysvia.cc; path = Src/sysvia.cc; sourceTree = "<group>"; };
 		19E9FA11086B5C85008741A6 /* uservia.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = uservia.cc; path = Src/uservia.cc; sourceTree = "<group>"; };
 		19E9FA12086B5C85008741A6 /* via.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = via.cc; path = Src/via.cc; sourceTree = "<group>"; };
@@ -265,8 +282,8 @@
 				199E79EF088121AE006705E8 /* GetFile.cc */,
 				191CA3A309A11734006B6614 /* i86.cc */,
 				191CA3A409A11734006B6614 /* i386dasm.cc */,
-				19E9FA0E086B5C85008741A6 /* main.cc */,
-				17E47C1C24890C130073DF2D /* main.h */,
+				19E9FA0E086B5C85008741A6 /* BeebEm-main.cc */,
+				17E47C1C24890C130073DF2D /* BeebEm-main.h */,
 				179F7C922487F56B00A4D164 /* MainWindow.xib */,
 				199E7BB008816C80006705E8 /* plist.cc */,
 				195825A70D19A79F0026D58C /* printing.cc */,
@@ -289,6 +306,18 @@
 				190C57C508A55D5A007CD57E /* z80dis.cc */,
 				17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */,
 				17BEDF8D248D194800A1C002 /* BeebEmLog.hpp */,
+				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
+				178BCCA82490E1DC0099EB8A /* TestClass.cpp */,
+				178BCCAB2490E1DC0099EB8A /* TestClass.hpp */,
+				178BCCAA2490E1DC0099EB8A /* TestClassWrapper.cpp */,
+				178BCCA52490E1DC0099EB8A /* TestClassWrapper.hpp */,
+				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
+				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
+				178BCCAF2490E1FD0099EB8A /* main.m */,
+				178BCCB12490E2880099EB8A /* MyView.h */,
+				178BCCB22490E2900099EB8A /* MyDelegate.h */,
+				178BCCB32490E58E0099EB8A /* MyModelObject.h */,
+				178BCCB42490E58E0099EB8A /* MyModelObject.mm */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -453,10 +482,12 @@
 				19E9FA1B086B5C85008741A6 /* beebmem.cc in Sources */,
 				19E9FA1C086B5C85008741A6 /* beebsound.cc in Sources */,
 				19E9FA1E086B5C85008741A6 /* disc8271.cc in Sources */,
-				19E9FA1F086B5C85008741A6 /* main.cc in Sources */,
+				19E9FA1F086B5C85008741A6 /* BeebEm-main.cc in Sources */,
 				19E9FA21086B5C85008741A6 /* sysvia.cc in Sources */,
+				178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */,
 				19E9FA22086B5C85008741A6 /* uservia.cc in Sources */,
 				19E9FA23086B5C85008741A6 /* via.cc in Sources */,
+				178BCCAE2490E1DC0099EB8A /* TestClassWrapper.cpp in Sources */,
 				19E9FA24086B5C85008741A6 /* video.cc in Sources */,
 				199E79F0088121AE006705E8 /* GetFile.cc in Sources */,
 				199E7BB108816C80006705E8 /* plist.cc in Sources */,
@@ -466,6 +497,7 @@
 				190C57C808A55D5A007CD57E /* z80dis.cc in Sources */,
 				19023C8908E3E96000BA702E /* uef.cc in Sources */,
 				1939747F08E6E5A900486851 /* userkybd.cc in Sources */,
+				178BCCB52490E58E0099EB8A /* MyModelObject.mm in Sources */,
 				1933BC890952FA1900C45D5A /* serial.cc in Sources */,
 				19E90D7E095B395C0004AD96 /* speech.cc in Sources */,
 				197E630009605023008AA155 /* econet.cc in Sources */,
@@ -473,6 +505,7 @@
 				19172C4009653728006A4ED9 /* sasi.cc in Sources */,
 				19368F9B098397E300B05B51 /* teletext.cc in Sources */,
 				191CA3A509A11734006B6614 /* i86.cc in Sources */,
+				178BCCAC2490E1DC0099EB8A /* TestGlue.cpp in Sources */,
 				191CA3A609A11734006B6614 /* i386dasm.cc in Sources */,
 				190C3A110AA211B500DF468A /* csw.cc in Sources */,
 				1907F0690AA32D4D0098CA99 /* serialdevices.cc in Sources */,
@@ -480,6 +513,7 @@
 				199193920BF601F20025F5A0 /* Arm.cc in Sources */,
 				195825A80D19A79F0026D58C /* printing.cc in Sources */,
 				19CE534A0D22551100B90A78 /* beebwin.cc in Sources */,
+				178BCCB02490E1FD0099EB8A /* main.m in Sources */,
 				FC8B56531EBB94F1001DF5A9 /* discedit.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -566,6 +600,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -588,6 +624,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_ONE_BYTE_BOOL = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -613,6 +650,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -634,6 +673,7 @@
 				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM_ID}";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_ONE_BYTE_BOOL = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = SOUNDSUPPORT;

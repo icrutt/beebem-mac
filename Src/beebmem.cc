@@ -26,7 +26,7 @@
 
 #include "6502core.h"
 #include "disc8271.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "sysvia.h"
 #include "uservia.h"
 #include "video.h"

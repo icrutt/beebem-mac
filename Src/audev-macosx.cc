@@ -17,7 +17,7 @@
 #include "common.h"
 #include "audev.h"
 
-#include "main.h"
+#include "BeebEm-main.h"
 
 typedef struct buffer_struct {
   pthread_mutex_t mutex;

@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "main.h"
+#include "BeebEm-main.h"
 #include "tube.h"
 #include "beebmem.h"
 #include "BeebEmLog.hpp"

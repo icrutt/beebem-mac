@@ -27,7 +27,7 @@ can be determined under normal use".
 #include <stdlib.h>
 #include "disc1770.h"
 #include "6502core.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "beebmem.h"
 #include "uefstate.h"
 #include "z80mem.h"

@@ -15,7 +15,7 @@ Based on code written by Frank Palazzolo and others
 #include "beebwin.h"
 #include "sysvia.h"
 #include "via.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "viastate.h"
 #include "debug.h"
 

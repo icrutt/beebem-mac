@@ -32,7 +32,7 @@ can be determined under normal use".
 #include <stdio.h>
 #include "6502core.h"
 #include "uef.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "serial.h"
 #include "beebsound.h"
 #include "beebwin.h"

@@ -39,7 +39,7 @@
 #include "z80mem.h"
 #include "z80.h"
 #include "speech.h"
-#include "main.h"
+#include "BeebEm-main.h"
 #include "BeebEmLog.hpp"
 
 extern void * PushSymbolicHotKeyMode(OptionBits inOptions) __attribute__((weak_import));
@@ -513,7 +513,7 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
     }
 }
 	
-int main(int argc,char *argv[]) 
+int BeebEmMain(int argc,char *argv[]) 
 {
 void *token;
 int i;

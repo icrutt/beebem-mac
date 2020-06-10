@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "main.h"
+#include "BeebEm-main.h"
 #include "userkybd.h"
 #include "plist.h"
 
