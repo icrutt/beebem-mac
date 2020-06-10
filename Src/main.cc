@@ -495,6 +495,11 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
             }
             if (err == noErr) {
                 //RunApplicationEventLoop();
+                // Instead of main app loop
+                for (int excount = 0; excount<1000; excount++) {
+                    Exec6502Instruction();
+                    if (excount%10==0) std::cout << "Exectuting " << excount << std::endl;
+                }
             }
 
             junk = RemoveEventHandler(installedHandler);

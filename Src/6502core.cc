@@ -1136,9 +1136,10 @@ void Exec6502Instruction(void) {
   int loop,loopc;
   bool iFlagJustCleared;
   bool iFlagJustSet;
+   loopc=(DebugEnabled ? 1 : 1024); // Makes debug window more responsive
+ std::cout << "loopc: " << loopc <<std::endl;
 
-  loopc=(DebugEnabled ? 1 : 1024); // Makes debug window more responsive
-  for(loop=0;loop<loopc;loop++) {
+    for(loop=0;loop<loopc;loop++) {
 
 	if (DebugEnabled && !DebugDisassembler(ProgramCounter,Accumulator,XReg,YReg,PSR,true))
 		continue;
