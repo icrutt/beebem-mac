@@ -13,7 +13,7 @@
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="970" y="384" width="640" height="512"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1792" height="1097"/>
-            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ" customClass="MyView">
+            <view key="contentView" id="EiT-Mj-1SZ" customClass="MyView">
                 <rect key="frame" x="0.0" y="0.0" width="640" height="512"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -46,5 +46,6 @@
                 <outlet property="label" destination="mLc-1a-Bj0" id="vRK-hZ-e0G"/>
             </connections>
         </customObject>
+        <customObject id="oCU-yr-AKf" customClass="NSFontManager"/>
     </objects>
 </document>
