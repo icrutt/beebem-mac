@@ -13,6 +13,7 @@
 		178BCCB02490E1FD0099EB8A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCAF2490E1FD0099EB8A /* main.m */; };
 		178BCCB52490E58E0099EB8A /* MyModelObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCB42490E58E0099EB8A /* MyModelObject.mm */; };
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
+		17A681372490F00A00E98AC0 /* MyViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 17A681352490F00A00E98AC0 /* MyViewController.mm */; };
 		17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */; };
 		19005B950963E34200872367 /* scsi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19005B940963E34200872367 /* scsi.cc */; };
 		19023C8908E3E96000BA702E /* uef.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19023C8808E3E96000BA702E /* uef.cc */; };
@@ -56,7 +57,6 @@
 		19E9FA29086B5CA6008741A6 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19E9FA28086B5CA6008741A6 /* CoreAudio.framework */; };
 		19F3FF6108895EC900E9828E /* beebem.icns in Resources */ = {isa = PBXBuildFile; fileRef = 19F3FF6008895EC900E9828E /* beebem.icns */; };
 		8D0C4E8D0486CD37000505A6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
-		8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
 		FC8B56531EBB94F1001DF5A9 /* discedit.cc in Sources */ = {isa = PBXBuildFile; fileRef = FC8B56521EBB94F1001DF5A9 /* discedit.cc */; };
 /* End PBXBuildFile section */
 
@@ -110,6 +110,8 @@
 		178BCCB32490E58E0099EB8A /* MyModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyModelObject.h; sourceTree = "<group>"; };
 		178BCCB42490E58E0099EB8A /* MyModelObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyModelObject.mm; sourceTree = "<group>"; };
 		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
+		17A681352490F00A00E98AC0 /* MyViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyViewController.mm; sourceTree = "<group>"; };
+		17A681362490F00A00E98AC0 /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
 		17BEDF8B248D161500A1C002 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeebEmLog.cpp; path = Src/BeebEmLog.cpp; sourceTree = "<group>"; };
 		17BEDF8D248D194800A1C002 /* BeebEmLog.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = BeebEmLog.hpp; path = Src/BeebEmLog.hpp; sourceTree = "<group>"; };
@@ -209,7 +211,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */,
 				19E9FA29086B5CA6008741A6 /* CoreAudio.framework in Frameworks */,
 				191656C10B39BBAE00C4FA44 /* IOKit.framework in Frameworks */,
 			);
@@ -318,6 +319,8 @@
 				178BCCB22490E2900099EB8A /* MyDelegate.h */,
 				178BCCB32490E58E0099EB8A /* MyModelObject.h */,
 				178BCCB42490E58E0099EB8A /* MyModelObject.mm */,
+				17A681362490F00A00E98AC0 /* MyViewController.h */,
+				17A681352490F00A00E98AC0 /* MyViewController.mm */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -512,6 +515,7 @@
 				1991931D0BF5D4D20025F5A0 /* ArmDisassembler.cc in Sources */,
 				199193920BF601F20025F5A0 /* Arm.cc in Sources */,
 				195825A80D19A79F0026D58C /* printing.cc in Sources */,
+				17A681372490F00A00E98AC0 /* MyViewController.mm in Sources */,
 				19CE534A0D22551100B90A78 /* beebwin.cc in Sources */,
 				178BCCB02490E1FD0099EB8A /* main.m in Sources */,
 				FC8B56531EBB94F1001DF5A9 /* discedit.cc in Sources */,
@@ -642,7 +646,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lz";
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -687,7 +691,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_LDFLAGS = "-lz";
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
