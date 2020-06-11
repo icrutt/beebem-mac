@@ -29,8 +29,6 @@
 #include "stdio.h"
 #include "BeebEmCommon.h"
 
-void DumpRegs(void);
-
 typedef enum IRQ_Nums {
   sysVia,
   userVia,
@@ -56,21 +54,9 @@ typedef enum PSR_Flags
 	FlagN=128
 } PSR_Flags;
 
-extern unsigned char intStatus;
-extern unsigned char NMIStatus;
-extern unsigned int Cycles;
-extern int PrePC;
-extern unsigned int NMILock;
-extern int DisplayCycles;
-
-extern int CyclesToInt;
-#define NO_TIMER_INT_DUE	-1000000
-
 #define SetTrigger(after,var) var=BeebEmCommon::TotalCycles+after;
 #define IncTrigger(after,var) var+=(after);
-
 #define ClearTrigger(var) var=CycleCountTMax;
-
 #define AdjustTrigger(var) if (var!=CycleCountTMax) var-=CycleCountWrap;
 
 /*-------------------------------------------------------------------------*/
@@ -90,7 +76,5 @@ void SyncIO(void);
 void AdjustForIORead(void);
 void AdjustForIOWrite(void);
 int i186_execute(int num_cycles);
-extern int SwitchOnCycles; // Reset delay
-extern int OpCodes;
-extern int BHardware;
+void DumpRegs(void);
 #endif

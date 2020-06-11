@@ -1671,7 +1671,7 @@ void BeebWin::SetSoundMenu(void) {
 void BeebWin::ResetBeebSystem(unsigned char NewModelType,unsigned char TubeStatus,unsigned char LoadRoms) 
 {
 	BeebReleaseAllKeys();
-	SwitchOnCycles=0; // Reset delay
+    BeebEmCommon::SwitchOnCycles=0; // Reset delay
 	SoundChipReset();
 	SwitchOnSound();
 	EnableTube=TubeStatus;
@@ -1840,8 +1840,8 @@ CFStringRef pTitle;
 	AddDictNum(dict, CFSTR("TorchTube"), TorchTube);
 	AddDictNum(dict, CFSTR("ArmTube"), ArmTube);
 	AddDictNum(dict, CFSTR("AcornZ80"), AcornZ80);
-	AddDictNum(dict, CFSTR("OpCodes"), OpCodes);
-	AddDictNum(dict, CFSTR("BasicHardware"), BHardware);
+	AddDictNum(dict, CFSTR("OpCodes"), BeebEmCommon::OpCodes);
+	AddDictNum(dict, CFSTR("BasicHardware"), BeebEmCommon::BHardware);
 	AddDictNum(dict, CFSTR("TeletextHalfMode"), THalfMode);
 	AddDictNum(dict, CFSTR("SoundBlockSize"), SBSize);
 	AddDictNum(dict, CFSTR("isFullScreen"), m_isFullScreen);
@@ -2049,8 +2049,8 @@ int LEDByte;
 	TorchTube = GetDictNum(dict, CFSTR("TorchTube"), 0);
 	ArmTube = GetDictNum(dict, CFSTR("ArmTube"), 0);
 	AcornZ80 = GetDictNum(dict, CFSTR("AcornZ80"), 0);
-	OpCodes = GetDictNum(dict, CFSTR("OpCodes"), 2);
-	BHardware = GetDictNum(dict, CFSTR("BasicHardware"), 0);
+	BeebEmCommon::OpCodes = GetDictNum(dict, CFSTR("OpCodes"), 2);
+	BeebEmCommon::BHardware = GetDictNum(dict, CFSTR("BasicHardware"), 0);
 	THalfMode = GetDictNum(dict, CFSTR("TeletextHalfMode"), 0);
 	SBSize = GetDictNum(dict, CFSTR("SoundBlockSize"), 0);
 	m_Invert = GetDictNum(dict, CFSTR("InvertBackground"), 0);
@@ -2899,11 +2899,11 @@ void BeebWin::InitMenu(void)
 
 	SetMenuCommandIDCheck('kmas', (m_KeyMapAS) ? true : false);
 
-	SetMenuCommandIDCheck('docu', (OpCodes == 1) ? true : false);
-	SetMenuCommandIDCheck('extr', (OpCodes == 2) ? true : false);
-	SetMenuCommandIDCheck('full', (OpCodes == 3) ? true : false);
+	SetMenuCommandIDCheck('docu', (BeebEmCommon::OpCodes == 1) ? true : false);
+	SetMenuCommandIDCheck('extr', (BeebEmCommon::OpCodes == 2) ? true : false);
+	SetMenuCommandIDCheck('full', (BeebEmCommon::OpCodes == 3) ? true : false);
 
-	SetMenuCommandIDCheck('hard', (BHardware) ? true : false);
+	SetMenuCommandIDCheck('hard', (BeebEmCommon::BHardware) ? true : false);
 	SetMenuCommandIDCheck('igil', (BeebEmCommon::IgnoreIllegalInstructions) ? true : false);
 	SetMenuCommandIDCheck('sfps', (m_ShowSpeedAndFPS) ? true : false);
 	SetMenuCommandIDCheck('sped', (SpeechEnabled) ? true : false);
@@ -3637,25 +3637,25 @@ OSStatus err = noErr;
 
         case 'hard':
             fprintf(stderr, "Basic Hardware selected\n");
-			BHardware = 1 - BHardware;
-			SetMenuCommandIDCheck('hard', (BHardware) ? true : false);
+			BeebEmCommon::BHardware = 1 - BeebEmCommon::BHardware;
+			SetMenuCommandIDCheck('hard', (BeebEmCommon::BHardware) ? true : false);
             break;
 
         case 'docu':
             fprintf(stderr, "Documented Only selected\n");
-			OpCodes = 1;
+			BeebEmCommon::OpCodes = 1;
 			InitMenu();
             break;
 
         case 'extr':
             fprintf(stderr, "Common Extras selected\n");
-			OpCodes = 2;
+			BeebEmCommon::OpCodes = 2;
 			InitMenu();
             break;
 
         case 'full':
             fprintf(stderr, "Full Set selected\n");
-			OpCodes = 3;
+			BeebEmCommon::OpCodes = 3;
 			InitMenu();
             break;
 

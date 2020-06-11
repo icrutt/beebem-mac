@@ -117,7 +117,7 @@ void Write_ACIA_Control(unsigned char CReg) {
 	// Master reset
 	if ((CReg & 3)==3) {
 		ACIA_Status&=8; ResetACIAStatus(7); SetACIAStatus(2);
-		intStatus&=~(1<<serial); // Master reset clears IRQ
+		BeebEmCommon::intStatus&=~(1<<serial); // Master reset clears IRQ
 		if (FirstReset==1) { 
 			CTS=1; SetACIAStatus(3);
 			FirstReset=0; RTS=1; 
@@ -145,7 +145,7 @@ void Write_ACIA_Control(unsigned char CReg) {
 	if (bit==3) { RTS=0; TIE=0; }
 	// Seem to need an interrupt immediately for tape writing when TIE set
 	if ( (SerialChannel == CASSETTE) && TIE && (Cass_Relay == 1) ) {
-		intStatus|=1<<serial;
+		BeebEmCommon::intStatus|=1<<serial;
 		SetACIAStatus(7);
 	}
 
@@ -162,7 +162,7 @@ void Write_ACIA_Tx_Data(unsigned char Data) {
 		DebugDisplayTrace(DEBUG_SERIAL, true, info);
 	}
 
-	intStatus&=~(1<<serial);
+	BeebEmCommon::intStatus&=~(1<<serial);
 	ResetACIAStatus(7);
 	
 /*
@@ -275,7 +275,7 @@ void HandleData(unsigned char AData) {
 	if (RxD==1) { RDSR=AData; SetACIAStatus(0); }
 	ResetACIAStatus(5);
 	if (RxD==2) { RDR=RDSR; RDSR=AData; SetACIAStatus(5); } // overrun
-	if (RIE) { intStatus|=1<<serial; SetACIAStatus(7); } // interrupt on receive/overun
+	if (RIE) { BeebEmCommon::intStatus|=1<<serial; SetACIAStatus(7); } // interrupt on receive/overun
 	if (RxD<2) RxD++; 	
 }
 
@@ -290,12 +290,12 @@ unsigned char Read_ACIA_Rx_Data(void) {
 //			DCDClear=0;
 //		}
 //	}
-	intStatus&=~(1<<serial);
+	BeebEmCommon::intStatus&=~(1<<serial);
 	ResetACIAStatus(7);
 	TData=RDR; RDR=RDSR; RDSR=0;
 	if (RxD>0) RxD--; 
 	if (RxD==0) ResetACIAStatus(0);
-	if ((RxD>0) && (RIE)) { intStatus|=1<<serial; SetACIAStatus(7); }
+	if ((RxD>0) && (RIE)) { BeebEmCommon::intStatus|=1<<serial; SetACIAStatus(7); }
 	if (Data_Bits==7) TData&=127;
 	if (DebugEnabled) {
 		char info[200];
@@ -395,7 +395,7 @@ static int delay = 0;
 					SetACIAStatus(1);
 					if (TIE)
 					{
-						intStatus|=1<<serial;
+						BeebEmCommon::intStatus|=1<<serial;
 						SetACIAStatus(7);
 					}
 					TapeAudio.Data=(TDR<<1)|1;
@@ -440,7 +440,7 @@ static int delay = 0;
 				SetACIAStatus(1);
 				if (TIE)
 				{
-					intStatus|=1<<serial;
+					BeebEmCommon::intStatus|=1<<serial;
 					SetACIAStatus(7);
 				}
 			}
@@ -548,7 +548,7 @@ static int delay = 0;
 				// low to high transition on the DCD line
 				if (RIE)
 				{
-					intStatus|=1<<serial;
+					BeebEmCommon::intStatus|=1<<serial;
 					SetACIAStatus(7);
 				}
 				DCD=1; SetACIAStatus(2); //ResetACIAStatus(0);

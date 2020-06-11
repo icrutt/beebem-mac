@@ -51,24 +51,27 @@ FILE *osclilog; //=fopen("/oscli.log","wt");
 static unsigned int InstrCount;
 static int CurrentInstruction;
 int CPUDebug=0;
+static int Accumulator,XReg,YReg;
+static unsigned char StackReg,PSR;
+static unsigned char IRQCycles;
+typedef int int16;
+inline static void SBCInstrHandler(int16 operand);
+
+/* Number of cycles VIAs advanced for mem read and writes */
+unsigned int ViaCycles;
+
+/* Number of additional cycles for IO read / writes */
+int IOCycles=0;
+
+/* Flag indicating if an interrupt is due */
+bool IntDue=false;
+
+static unsigned char Branched;
+// Branched - 1 if the instruction branched
 // ***************************
 
 // Needs to be passed to the CPU code another way (by registering with the CPU object)
 extern CArm *arm;
-
-// To be processed ++++++++++++++++++++++++++++++++
-int PrePC;
-static int Accumulator,XReg,YReg;
-static unsigned char StackReg,PSR;
-static unsigned char IRQCycles;
-int DisplayCycles=0;
-int SwitchOnCycles=2000000; // Reset delay
-
-unsigned char intStatus=0; /* bit set (nums in IRQ_Nums) if interrupt being caused */
-unsigned char NMIStatus=0; /* bit set (nums in NMI_Nums) if NMI being caused */
-unsigned int NMILock=0; /* Well I think NMI's are maskable - to stop repeated NMI's - the lock is released when an RTI is done */
-typedef int int16;
-inline static void SBCInstrHandler(int16 operand);
 
 /* Note how GETCFLAG is special since being bit 0 we don't need to test it to get a clean 0/1 */
 #define GETCFLAG ((PSR & FlagC))
@@ -145,27 +148,6 @@ static int CyclesToMemWrite[]={
 	0,0,0,0,0,0,2,0,0,0,0,0,0,0,2,0  /* f */
 };
 
-/* The number of cycles to be used by the current instruction - exported to
-   allow fernangling by memory subsystem */
-unsigned int Cycles;
-
-/* Number of cycles VIAs advanced for mem read and writes */
-unsigned int ViaCycles;
-
-/* Number of additional cycles for IO read / writes */
-int IOCycles=0;
-
-/* Flag indicating if an interrupt is due */
-bool IntDue=false;
-
-/* When a timer interrupt is due this is the number of cycles 
-to it (usually -ve) */
-int CyclesToInt = NO_TIMER_INT_DUE;
-
-static unsigned char Branched;
-// Branched - 1 if the instruction branched
-int OpCodes=2; // 1 = documented only, 2 = commonoly used undocumenteds, 3 = full set
-int BHardware=0; // 0 = all hardware, 1 = basic hardware only
 // 1 if first cycle happened
 
 /* Get a two byte address from the program counter, and then post inc the program counter */
@@ -188,12 +170,12 @@ inline void Carried() {
 		 (CurrentInstruction & 0xf)==0xd) &&
 		(CurrentInstruction & 0xf0)!=0x90)
 	{
-		Cycles++;
+		BeebEmCommon::Cycles++;
 	}
 	else if (CurrentInstruction==0xBC ||
 			 CurrentInstruction==0xBE)
 	{
-		Cycles++;
+		BeebEmCommon::Cycles++;
 	}
 }
 
@@ -202,15 +184,15 @@ void DoIntCheck(void)
 {
 	if (!IntDue)
 	{
-		IntDue = (intStatus != 0);
+		IntDue = (BeebEmCommon::intStatus != 0);
 		if (!IntDue)
 		{
-			CyclesToInt = NO_TIMER_INT_DUE;
+			BeebEmCommon::CyclesToInt = NO_TIMER_INT_DUE;
 		}
-		else if (CyclesToInt == NO_TIMER_INT_DUE)
+		else if (BeebEmCommon::CyclesToInt == NO_TIMER_INT_DUE)
 		{
 			// Non-timer interrupt has occurred
-			CyclesToInt = 0;
+			BeebEmCommon::CyclesToInt = 0;
 		}
 	}
 }
@@ -220,9 +202,9 @@ void DoIntCheck(void)
 // from Model-b - have not seen this documented anywhere)
 void SyncIO(void)
 {
-	if ((BeebEmCommon::TotalCycles+Cycles) & 1)
+	if ((BeebEmCommon::TotalCycles+BeebEmCommon::Cycles) & 1)
 	{
-		Cycles++;
+		BeebEmCommon::Cycles++;
 		IOCycles = 1;
 		PollVIAs(1);
 	}
@@ -234,13 +216,13 @@ void SyncIO(void)
 
 void AdjustForIORead(void)
 {
-	Cycles++;
+	BeebEmCommon::Cycles++;
 	IOCycles += 1;
 	PollVIAs(1);
 }
 void AdjustForIOWrite(void)
 {
-	Cycles++;
+	BeebEmCommon::Cycles++;
 	IOCycles += 1;
 	PollVIAs(1);
 	DoIntCheck();
@@ -249,7 +231,7 @@ void AdjustForIOWrite(void)
 void AdvanceCyclesForMemRead(void)
 {
 	// Advance VIAs to point where mem read happens
-	Cycles += CyclesToMemRead[CurrentInstruction];
+	BeebEmCommon::Cycles += CyclesToMemRead[CurrentInstruction];
 	PollVIAs(CyclesToMemRead[CurrentInstruction]);
 	
 	// Check if interrupt should be taken if instruction does
@@ -263,7 +245,7 @@ void AdvanceCyclesForMemRead(void)
 void AdvanceCyclesForMemWrite(void)
 {
 	// Advance VIAs to point where mem write happens
-	Cycles += CyclesToMemWrite[CurrentInstruction];
+	BeebEmCommon::Cycles += CyclesToMemWrite[CurrentInstruction];
 	PollVIAs(CyclesToMemWrite[CurrentInstruction]);
 	
 	DoIntCheck();
@@ -403,11 +385,11 @@ inline static void ANDInstrHandler(int16 operand) {
 inline static void ASLInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
-	Cycles+=1;
+	BeebEmCommon::Cycles+=1;
 	PollVIAs(1);
 	WritePaged(address,oldVal);
 	newVal=(((unsigned int)oldVal)<<1) & 254;
-	Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
+	BeebEmCommon::Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
 	PollVIAs(CyclesToMemWrite[CurrentInstruction] - 1);
 	WritePaged(address,newVal);
 	SetPSRCZN((oldVal & 128)>0, newVal==0,newVal & 128);
@@ -546,11 +528,11 @@ inline static void CPYInstrHandler(int16 operand) {
 inline static void DECInstrHandler(int16 address) {
 	unsigned char val;
 	val=ReadPaged(address);
-	Cycles+=1;
+	BeebEmCommon::Cycles+=1;
 	PollVIAs(1);
 	WritePaged(address,val);
 	val=(val-1);
-	Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
+	BeebEmCommon::Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
 	PollVIAs(CyclesToMemWrite[CurrentInstruction] - 1);
 	WritePaged(address,val);
 	SetPSRZN(val);
@@ -574,11 +556,11 @@ inline static void EORInstrHandler(int16 operand) {
 inline static void INCInstrHandler(int16 address) {
 	unsigned char val;
 	val=ReadPaged(address);
-	Cycles+=1;
+	BeebEmCommon::Cycles+=1;
 	PollVIAs(1);
 	WritePaged(address,val);
 	val=(val+1) & 255;
-	Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
+	BeebEmCommon::Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
 	PollVIAs(CyclesToMemWrite[CurrentInstruction] - 1);
 	WritePaged(address,val);
 	SetPSRZN(val);
@@ -637,11 +619,11 @@ inline static void LDYInstrHandler(int16 operand) {
 inline static void LSRInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
-	Cycles+=1;
+	BeebEmCommon::Cycles+=1;
 	PollVIAs(1);
 	WritePaged(address,oldVal);
 	newVal=(((unsigned int)oldVal)>>1) & 127;
-	Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
+	BeebEmCommon::Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
 	PollVIAs(CyclesToMemWrite[CurrentInstruction] - 1);
 	WritePaged(address,newVal);
 	SetPSRCZN((oldVal & 1)>0, newVal==0,0);
@@ -663,12 +645,12 @@ inline static void ORAInstrHandler(int16 operand) {
 inline static void ROLInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
-	Cycles+=1;
+	BeebEmCommon::Cycles+=1;
 	PollVIAs(1);
 	WritePaged(address,oldVal);
 	newVal=((unsigned int)oldVal<<1) & 254;
 	newVal+=GETCFLAG;
-	Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
+	BeebEmCommon::Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
 	PollVIAs(CyclesToMemWrite[CurrentInstruction] - 1);
 	WritePaged(address,newVal);
 	SetPSRCZN((oldVal & 128)>0,newVal==0,newVal & 128);
@@ -687,12 +669,12 @@ inline static void ROLInstrHandler_Acc(void) {
 inline static void RORInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
-	Cycles+=1;
+	BeebEmCommon::Cycles+=1;
 	PollVIAs(1);
 	WritePaged(address,oldVal);
 	newVal=((unsigned int)oldVal>>1) & 127;
 	newVal+=GETCFLAG*128;
-	Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
+	BeebEmCommon::Cycles+=CyclesToMemWrite[CurrentInstruction] - 1;
 	PollVIAs(CyclesToMemWrite[CurrentInstruction] - 1);
 	WritePaged(address,newVal);
 	SetPSRCZN(oldVal & 1,newVal==0,newVal & 128);
@@ -1045,9 +1027,9 @@ void Init6502core(void) {
   StackReg=0xff; /* Initial value ? */
   PSR=FlagI; /* Interrupts off for starters */
 
-  intStatus=0;
-  NMIStatus=0;
-  NMILock=0;
+  BeebEmCommon::intStatus=0;
+  BeebEmCommon::NMIStatus=0;
+  BeebEmCommon::NMILock=0;
 } /* Init6502core */
 
 #include "via.h"
@@ -1063,7 +1045,7 @@ void DoInterrupt(void) {
 
 /*-------------------------------------------------------------------------*/
 void DoNMI(void) {
-  NMILock=1;
+  BeebEmCommon::NMILock=1;
   PushWord(BeebEmCommon::ProgramCounter);
   Push(PSR);
   BeebEmCommon::ProgramCounter=BeebReadMem(0xfffa) | (BeebReadMem(0xfffb)<<8);
@@ -1188,14 +1170,14 @@ void Exec6502Instruction(void) {
  Branched=0;
  iFlagJustCleared=false;
  iFlagJustSet=false;
- Cycles=0;
+ BeebEmCommon::Cycles=0;
  IOCycles = 0;
  BadCount=0;
  IntDue = false;
   
  /* Read an instruction and post inc program couter */
   OldPC=BeebEmCommon::ProgramCounter;
-  PrePC=BeebEmCommon::ProgramCounter;
+  BeebEmCommon::PrePC=BeebEmCommon::ProgramCounter;
   CurrentInstruction=ReadPaged(BeebEmCommon::ProgramCounter++);
   
   // cout << "Fetch at " << hex << (BeebEmCommon::ProgramCounter-1) << " giving 0x" << CurrentInstruction << dec << "\n"; 
@@ -1204,7 +1186,7 @@ void Exec6502Instruction(void) {
   ViaCycles=0;
   AdvanceCyclesForMemRead();
   
-  if (OpCodes>=1) { // Documented opcodes
+  if (BeebEmCommon::OpCodes>=1) { // Documented opcodes
   switch (CurrentInstruction) {
     case 0x00:
  	  BRKInstrHandler();
@@ -1378,7 +1360,7 @@ void Exec6502Instruction(void) {
     case 0x40:
       PSR=Pop(); /* RTI */
       BeebEmCommon::ProgramCounter=PopWord();
-      NMILock=0;
+      BeebEmCommon::NMILock=0;
       break;
     case 0x41:
       EORInstrHandler(IndXAddrModeHandler_Data());
@@ -1820,7 +1802,7 @@ void Exec6502Instruction(void) {
 		BadCount++;
 	  }
 	  }
- if (OpCodes==3) {
+ if (BeebEmCommon::OpCodes==3) {
   switch (CurrentInstruction) {
     case 0x07: /* Undocumented Instruction: ASL zp and ORA zp */
       {
@@ -2159,7 +2141,7 @@ void Exec6502Instruction(void) {
       break;
   }
  }
- if (OpCodes>=2) {
+ if (BeebEmCommon::OpCodes>=2) {
   switch (CurrentInstruction) {
 	      case 0x0b:
 	case 0x2b:
@@ -2225,7 +2207,7 @@ void Exec6502Instruction(void) {
 		BadCount++;
   }
  }
- if (BadCount==OpCodes) 
+ if (BadCount==BeebEmCommon::OpCodes) 
 	 BadInstrHandler(CurrentInstruction);
 	  
 	// This block corrects the cycle count for the branch instructions
@@ -2241,27 +2223,27 @@ void Exec6502Instruction(void) {
 
 		if (Branched)
 		{
-			Cycles++;
+			BeebEmCommon::Cycles++;
 			if ((BeebEmCommon::ProgramCounter & 0xff00) != ((OldPC+2) & 0xff00))
-				Cycles+=1;
+				BeebEmCommon::Cycles+=1;
 		}
 	}
 	
-	Cycles += CyclesTable[CurrentInstruction] -
+	BeebEmCommon::Cycles += CyclesTable[CurrentInstruction] -
 		CyclesToMemRead[CurrentInstruction] - CyclesToMemWrite[CurrentInstruction];
 	
-	PollVIAs(Cycles - ViaCycles);
-	PollHardware(Cycles);
+        PollVIAs(BeebEmCommon::Cycles - ViaCycles);
+        PollHardware(BeebEmCommon::Cycles);
 
 	DoKbdIntCheck();
 	
 	// Check for IRQ
 	DoIntCheck();
 	if (IntDue && (!GETIFLAG || iFlagJustSet) &&
-		(CyclesToInt <= (-2-IOCycles) && !iFlagJustCleared))
+		(BeebEmCommon::CyclesToInt <= (-2-IOCycles) && !iFlagJustCleared))
 	{
 		// Int noticed 2 cycles before end of instruction - interrupt now
-		CyclesToInt = NO_TIMER_INT_DUE;
+		BeebEmCommon::CyclesToInt = NO_TIMER_INT_DUE;
 		DoInterrupt();
 		PollHardware(IRQCycles);
 		PollVIAs(IRQCycles);
@@ -2269,15 +2251,15 @@ void Exec6502Instruction(void) {
 	}
 	
 	// Check for NMI
-	if ((NMIStatus && !OldNMIStatus) || (NMIStatus & 1<<nmi_econet))
+	if ((BeebEmCommon::NMIStatus && !OldNMIStatus) || (BeebEmCommon::NMIStatus & 1<<nmi_econet))
 	{
-		NMIStatus &= ~(1<<nmi_econet);
+		BeebEmCommon::NMIStatus &= ~(1<<nmi_econet);
 		DoNMI();
 		PollHardware(IRQCycles);
 		PollVIAs(IRQCycles);
 		IRQCycles=0;
 	}
-	OldNMIStatus=NMIStatus;
+	OldNMIStatus=BeebEmCommon::NMIStatus;
 	
 	if ( (EnableTube) && (TubeEnabled) )
 		SyncTubeProcessor();
@@ -2289,8 +2271,8 @@ void PollVIAs(unsigned int nCycles)
 {
 	if (nCycles != 0)
 	{
-		if (CyclesToInt != NO_TIMER_INT_DUE)
-			CyclesToInt -= nCycles;
+		if (BeebEmCommon::CyclesToInt != NO_TIMER_INT_DUE)
+			BeebEmCommon::CyclesToInt -= nCycles;
 		
 		SysVIA_poll(nCycles);
 		UserVIA_poll(nCycles);
@@ -2321,18 +2303,18 @@ void PollHardware(unsigned int nCycles)
 	}
 	
 	VideoPoll(nCycles);
-	if (!BHardware) {
+	if (!BeebEmCommon::BHardware) {
 		AtoD_poll(nCycles);
 		Serial_Poll();
 	}
 	Disc8271_poll(nCycles);
 	Sound_Trigger(nCycles);
-	if (DisplayCycles>0) DisplayCycles-=nCycles; // Countdown time till end of display of info.
+	if (BeebEmCommon::DisplayCycles>0) BeebEmCommon::DisplayCycles-=nCycles; // Countdown time till end of display of info.
 	if ((MachineType==3) || (!NativeFDC)) Poll1770(nCycles); // Do 1770 Background stuff
 	
 	if (EconetEnabled && EconetPoll()) {
 		if (EconetNMIenabled ) { 
-			NMIStatus|=1<<nmi_econet;
+			BeebEmCommon::NMIStatus|=1<<nmi_econet;
 			if (DebugEnabled)
 				DebugDisplayTrace(DEBUG_ECONET, true, "Econet: NMI asserted");
 		}
@@ -2361,9 +2343,9 @@ void Save6502UEF(FILE *SUEF) {
 	fputc(StackReg,SUEF);
 	fputc(PSR,SUEF);
 	fput32(BeebEmCommon::TotalCycles,SUEF);
-	fputc(intStatus,SUEF);
-	fputc(NMIStatus,SUEF);
-	fputc(NMILock,SUEF);
+	fputc(BeebEmCommon::intStatus,SUEF);
+	fputc(BeebEmCommon::NMIStatus,SUEF);
+	fputc(BeebEmCommon::NMILock,SUEF);
 	fput16(0,SUEF);
 }
 
@@ -2377,9 +2359,9 @@ void Load6502UEF(FILE *SUEF) {
 	PSR=fgetc(SUEF);
 	//BeebEmCommon::TotalCycles=fget32(SUEF);
 	Dlong=fget32(SUEF);
-	intStatus=fgetc(SUEF);
-	NMIStatus=fgetc(SUEF);
-	NMILock=fgetc(SUEF);
+	BeebEmCommon::intStatus=fgetc(SUEF);
+	BeebEmCommon::NMIStatus=fgetc(SUEF);
+	BeebEmCommon::NMILock=fgetc(SUEF);
 	//AtoDTrigger=Disc8271Trigger=AMXTrigger=PrinterTrigger=VideoTriggerCount=BeebEmCommon::TotalCycles+100;
 	//if (UseHostClock) SoundTrigger=BeebEmCommon::TotalCycles+100;
 	// Make sure emulator doesn't lock up waiting for triggers.

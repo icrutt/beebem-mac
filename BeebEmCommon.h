@@ -14,6 +14,8 @@ typedef int CycleCountT;
 #define CycleCountTMax INT_MAX
 #define CycleCountWrap (INT_MAX / 2)
 
+#define NO_TIMER_INT_DUE    -1000000
+
 class BeebEmCommon {
 public:
     static int trace;
@@ -22,6 +24,16 @@ public:
     static int DumpAfterEach;
     static CycleCountT TotalCycles;
     static int ProgramCounter;
+    static unsigned char intStatus;
+    static unsigned char NMIStatus;
+    static unsigned int Cycles;
+    static int PrePC;
+    static unsigned int NMILock;
+    static int DisplayCycles;
+    static int CyclesToInt;
+    static int SwitchOnCycles; // Reset delay
+    static int OpCodes;
+    static int BHardware;
 };
 
 #endif /* BeebEmCommon_h */

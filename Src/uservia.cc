@@ -78,8 +78,8 @@ static void UpdateIFRTopBit(void) {
     UserVIAState.ifr|=0x80;
   else
     UserVIAState.ifr&=0x7f;
-  intStatus&=~(1<<userVia);
-  intStatus|=((UserVIAState.ifr & 128)?(1<<userVia):0);
+  BeebEmCommon::intStatus&=~(1<<userVia);
+  BeebEmCommon::intStatus|=((UserVIAState.ifr & 128)?(1<<userVia):0);
 }; /* UpdateIFRTopBit */
 
 /*--------------------------------------------------------------------------*/
@@ -434,8 +434,8 @@ void UserVIA_poll_real(void) {
         UserVIAState.orb^=0x80; /* Toggle PB7 */
         UserVIAState.irb^=0x80; /* Toggle PB7 */
       }
-   	  if ((UserVIAState.ier & 0x40) && CyclesToInt == NO_TIMER_INT_DUE) {
-		  CyclesToInt = 3 + UserVIAState.timer1c;
+        if ((UserVIAState.ier & 0x40) && BeebEmCommon::CyclesToInt == NO_TIMER_INT_DUE) {
+            BeebEmCommon::CyclesToInt = 3 + UserVIAState.timer1c;
 	  }
 	  UserVIAState.timer1hasshot=1;
     }
@@ -451,8 +451,8 @@ void UserVIA_poll_real(void) {
      /* cerr << "UserVIA timer2c - int\n"; */
       UserVIAState.ifr|=0x20; /* Timer 2 interrupt */
       UpdateIFRTopBit();
-   	  if ((UserVIAState.ier & 0x20) && CyclesToInt == NO_TIMER_INT_DUE) {
-		  CyclesToInt = 3 + UserVIAState.timer2c;
+        if ((UserVIAState.ier & 0x20) && BeebEmCommon::CyclesToInt == NO_TIMER_INT_DUE) {
+            BeebEmCommon::CyclesToInt = 3 + UserVIAState.timer2c;
 	  }
 	  UserVIAState.timer2hasshot=1; // Added by K.Lowe 24/08/03
     }

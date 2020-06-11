@@ -169,7 +169,7 @@ int data = 0x00;
     {
     case 0x00 :         // Data Register
         data = TeleTextStatus;
-   		intStatus&=~(1<<teletext);
+   		BeebEmCommon::intStatus&=~(1<<teletext);
         break;
     case 0x01:			// Status Register
         break;
@@ -233,7 +233,7 @@ int RetVal;
 				
 					if (TeleTextInts == true)
 					{
-						intStatus|=1<<teletext;
+						BeebEmCommon::intStatus|=1<<teletext;
 					
 						rowPtr = 0x00;
 						colPtr = 0x00;
@@ -273,7 +273,7 @@ int RetVal;
 			if (TeleTextInts == true)
 			{
 
-				intStatus|=1<<teletext;
+				BeebEmCommon::intStatus|=1<<teletext;
 
 //				TeleTextStatus = 0xef;
 				rowPtr = 0x00;

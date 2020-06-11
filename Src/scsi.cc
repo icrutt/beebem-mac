@@ -140,14 +140,14 @@ void SCSIWrite(int Address, int Value)
 			if (Value == 0xff)
 			{
 				scsi.irq = true;
-				intStatus |= (1<<hdc);
+				BeebEmCommon::intStatus |= (1<<hdc);
 				scsi.status = 0x00;
 //				BeebEmLog::writeLog("Setting HDC Interrupt\n");
 			}
 			else
 			{
 				scsi.irq = false;
-				intStatus &= ~(1<<hdc);
+				BeebEmCommon::intStatus &= ~(1<<hdc);
 //				BeebEmLog::writeLog("Clearing HDC Interrupt\n");
 			}
 				

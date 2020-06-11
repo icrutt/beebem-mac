@@ -130,7 +130,7 @@ unsigned char Read1770Register(unsigned char Register) {
 	if ((FDCommand<6) && (FDCommand!=0)) dStatus^=2; // Fool anything reading the
 	// Index pulse signal by alternating it on each read.
 	if (Register==0) {
-		NMIStatus &= ~(1<<nmi_floppy);
+		BeebEmCommon::NMIStatus &= ~(1<<nmi_floppy);
 		return(dStatus);
 	}
 	if (Register==1) return(ATrack); 
@@ -148,7 +148,7 @@ unsigned char Read1770Register(unsigned char Register) {
 	if (Register==3) {
 		if (FDCommand>5) 
 		{
-			ResetStatus(1); NMIStatus &= ~(1<<nmi_floppy); 
+			ResetStatus(1); BeebEmCommon::NMIStatus &= ~(1<<nmi_floppy); 
 		}
 		return(Data);
 	}
@@ -186,7 +186,7 @@ void Write1770Register(unsigned char Register, unsigned char Value) {
 	
 	// Write 1770 Register - NOT the FDC Control register @ &FE24
 	if (Register==0) {
-		NMIStatus &= ~(1<<nmi_floppy); // reset INTRQ
+		BeebEmCommon::NMIStatus &= ~(1<<nmi_floppy); // reset INTRQ
 		// Control Register - can only write if current drive is open
 		// Changed, now command returns errors if no disc inserted
 		ComBits=Value & 0xf0;
@@ -269,7 +269,7 @@ void Write1770Register(unsigned char Register, unsigned char Value) {
 			NFDCommand=0; // just in case
 			Data=0; // If this isn't done, the stupid Opus DDOS tries to use the last 
 			// byte of the last sector read in as a Track number for a seek command.
-			if ((Value & 0xf)) NMIStatus|=1<<nmi_floppy;
+			if ((Value & 0xf)) BeebEmCommon::NMIStatus|=1<<nmi_floppy;
 		}
 		if (ComBits==0xc0) {
 			// Read Address - Type 3 Command
@@ -325,7 +325,7 @@ void Write1770Register(unsigned char Register, unsigned char Value) {
 	}
 	if (Register==3) {
 		Data=Value;
-		if (FDCommand>5) { ResetStatus(1); NMIStatus &= ~(1<<nmi_floppy); }
+		if (FDCommand>5) { ResetStatus(1); BeebEmCommon::NMIStatus &= ~(1<<nmi_floppy); }
 	}
 	last_combits = ComBits;
 }
@@ -345,13 +345,13 @@ void Poll1770(int NCycles) {
 //  if ( (FDCommand != 0) && (FDCommand != 13) && (FDCommand != 11)) BeebEmLog::writeLog("FDCommand = %d\n", FDCommand);
 	
   // This procedure is called from the 6502core to enable the chip to do stuff in the background
-  if ((dStatus & 1) && (NMILock==0)) {
+    if ((dStatus & 1) && (BeebEmCommon::NMILock==0)) {
 
 	  if (FDCommand<6 && *CDiscOpen && (DiscType[CurrentDrive] == 0 && CurrentHead[CurrentDrive] == 1)) {
 		  // Single sided disk, disc not ready
 		  ResetStatus(0);
 		  SetStatus(4);
-		  NMIStatus|=1<<nmi_floppy; FDCommand=12;
+		  BeebEmCommon::NMIStatus|=1<<nmi_floppy; FDCommand=12;
 		  return;
 	  }
 	  
@@ -395,7 +395,7 @@ void Poll1770(int NCycles) {
 			StopSoundSample(SAMPLE_HEAD_SEEK);
 			LoadingCycles=SPIN_DOWN_TIME;
 			FDCommand=12;
-			NMIStatus|=1<<nmi_floppy; 
+			BeebEmCommon::NMIStatus|=1<<nmi_floppy; 
 			if (InvertTR00) { if (MyTrack!=0) ResetStatus(2); else SetStatus(2); }
 			else { if (MyTrack==0) ResetStatus(2); else SetStatus(2); }
 			ResetStatus(5); ResetStatus(0);
@@ -406,7 +406,7 @@ void Poll1770(int NCycles) {
 		// Disc not ready, return seek error;
 		ResetStatus(0);
 		SetStatus(4);
-		NMIStatus|=1<<nmi_floppy; FDCommand=12;
+		BeebEmCommon::NMIStatus|=1<<nmi_floppy; FDCommand=12;
 		return;
 	}
 	if (FDCommand==6) { // Read
@@ -421,9 +421,9 @@ void Poll1770(int NCycles) {
 			// If reading multiple sectors, and ByteCount== :-
 			// 256..2: read + DRQ (255x)
 			//      1: read + DRQ + rotate disc + go back to 256
-			if (dByteCount > 0 && !feof(CurrentDisc)) { Data=fgetc(CurrentDisc); SetStatus(1); NMIStatus|=1<<nmi_floppy; } // DRQ
+			if (dByteCount > 0 && !feof(CurrentDisc)) { Data=fgetc(CurrentDisc); SetStatus(1); BeebEmCommon::NMIStatus|=1<<nmi_floppy; } // DRQ
 			if (dByteCount==0 || ((dByteCount == 1) && (MultiSect))) RotSect++; if (RotSect>MaxSects[CurrentDrive]) RotSect=0;
-			if ((dByteCount==0) && (!MultiSect)) { ResetStatus(0); NMIStatus|=1<<nmi_floppy; fseek(CurrentDisc,HeadPos[CurrentDrive],SEEK_SET); FDCommand=10; ResetStatus(1); } // End of sector
+			if ((dByteCount==0) && (!MultiSect)) { ResetStatus(0); BeebEmCommon::NMIStatus|=1<<nmi_floppy; fseek(CurrentDisc,HeadPos[CurrentDrive],SEEK_SET); FDCommand=10; ResetStatus(1); } // End of sector
 			if ((dByteCount==1) && (MultiSect)) { dByteCount=SecSize[CurrentDrive]+1; Sector++; 
 			if (Sector==MaxSects[CurrentDrive]) { MultiSect=0; /* Sector=0; */ }
 			}
@@ -444,9 +444,9 @@ void Poll1770(int NCycles) {
 			// 256..2: write + next DRQ (255x)
 			//      1: write + next DRQ + rotate disc + go back to 256
 			fputc(Data,CurrentDisc);
-			if ((dByteCount>1) || (MultiSect)) { SetStatus(1); NMIStatus|=1<<nmi_floppy; } // DRQ
+			if ((dByteCount>1) || (MultiSect)) { SetStatus(1); BeebEmCommon::NMIStatus|=1<<nmi_floppy; } // DRQ
 			if (dByteCount<= 1) RotSect++; if (RotSect>MaxSects[CurrentDrive]) RotSect=0;
-			if ((dByteCount<= 1) && (!MultiSect)) { ResetStatus(0); NMIStatus|=1<<nmi_floppy; fseek(CurrentDisc,HeadPos[CurrentDrive],SEEK_SET); FDCommand=10; ResetStatus(1); }
+			if ((dByteCount<= 1) && (!MultiSect)) { ResetStatus(0); BeebEmCommon::NMIStatus|=1<<nmi_floppy; fseek(CurrentDisc,HeadPos[CurrentDrive],SEEK_SET); FDCommand=10; ResetStatus(1); }
 			if ((dByteCount<=1) && (MultiSect)) { dByteCount=SecSize[CurrentDrive]+1; Sector++; 
 			if (Sector==MaxSects[CurrentDrive]) { MultiSect=0; /* Sector=0; */ }
 			}
@@ -457,7 +457,7 @@ void Poll1770(int NCycles) {
 	if ((FDCommand==7) && (DWriteable[CurrentDrive]==0)) {
 		BeebEmLog::writeLog("Disc Write Protected\n");
 		SetStatus(6);
-		NMIStatus|=1<<nmi_floppy; 
+		BeebEmCommon::NMIStatus|=1<<nmi_floppy; 
 		FDCommand=0;
 	}
 	if ((FDCommand>=8) && (*CDiscOpen==1) && (FDCommand<=10)) { // Read/Write Prepare
@@ -473,10 +473,10 @@ void Poll1770(int NCycles) {
 	if ((FDCommand>=8) && (*CDiscOpen==0) && (FDCommand<=9)) {
 		ResetStatus(0);
 		SetStatus(4);
-		NMIStatus|=1<<nmi_floppy; FDCommand=0;
+		BeebEmCommon::NMIStatus|=1<<nmi_floppy; FDCommand=0;
 	}
 	if ((FDCommand==8) && (*CDiscOpen==1)) FDCommand=6;
-	if ((FDCommand==9) && (*CDiscOpen==1)) { FDCommand=7; SetStatus(1); NMIStatus|=1<<nmi_floppy; }
+	if ((FDCommand==9) && (*CDiscOpen==1)) { FDCommand=7; SetStatus(1); BeebEmCommon::NMIStatus|=1<<nmi_floppy; }
   }
 
 // Not implemented Read Track yet, perhaps don't really need it
@@ -486,10 +486,10 @@ void Poll1770(int NCycles) {
 //		if ((dStatus & 2)==0) { 
 //			NFDCommand=0;
 //			ResetStatus(4); ResetStatus(5); ResetStatus(3); ResetStatus(2);
-//			if (!feof(CurrentDisc)) { Data=fgetc(CurrentDisc); SetStatus(1); NMIStatus|=1<<nmi_floppy; } // DRQ
+//			if (!feof(CurrentDisc)) { Data=fgetc(CurrentDisc); SetStatus(1); BeebEmCommon::NMIStatus|=1<<nmi_floppy; } // DRQ
 //			dByteCount--;
 //			if (dByteCount==0) RotSect++; if (RotSect>MaxSects[CurrentDrive]) RotSect=0;
-//			if ((dByteCount==0) && (!MultiSect)) { ResetStatus(0); NMIStatus|=1<<nmi_floppy; fseek(CurrentDisc,HeadPos[CurrentDrive],SEEK_SET); FDCommand=10; } // End of sector
+//			if ((dByteCount==0) && (!MultiSect)) { ResetStatus(0); BeebEmCommon::NMIStatus|=1<<nmi_floppy; fseek(CurrentDisc,HeadPos[CurrentDrive],SEEK_SET); FDCommand=10; } // End of sector
 //			if ((dByteCount==0) && (MultiSect)) { dByteCount=257; Sector++; 
 //				if (Sector==MaxSects[CurrentDrive]) { MultiSect=0; /* Sector=0; */ }
 //			}
@@ -506,7 +506,7 @@ void Poll1770(int NCycles) {
 			ResetStatus(4); ResetStatus(5); ResetStatus(3); ResetStatus(2); 
 
 			SetStatus(1);
-			NMIStatus |= 1<<nmi_floppy; // DRQ
+			BeebEmCommon::NMIStatus |= 1<<nmi_floppy; // DRQ
 				
             switch (FormatState)
             {
@@ -578,7 +578,7 @@ void Poll1770(int NCycles) {
 						if (Sector>MaxSects[CurrentDrive]) 
 						{
 							ResetStatus(0);
-							NMIStatus|=1<<nmi_floppy;
+							BeebEmCommon::NMIStatus|=1<<nmi_floppy;
 							fseek(CurrentDisc,HeadPos[CurrentDrive],SEEK_SET);
 							FDCommand=10; 
 							ResetStatus(1);
@@ -600,7 +600,7 @@ void Poll1770(int NCycles) {
     {
         BeebEmLog::writeLog("Disc Write Protected\n");
 		SetStatus(6);
-		NMIStatus|=1<<nmi_floppy; 
+		BeebEmCommon::NMIStatus|=1<<nmi_floppy; 
         FDCommand=0;
 	}
 
@@ -616,10 +616,10 @@ void Poll1770(int NCycles) {
 	if ((FDCommand>=20) && (*CDiscOpen==0) && (FDCommand<=21)) {
         ResetStatus(0);
 		SetStatus(4);
-		NMIStatus|=1<<nmi_floppy; FDCommand=0;
+		BeebEmCommon::NMIStatus|=1<<nmi_floppy; FDCommand=0;
 	}
 	if ((FDCommand==20) && (*CDiscOpen==1)) FDCommand=22;
-	if ((FDCommand==21) && (*CDiscOpen==1)) { FDCommand=23; FormatState = 0; SetStatus(1); NMIStatus|=1<<nmi_floppy; }
+	if ((FDCommand==21) && (*CDiscOpen==1)) { FDCommand=23; FormatState = 0; SetStatus(1); BeebEmCommon::NMIStatus|=1<<nmi_floppy; }
 
 
   if (FDCommand==10) {
@@ -634,7 +634,7 @@ void Poll1770(int NCycles) {
 		if ((MyTrack==0) && (InvertTR00)) SetStatus(2); else ResetStatus(2);
 		if ((MyTrack==0) && (!InvertTR00)) ResetStatus(2); else SetStatus(2);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 	}
-	NMIStatus|=1<<nmi_floppy; FDCommand=12; LoadingCycles=SPIN_DOWN_TIME; // Spin-down delay
+	BeebEmCommon::NMIStatus|=1<<nmi_floppy; FDCommand=12; LoadingCycles=SPIN_DOWN_TIME; // Spin-down delay
 	return;
   }
   if (FDCommand==11) {
@@ -700,7 +700,7 @@ void Poll1770(int NCycles) {
         
         SetStatus(1); 
 	    dByteCount--;
-	    NMIStatus|=1<<nmi_floppy;
+	    BeebEmCommon::NMIStatus|=1<<nmi_floppy;
         LoadingCycles=BYTE_TIME; // Slow down the read a bit :)
       }
 	  return;

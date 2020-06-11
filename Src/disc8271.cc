@@ -108,7 +108,7 @@ static void DriveHeadScheduleUnload(void);
 
 typedef void (*CommandFunc)(void);
 
-#define UPDATENMISTATUS if (StatusReg & 8) NMIStatus |=1<<nmi_floppy; else NMIStatus &= ~(1<<nmi_floppy);
+#define UPDATENMISTATUS if (StatusReg & 8) BeebEmCommon::NMIStatus |=1<<nmi_floppy; else BeebEmCommon::NMIStatus &= ~(1<<nmi_floppy);
 
 /*--------------------------------------------------------------------------*/
 static struct {

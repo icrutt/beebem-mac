@@ -86,8 +86,8 @@ static void UpdateIFRTopBit(void) {
     SysVIAState.ifr|=0x80;
   else
     SysVIAState.ifr&=0x7f;
-  intStatus&=~(1<<sysVia);
-  intStatus|=((SysVIAState.ifr & 128)?(1<<sysVia):0);
+  BeebEmCommon::intStatus&=~(1<<sysVia);
+  BeebEmCommon::intStatus|=((SysVIAState.ifr & 128)?(1<<sysVia):0);
 }; /* UpdateIFRTopBit */
 
 void PulseSysViaCB1(void) {
@@ -568,8 +568,8 @@ static bool t1int = false;
         SysVIAState.orb^=0x80; /* Toggle PB7 */
         SysVIAState.irb^=0x80; /* Toggle PB7 */
       }
-   	  if ((SysVIAState.ier & 0x40) && CyclesToInt == NO_TIMER_INT_DUE) {
-		CyclesToInt = 3 + SysVIAState.timer1c;
+        if ((SysVIAState.ier & 0x40) && BeebEmCommon::CyclesToInt == NO_TIMER_INT_DUE) {
+            BeebEmCommon::CyclesToInt = 3 + SysVIAState.timer1c;
 	  }
 	  SysVIAState.timer1hasshot=1;
 	}
@@ -584,8 +584,8 @@ static bool t1int = false;
     if (SysVIAState.timer2hasshot==0) {
       SysVIAState.ifr|=0x20; /* Timer 2 interrupt */
       UpdateIFRTopBit();
-   	  if ((SysVIAState.ier & 0x20) && CyclesToInt == NO_TIMER_INT_DUE) {
-		  CyclesToInt = 3 + SysVIAState.timer2c;
+        if ((SysVIAState.ier & 0x20) && BeebEmCommon::CyclesToInt == NO_TIMER_INT_DUE) {
+            BeebEmCommon::CyclesToInt = 3 + SysVIAState.timer2c;
 	  }
       SysVIAState.timer2hasshot=1;
 	}

@@ -253,8 +253,8 @@ int Value = 0xff;
 //BBC B+ Start
   if (MachineType==2) { 
 	    if (Address<0x3000) return(WholeRam[Address]);
-		if ((Address<0x8000) && (Sh_Display==1) && (PrePC>=0xC000) && (PrePC<0xE000)) return(ShadowRAM[Address]);
-		if ((Address<0x8000) && (Sh_Display==1) && (MemSel==1) && (PrePC>=0xA000) && (PrePC<0xB000)) return(ShadowRAM[Address]);
+		if ((Address<0x8000) && (Sh_Display==1) && (BeebEmCommon::PrePC>=0xC000) && (BeebEmCommon::PrePC<0xE000)) return(ShadowRAM[Address]);
+		if ((Address<0x8000) && (Sh_Display==1) && (MemSel==1) && (BeebEmCommon::PrePC>=0xA000) && (BeebEmCommon::PrePC<0xB000)) return(ShadowRAM[Address]);
 		if (Address<0x8000) return(WholeRam[Address]);
 		if ((Address<0xB000) && (MemSel==1)) return(Private[Address-0x8000]);
 		if (Address>=0x8000 && Address<0xc000) return(Roms[ROMSEL][Address-0x8000]);
@@ -280,7 +280,7 @@ int Value = 0xff;
 			if ((!Sh_CPUX) && (!Sh_CPUE)) return(WholeRam[Address]);
 			if (Sh_CPUX) return(ShadowRAM[Address]);
 			if ((Sh_CPUE)  && (!Sh_CPUX)) {
-				if ((PrePC>=0xc000) && (PrePC<0xe000)) return(ShadowRAM[Address]); else return(WholeRam[Address]);
+				if ((BeebEmCommon::PrePC>=0xc000) && (BeebEmCommon::PrePC<0xe000)) return(ShadowRAM[Address]); else return(WholeRam[Address]);
 			}
 			break;
 		case 8:
@@ -400,7 +400,7 @@ int Value = 0xff;
 	  if (!EconetNMIenabled) {  // was off
 		  EconetNMIenabled = INTON;  // turn on
 		  if (ADLC.status1 & 128) {			// irq pending?
-			  NMIStatus|=1<<nmi_econet; 
+			  BeebEmCommon::NMIStatus|=1<<nmi_econet; 
 			  if (DebugEnabled) DebugDisplayTrace(DEBUG_ECONET, true, "Econet: delayed NMI asserted");
 		  }
 	  }
@@ -506,7 +506,7 @@ static void FiddleACCCON(unsigned char newValue) {
 	unsigned char oldshd;
 //	if ((newValue & 128)==128) DoInterrupt();
 	ACCCON=newValue & 127; // mask out the IRR bit so that interrupts dont occur repeatedly
-	if (newValue & 128) intStatus|=128; else intStatus&=127;
+	if (newValue & 128) BeebEmCommon::intStatus|=128; else BeebEmCommon::intStatus&=127;
 	oldshd=Sh_Display;
 	Sh_Display=ACCCON & 1;
 	if (Sh_Display!=oldshd) RedoMPTR();
@@ -671,12 +671,12 @@ void BeebWriteMem(int Address, unsigned char Value) {
 	 }
 
 	 if (Address<0x8000) {
-		 if ((Sh_Display==1) && (PrePC>=0xC000) && (PrePC<0xE000)) {
+		 if ((Sh_Display==1) && (BeebEmCommon::PrePC>=0xC000) && (BeebEmCommon::PrePC<0xE000)) {
 			 ShadowRAM[Address]=Value;
 			 return;
 		 } else
 
-		 if ((Sh_Display==1) && (MemSel==1) && (PrePC>=0xA000) && (PrePC<0xB000)) {
+		 if ((Sh_Display==1) && (MemSel==1) && (BeebEmCommon::PrePC>=0xA000) && (BeebEmCommon::PrePC<0xB000)) {
 			 ShadowRAM[Address]=Value;
 			 return;
 		 } else {
@@ -729,7 +729,7 @@ void BeebWriteMem(int Address, unsigned char Value) {
 				if ((!Sh_CPUX) && (!Sh_CPUE)) WholeRam[Address]=Value;
 				if (Sh_CPUX) ShadowRAM[Address]=Value;
 				if ((Sh_CPUE) && (!Sh_CPUX)) { 
-					if ((PrePC>=0xc000) && (PrePC<0xe000)) ShadowRAM[Address]=Value; else WholeRam[Address]=Value;
+					if ((BeebEmCommon::PrePC>=0xc000) && (BeebEmCommon::PrePC<0xe000)) ShadowRAM[Address]=Value; else WholeRam[Address]=Value;
 				} 
 				break;
 			case 8:

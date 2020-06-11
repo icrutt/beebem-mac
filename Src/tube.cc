@@ -185,9 +185,9 @@ void UpdateR3Interrupt(void) {
 
 void UpdateHostR4Interrupt(void) {
 	if ((R1Status & TubeQ) && (R4HStatus & TubeDataAv))
-		intStatus|=(1<<tube);
+		BeebEmCommon::intStatus|=(1<<tube);
 	else
-		intStatus&=~(1<<tube);
+		BeebEmCommon::intStatus&=~(1<<tube);
 }
 
 
@@ -2553,7 +2553,7 @@ void Save65C02UEF(FILE *SUEF) {
 	fput32(TotalTubeCycles,SUEF);
 	fputc(TubeintStatus,SUEF);
 	fputc(TubeNMIStatus,SUEF);
-	fputc(NMILock,SUEF);
+	fputc(BeebEmCommon::NMILock,SUEF);
 	fput16(0,SUEF);
 }
 
@@ -2600,7 +2600,7 @@ void Load65C02UEF(FILE *SUEF) {
 	Dlong=fget32(SUEF);
 	TubeintStatus=fgetc(SUEF);
 	TubeNMIStatus=fgetc(SUEF);
-	NMILock=fgetc(SUEF);
+	BeebEmCommon::NMILock=fgetc(SUEF);
 }
 
 void Load65C02MemUEF(FILE *SUEF) {
