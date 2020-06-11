@@ -45,20 +45,17 @@
 #include "Arm.h"
 #include "BeebEmLog.hpp"
 
-int CPUDebug=0;
+// Used only by 6502core
 FILE *InstrLog;
 FILE *osclilog; //=fopen("/oscli.log","wt");
-
 static unsigned int InstrCount;
-int IgnoreIllegalInstructions = 1;
 static int CurrentInstruction;
+int CPUDebug=0;
+// ***************************
 
-extern int DumpAfterEach;
+// Needs to be passed to the CPU code another way (by registering with the CPU object)
 extern CArm *arm;
 
-CycleCountT TotalCycles=0;
-
-extern int trace;
 int ProgramCounter;
 int PrePC;
 static int Accumulator,XReg,YReg;
@@ -223,7 +220,7 @@ void DoIntCheck(void)
 // from Model-b - have not seen this documented anywhere)
 void SyncIO(void)
 {
-	if ((TotalCycles+Cycles) & 1)
+	if ((BeebEmCommon::TotalCycles+Cycles) & 1)
 	{
 		Cycles++;
 		IOCycles = 1;
@@ -768,7 +765,7 @@ inline static void STYInstrHandler(int16 address) {
 } /* STYInstrHandler */
 
 inline static void BadInstrHandler(int opcode) {
-	if (!IgnoreIllegalInstructions)
+	if (!BeebEmCommon::IgnoreIllegalInstructions)
 	{
 #ifdef WIN32
 		char errstr[250];
@@ -1153,32 +1150,32 @@ void Exec6502Instruction(void) {
 	  
 // 	  if (ProgramCounter == 0x09c0) 
 //	  {
-//		  trace = 100;
+//		  BeebEmCommon::trace = 100;
 //	  }
 
-	  if (trace)
+	  if (BeebEmCommon::trace)
 	  {
 		  char str[128];
 		  Dis6502(str);
 		  BeebEmLog::writeLog("%s\n", str);
-		  trace--;
+		  BeebEmCommon::trace--;
 	  }
 	  
   
 	  
-//	  if (trace && (ProgramCounter >= 0x8000) && (ProgramCounter <= 0xa000) && ((PagedRomReg & 0x0f) == 8))
+//	  if (BeebEmCommon::trace && (ProgramCounter >= 0x8000) && (ProgramCounter <= 0xa000) && ((PagedRomReg & 0x0f) == 8))
 //	  {
 //		  char str[128];
 //		  Dis6502(str);
 //		  BeebEmLog::writeLog("%s\n", str);
-//		  trace--;
+//		  BeebEmCommon::trace--;
 //	  }
 	  
  
 // if (ProgramCounter == 0x80c2) 
 //  {
 //	  MemoryDump6502(0x280, 0x20);
-//	  trace = 1;
+//	  BeebEmCommon::trace = 1;
 //  }
  
  if (trace_186)
@@ -1415,7 +1412,7 @@ void Exec6502Instruction(void) {
 	  *pcptr=0;
 	  fprintf(osclilog,"%s\n",pcbuf);
   }
-  /*if (ProgramCounter==0xffdd) {
+  if (ProgramCounter==0xffdd) {
 	  char errstr[250];
 	  sprintf(errstr,"OSFILE called\n");
 	  MessageBox(GETHWND,errstr,"BBC Emulator",MB_OKCANCEL|MB_ICONERROR);
@@ -2304,11 +2301,11 @@ void PollVIAs(unsigned int nCycles)
 
 void PollHardware(unsigned int nCycles)
 {
-	TotalCycles+=nCycles;
+	BeebEmCommon::TotalCycles+=nCycles;
 	
-	if (TotalCycles > CycleCountWrap)
+	if (BeebEmCommon::TotalCycles > CycleCountWrap)
 	{
-		TotalCycles -= CycleCountWrap;
+		BeebEmCommon::TotalCycles -= CycleCountWrap;
 		//SoundCycles -= CycleCountWrap;
 		AdjustTrigger(AtoDTrigger);
 		AdjustTrigger(SoundTrigger);
@@ -2363,7 +2360,7 @@ void Save6502UEF(FILE *SUEF) {
 	fputc(YReg,SUEF);
 	fputc(StackReg,SUEF);
 	fputc(PSR,SUEF);
-	fput32(TotalCycles,SUEF);
+	fput32(BeebEmCommon::TotalCycles,SUEF);
 	fputc(intStatus,SUEF);
 	fputc(NMIStatus,SUEF);
 	fputc(NMILock,SUEF);
@@ -2378,13 +2375,13 @@ void Load6502UEF(FILE *SUEF) {
 	YReg=fgetc(SUEF);
 	StackReg=fgetc(SUEF);
 	PSR=fgetc(SUEF);
-	//TotalCycles=fget32(SUEF);
+	//BeebEmCommon::TotalCycles=fget32(SUEF);
 	Dlong=fget32(SUEF);
 	intStatus=fgetc(SUEF);
 	NMIStatus=fgetc(SUEF);
 	NMILock=fgetc(SUEF);
-	//AtoDTrigger=Disc8271Trigger=AMXTrigger=PrinterTrigger=VideoTriggerCount=TotalCycles+100;
-	//if (UseHostClock) SoundTrigger=TotalCycles+100;
+	//AtoDTrigger=Disc8271Trigger=AMXTrigger=PrinterTrigger=VideoTriggerCount=BeebEmCommon::TotalCycles+100;
+	//if (UseHostClock) SoundTrigger=BeebEmCommon::TotalCycles+100;
 	// Make sure emulator doesn't lock up waiting for triggers.
 
 }

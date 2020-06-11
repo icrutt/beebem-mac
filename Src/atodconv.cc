@@ -172,7 +172,7 @@ void SaveAtoDUEF(FILE *SUEF) {
 	if (AtoDTrigger == CycleCountTMax)
 		fput32(AtoDTrigger,SUEF);
 	else
-		fput32(AtoDTrigger - TotalCycles,SUEF);
+		fput32(AtoDTrigger - BeebEmCommon::TotalCycles,SUEF);
 }
 void LoadAtoDUEF(FILE *SUEF) {
 	AtoDState.datalatch = fgetc(SUEF);
@@ -181,5 +181,5 @@ void LoadAtoDUEF(FILE *SUEF) {
 	AtoDState.low = fgetc(SUEF);
 	AtoDTrigger = fget32(SUEF);
 	if (AtoDTrigger != CycleCountTMax)
-		AtoDTrigger+=TotalCycles;
+		AtoDTrigger+=BeebEmCommon::TotalCycles;
 }

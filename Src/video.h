@@ -62,7 +62,7 @@ void VideoDoScanLine(void);
 
 extern unsigned char TeletextEnabled;
 
-#define VideoPoll(ncycles) if ((VideoTriggerCount)<=TotalCycles) VideoDoScanLine();
+#define VideoPoll(ncycles) if ((VideoTriggerCount)<=BeebEmCommon::TotalCycles) VideoDoScanLine();
 
 // Allow enough lines for all modes.
 // i.e. max(virtical total * scan lines per char) = 38 * 8  (mode 7 excluded)

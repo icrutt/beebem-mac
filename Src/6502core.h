@@ -27,6 +27,7 @@
 
 #include "port.h"
 #include "stdio.h"
+#include "BeebEmCommon.h"
 
 void DumpRegs(void);
 
@@ -55,23 +56,18 @@ typedef enum PSR_Flags
 	FlagN=128
 } PSR_Flags;
 
-extern int trace;
-extern int trace_186;
-extern int IgnoreIllegalInstructions;
-
 extern unsigned char intStatus;
 extern unsigned char NMIStatus;
 extern unsigned int Cycles;
 extern int ProgramCounter;
 extern int PrePC;
-extern CycleCountT TotalCycles;
 extern unsigned int NMILock;
 extern int DisplayCycles;
 
 extern int CyclesToInt;
 #define NO_TIMER_INT_DUE	-1000000
 
-#define SetTrigger(after,var) var=TotalCycles+after;
+#define SetTrigger(after,var) var=BeebEmCommon::TotalCycles+after;
 #define IncTrigger(after,var) var+=(after);
 
 #define ClearTrigger(var) var=CycleCountTMax;

@@ -556,8 +556,8 @@ static void VideoStartOfFrame(void) {
     frametime/=(double)1000000.0;
 
     frametime/=(double)BEEB_DOTIME_SAMPLESIZE;
-//    cerr << "Frametime: " << frametime << "s fps = " << (1/frametime) << " Total cycles = " << TotalCycles << " Cycles in last unit = " << (TotalCycles-OldCycles) << "\n";
-    OldCycles=TotalCycles;
+//    cerr << "Frametime: " << frametime << "s fps = " << (1/frametime) << " Total cycles = " << BeebEmCommon::TotalCycles << " Cycles in last unit = " << (BeebEmCommon::TotalCycles-OldCycles) << "\n";
+    OldCycles=BeebEmCommon::TotalCycles;
     previous=now;
     Time_FrameCount=0;
   } else {
@@ -570,7 +570,7 @@ static void VideoStartOfFrame(void) {
     frametime/=(double)1000000.0;
 	
 //    cerr << "now = " << now.tv_usec << " previous = " << previous.tv_usec << " CLK_TCK = " << CLK_TCK << "\n";
-//    cerr << "Frametime for 50 frames is : " << frametime << "s fps=" << (1/frametime) << " Total cycles=" << TotalCycles << " Cycles in last unit=" << (TotalCycles-OldCycles) << "\n";
+//    cerr << "Frametime for 50 frames is : " << frametime << "s fps=" << (1/frametime) << " Total cycles=" << BeebEmCommon::TotalCycles << " Cycles in last unit=" << (BeebEmCommon::TotalCycles-OldCycles) << "\n";
 
     fprevious = fnow;
     if (frametime < 0.02)

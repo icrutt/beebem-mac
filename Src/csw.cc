@@ -130,7 +130,7 @@ void LoadCSW(char *file)
 	RxD = 0;
 	TapeClock = 0;
 	OldClock = 0;
-	TapeTrigger = TotalCycles + CSW_CYCLES;
+	TapeTrigger = BeebEmCommon::TotalCycles + CSW_CYCLES;
 
 	if (TapeControlEnabled)
 	{

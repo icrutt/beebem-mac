@@ -124,7 +124,7 @@ void Write_ACIA_Control(unsigned char CReg) {
 		} // RTS High on first Master reset.
 		ResetACIAStatus(2); DCD=0; DCDI=0; DCDClear=0;
 		SetACIAStatus(1); // Xmit data register empty
-		TapeTrigger=TotalCycles+TAPECYCLES;
+		TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
 	}
 	// Clock Divide
 	if ((CReg & 3)==0) Clk_Divide=1;
@@ -177,7 +177,7 @@ void Write_ACIA_Tx_Data(unsigned char Data) {
 		TDR=Data;
 		TxD=1;
 		int baud = Tx_Rate * ((Clk_Divide==1) ? 64 : (Clk_Divide==64) ? 1 : 4);
-		TapeTrigger=TotalCycles + 2000000/(baud/8) * TapeClockSpeed/5600;
+		TapeTrigger=BeebEmCommon::TotalCycles + 2000000/(baud/8) * TapeClockSpeed/5600;
 	}
 
 	if ((SerialChannel==RS423) && (SerialPortEnabled)) 
@@ -189,7 +189,7 @@ void Write_ACIA_Tx_Data(unsigned char Data) {
 			TDR = Data;
 			TxD = 1;
 			int baud = Tx_Rate * ((Clk_Divide==1) ? 64 : (Clk_Divide==64) ? 1 : 4);
-			TapeTrigger=TotalCycles + 2000000/(baud/8) * TapeClockSpeed/5600;
+			TapeTrigger=BeebEmCommon::TotalCycles + 2000000/(baud/8) * TapeClockSpeed/5600;
 //			fprintf(stderr, "Waiting %f cycles\n", 2000000/(baud/8) * TapeClockSpeed/5600.0);
 		}
 		else
@@ -230,7 +230,7 @@ void Write_SERPROC(unsigned char Data) {
 	TapeAudio.Enabled=(Cass_Relay && (TapePlaying||TapeRecording))?TRUE:FALSE;
 	LEDs.Motor=(Cass_Relay==1);
 	if (Cass_Relay)
-		TapeTrigger=TotalCycles+TAPECYCLES;
+		TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
 	if (Cass_Relay!=OldRelayState) {
 		OldRelayState=Cass_Relay;
 		ClickRelay(Cass_Relay);
@@ -361,7 +361,7 @@ static int delay = 0;
 		
 //		if (wait_for_tx == true)
 //		{
-//			if (TotalCycles >= TapeTrigger)
+//			if (BeebEmCommon::TotalCycles >= TapeTrigger)
 //			{
 //				SetACIAStatus(1);
 //				wait_for_tx = false;
@@ -379,7 +379,7 @@ static int delay = 0;
 	{
 		if (TapeRecording)
 		{
-			if (Cass_Relay==1 && UEFOpen && TotalCycles >= TapeTrigger)
+			if (Cass_Relay==1 && UEFOpen && BeebEmCommon::TotalCycles >= TapeTrigger)
 			{
 				if (TxD > 0)
 				{
@@ -419,7 +419,7 @@ static int delay = 0;
 
 				}
 
-				TapeTrigger=TotalCycles+TAPECYCLES;
+				TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
 				TapeClock++;
 			}
 		}
@@ -431,7 +431,7 @@ static int delay = 0;
  * JW - If trying to write data when not recording, just ignore
  */
 			
-			if ( (TxD > 0) && (TotalCycles >= TapeTrigger) )
+			if ( (TxD > 0) && (BeebEmCommon::TotalCycles >= TapeTrigger) )
 			{
 				
 				//				BeebEmLog::writeLog("Ignoring Writes\n");
@@ -486,11 +486,11 @@ static int delay = 0;
 			}
 			if ((Cass_Relay==1) && (RxD<2) && UEFOpen)
 			{
-				if (TotalCycles >= TapeTrigger)
+				if (BeebEmCommon::TotalCycles >= TapeTrigger)
 				{
 					if (TapePlaying)
 						TapeClock++;
-					TapeTrigger=TotalCycles+TAPECYCLES;
+					TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
 				}
 			}
 
@@ -533,12 +533,12 @@ static int delay = 0;
 			}
 			if ((Cass_Relay==1) && (RxD<2) && CSWOpen)
 			{
-				if (TotalCycles >= TapeTrigger)
+				if (BeebEmCommon::TotalCycles >= TapeTrigger)
 				{
 					if (TapePlaying)
 						TapeClock++;
 					
-					TapeTrigger = TotalCycles + CSW_CYCLES;
+					TapeTrigger = BeebEmCommon::TotalCycles + CSW_CYCLES;
 					
 				}
 			}
@@ -616,7 +616,7 @@ void LoadUEF(char *UEFName) {
 		RxD=0;
 		TapeClock=0;
 		OldClock=0;
-		TapeTrigger=TotalCycles+TAPECYCLES;
+		TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
 		TapeControlUpdateCounter(TapeClock);
 	}
 	else {
@@ -629,7 +629,7 @@ void RewindTape(void) {
 	UEF_BUF=0;
 	TapeClock=0;
 	OldClock=0;
-	TapeTrigger=TotalCycles+TAPECYCLES;
+	TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
 	TapeControlUpdateCounter(TapeClock);
 
 	csw_state = 0;
@@ -1005,7 +1005,7 @@ CFStringRef pTitle;
 						TapeClock=map_time[s];
 					}
 					OldClock=0;
-					TapeTrigger=TotalCycles+TAPECYCLES;
+					TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
 				}
 				break;
 				

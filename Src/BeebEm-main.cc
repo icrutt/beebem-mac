@@ -27,6 +27,7 @@
 #include <thread>
 #include <Carbon/Carbon.h>
 
+#include "BeebEmCommon.h"
 #include "6502core.h"
 #include "beebmem.h"
 #include "beebsound.h"
@@ -48,8 +49,7 @@ extern void * PushSymbolicHotKeyMode(OptionBits inOptions) __attribute__((weak_i
 extern void PopSymbolicHotKeyMode(void * inToken)          __attribute__((weak_import));
 
 
-int trace;
-int DumpAfterEach=0;
+
 int done = 0;
 #include "via.h"
 extern VIAState SysVIAState;

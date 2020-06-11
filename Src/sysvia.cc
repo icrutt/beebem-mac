@@ -53,7 +53,7 @@ unsigned char SREnabled;
 /* Fire button for joystick 1, 0=not pressed, 1=pressed */
 int JoystickButton = 0;
 
-extern int DumpAfterEach;
+
 /* My raw VIA state */
 VIAState SysVIAState;
 char WECycles=0;
@@ -152,7 +152,7 @@ void BeebKeyDown(int row,int col) {
 
   DoKbdIntCheck();
 #ifdef KBDDEBUG
-  DumpAfterEach=1;
+  BeebEmCommon::DumpAfterEach=1;
 #endif
 }; /* BeebKeyDown */
 
@@ -301,7 +301,7 @@ static int SlowDataBusRead(void) {
 /* Address is in the range 0-f - with the fe40 stripped out */
 void SysVIAWrite(int Address, int Value) {
   //fprintf(vialog,"SYSTEM VIA Write of %d (%02x) to address %d\n",Value,Value,Address);
-  /* cerr << "SysVIAWrite: Address=0x" << hex << Address << " Value=0x" << Value << dec << " at " << TotalCycles << "\n";
+  /* cerr << "SysVIAWrite: Address=0x" << hex << Address << " Value=0x" << Value << dec << " at " << BeebEmCommon::TotalCycles << "\n";
   DumpRegs(); */
 
 	if (DebugEnabled) {
@@ -428,7 +428,7 @@ void SysVIAWrite(int Address, int Value) {
 int SysVIARead(int Address) {
   int tmp = 0xff;
   //fprintf(vialog,"SYSTEM VIA Read of address %02x (%d)\n",Address,Address);
-  /* cerr << "SysVIARead: Address=0x" << hex << Address << dec << " at " << TotalCycles << "\n";
+  /* cerr << "SysVIARead: Address=0x" << hex << Address << dec << " at " << BeebEmCommon::TotalCycles << "\n";
   DumpRegs(); */
   switch (Address) {
     case 0: /* IRB read */
@@ -545,7 +545,7 @@ int SysVIARead(int Address) {
 /* Value denotes the new value - i.e. 1 for a rising edge */
 void SysVIATriggerCA1Int(int value) {
   /*value^=1; */
-  /*cerr << "SysVIATriggerCA1Int at " << TotalCycles << "\n"; */
+  /*cerr << "SysVIATriggerCA1Int at " << BeebEmCommon::TotalCycles << "\n"; */
   /* Cause interrupt on appropriate edge */
   if (!((SysVIAState.pcr & 1) ^ value)) {
     SysVIAState.ifr|=2; /* CA1 */
@@ -561,7 +561,7 @@ static bool t1int = false;
 	t1int = true;
 	
     if ((SysVIAState.timer1hasshot==0) || (SysVIAState.acr & 0x40)) {
-      /* cerr << "SysVia timer1 int at " << TotalCycles << "\n"; */
+      /* cerr << "SysVia timer1 int at " << BeebEmCommon::TotalCycles << "\n"; */
       SysVIAState.ifr|=0x40; /* Timer 1 interrupt */
       UpdateIFRTopBit();
       if (SysVIAState.acr & 0x80) {

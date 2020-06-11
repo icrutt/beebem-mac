@@ -15,6 +15,7 @@
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
 		17A681372490F00A00E98AC0 /* MyViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 17A681352490F00A00E98AC0 /* MyViewController.mm */; };
 		17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */; };
+		17F7FBAB249275F400B369B7 /* BeebEmCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17F7FBAA249275F400B369B7 /* BeebEmCommon.cpp */; };
 		19005B950963E34200872367 /* scsi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19005B940963E34200872367 /* scsi.cc */; };
 		19023C8908E3E96000BA702E /* uef.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19023C8808E3E96000BA702E /* uef.cc */; };
 		1907F0690AA32D4D0098CA99 /* serialdevices.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1907F0680AA32D4D0098CA99 /* serialdevices.cc */; };
@@ -91,6 +92,7 @@
 		17E47C1A2489012F0073DF2D /* audev.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = audev.h; path = Src/audev.h; sourceTree = "<group>"; };
 		17E47C1B2489012F0073DF2D /* atodconv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = atodconv.h; path = Src/atodconv.h; sourceTree = "<group>"; };
 		17E47C1C24890C130073DF2D /* BeebEm-main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BeebEm-main.h"; path = "Src/BeebEm-main.h"; sourceTree = "<group>"; };
+		17F7FBAA249275F400B369B7 /* BeebEmCommon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BeebEmCommon.cpp; sourceTree = "<group>"; };
 		17FE2AB62491330800FF3D93 /* plist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = plist.h; path = Src/plist.h; sourceTree = "<group>"; };
 		19005B940963E34200872367 /* scsi.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = scsi.cc; path = Src/scsi.cc; sourceTree = "<group>"; };
 		19023C8808E3E96000BA702E /* uef.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = uef.cc; path = Src/uef.cc; sourceTree = "<group>"; };
@@ -223,8 +225,9 @@
 			isa = PBXGroup;
 			children = (
 				19E9FA09086B5C85008741A6 /* 6502core.cc */,
-				1730E788249172A500396BA8 /* BeebEmCommon.h */,
 				173406592487E315005588CC /* 6502core.h */,
+				1730E788249172A500396BA8 /* BeebEmCommon.h */,
+				17F7FBAA249275F400B369B7 /* BeebEmCommon.cpp */,
 				199193910BF601F20025F5A0 /* Arm.cc */,
 				17E47C15248901090073DF2D /* Arm.h */,
 				1991931B0BF5D4D20025F5A0 /* ArmDisassembler.cc */,
@@ -442,6 +445,7 @@
 			files = (
 				19E9FA14086B5C85008741A6 /* tube.cc in Sources */,
 				19E9FA15086B5C85008741A6 /* disc1770.cc in Sources */,
+				17F7FBAB249275F400B369B7 /* BeebEmCommon.cpp in Sources */,
 				17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */,
 				19E9FA17086B5C85008741A6 /* audev-macosx.cc in Sources */,
 				19E9FA18086B5C85008741A6 /* atodconv.cc in Sources */,

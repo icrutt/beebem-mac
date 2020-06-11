@@ -1584,7 +1584,7 @@ bool BeebWin::Initialise(char *home)
 	TouchScreenOpen();
     BeebEmLog::writeLog("Debug BeebWinInit 06\n");
 
-	IgnoreIllegalInstructions = 1;
+	BeebEmCommon::IgnoreIllegalInstructions = 1;
     BeebEmLog::writeLog("Debug BeebWinInit 07\n");
 
 	m_WriteProtectDisc[0] = !IsDiscWritable(0);
@@ -2263,10 +2263,10 @@ void BeebWin::ResetTiming(void)
 {
 	m_LastTickCount = GetTickCount();
 	m_LastStatsTickCount = m_LastTickCount;
-	m_LastTotalCycles = TotalCycles;
-	m_LastStatsTotalCycles = TotalCycles;
+	m_LastTotalCycles = BeebEmCommon::TotalCycles;
+	m_LastStatsTotalCycles = BeebEmCommon::TotalCycles;
 	m_TickBase = m_LastTickCount;
-	m_CycleBase = TotalCycles;
+    m_CycleBase = BeebEmCommon::TotalCycles;
 	m_MinFrameCount = 0;
 	m_LastFPSCount = m_LastTickCount;
 	m_ScreenRefreshCount = 0;
@@ -2699,7 +2699,7 @@ bool BeebWin::UpdateTiming(void)
 		 (TickCount < m_LastTickCount) ||
 		((TickCount - m_LastTickCount) > 1000) ||
 		(firsttime == 0) ||
-		(TotalCycles < m_LastTotalCycles) )
+		(BeebEmCommon::TotalCycles < m_LastTotalCycles) )
 	{
 		firsttime = 1;
 		ResetTiming();
@@ -2712,10 +2712,10 @@ bool BeebWin::UpdateTiming(void)
 
 		m_FramesPerSecond = m_ScreenRefreshCount;
 		m_ScreenRefreshCount = 0;
-		m_RelativeSpeed = ((TotalCycles - m_LastStatsTotalCycles) / 2000.0) /
+		m_RelativeSpeed = ((BeebEmCommon::TotalCycles - m_LastStatsTotalCycles) / 2000.0) /
 								(TickCount - m_LastStatsTickCount);
 
-		m_LastStatsTotalCycles = TotalCycles;
+		m_LastStatsTotalCycles = BeebEmCommon::TotalCycles;
 		m_LastStatsTickCount += 1000;
 		DisplayTiming();
 		
@@ -2725,7 +2725,7 @@ bool BeebWin::UpdateTiming(void)
 	if (m_RealTimeTarget > 0.0)
 	{
 		Ticks = TickCount - m_TickBase;
-		Cycles = (int)((double)(TotalCycles - m_CycleBase) / m_RealTimeTarget);
+		Cycles = (int)((double)(BeebEmCommon::TotalCycles - m_CycleBase) / m_RealTimeTarget);
 
 		if (Ticks <= (unsigned long)(Cycles / 2000))
 		{
@@ -2766,7 +2766,7 @@ bool BeebWin::UpdateTiming(void)
 		/* Move counter bases forward */
 		CyclesPerSec = (int) (2000000.0 * m_RealTimeTarget);
 
-		while ( ((TickCount - m_TickBase) > 1000) && ((TotalCycles - m_CycleBase) > CyclesPerSec))
+		while ( ((TickCount - m_TickBase) > 1000) && ((BeebEmCommon::TotalCycles - m_CycleBase) > CyclesPerSec))
 		{
 			m_TickBase += 1000;
 			m_CycleBase += CyclesPerSec;
@@ -2787,7 +2787,7 @@ bool BeebWin::UpdateTiming(void)
 	}
 
 	m_LastTickCount = TickCount;
-	m_LastTotalCycles = TotalCycles;
+	m_LastTotalCycles = BeebEmCommon::TotalCycles;
 
 	return UpdateScreen;
 }
@@ -2904,7 +2904,7 @@ void BeebWin::InitMenu(void)
 	SetMenuCommandIDCheck('full', (OpCodes == 3) ? true : false);
 
 	SetMenuCommandIDCheck('hard', (BHardware) ? true : false);
-	SetMenuCommandIDCheck('igil', (IgnoreIllegalInstructions) ? true : false);
+	SetMenuCommandIDCheck('igil', (BeebEmCommon::IgnoreIllegalInstructions) ? true : false);
 	SetMenuCommandIDCheck('sfps', (m_ShowSpeedAndFPS) ? true : false);
 	SetMenuCommandIDCheck('sped', (SpeechEnabled) ? true : false);
 	SetMenuCommandIDCheck('sond', (SoundEnabled) ? true : false);
@@ -3624,15 +3624,15 @@ OSStatus err = noErr;
 			
         case 'igil':
             fprintf(stderr, "Ignore Illegal Instructions selected\n");
-			if (IgnoreIllegalInstructions)
+			if (BeebEmCommon::IgnoreIllegalInstructions)
 			{
-				IgnoreIllegalInstructions = false;
+				BeebEmCommon::IgnoreIllegalInstructions = false;
 			}
 			else
 			{
-				IgnoreIllegalInstructions = true;
+				BeebEmCommon::IgnoreIllegalInstructions = true;
 			}
-			SetMenuCommandIDCheck('igil', (IgnoreIllegalInstructions) ? true : false);
+			SetMenuCommandIDCheck('igil', (BeebEmCommon::IgnoreIllegalInstructions) ? true : false);
             break;
 
         case 'hard':

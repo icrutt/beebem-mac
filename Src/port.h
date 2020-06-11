@@ -31,11 +31,7 @@ typedef __int64 EightByteType;	// $NRM for MSVC. Will it work though?
 typedef long long EightByteType;
 #endif
 
-/* Used to keep a count of total number of cycles executed */
-typedef int CycleCountT;
 
-#define CycleCountTMax INT_MAX
-#define CycleCountWrap (INT_MAX / 2)
 
 #define DEFAULTSAMPLERATE 40000
 

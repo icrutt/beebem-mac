@@ -50,7 +50,7 @@ extern int trace_z80;
 
 static int CurrentInstruction;
 unsigned char TubeRam[65536];
-extern int DumpAfterEach;
+
 unsigned char TubeEnabled,Tube186Enabled,AcornZ80,EnableTube;
 unsigned char TubeMachineType=3;
 
@@ -1102,7 +1102,7 @@ INLINE static void STYInstrHandler(int16 address) {
 } /* STYInstrHandler */
 
 INLINE static void BadInstrHandler(int opcode) {
-	if (!IgnoreIllegalInstructions)
+	if (!BeebEmCommon::IgnoreIllegalInstructions)
 	{
 #ifdef WIN32
 		char errstr[250];
@@ -1396,7 +1396,7 @@ void Reset65C02(void) {
   }
 
   TubeProgramCounter=TubeReadMem(0xfffc) | (TubeReadMem(0xfffd)<<8);
-  TotalTubeCycles=TotalCycles/2*3;
+  TotalTubeCycles=BeebEmCommon::TotalCycles/2*3;
 }
 
 /* Reset Tube */
@@ -2482,7 +2482,7 @@ void WrapTubeCycles(void) {
 void SyncTubeProcessor(void) {
 	// This proc syncronises the two processors on a cycle based timing.
 	// Second pro runs at 3MHz
-	while (TotalTubeCycles<(TotalCycles/2*3)) {
+	while (TotalTubeCycles<(BeebEmCommon::TotalCycles/2*3)) {
 		Exec65C02Instruction();
 	}
 }

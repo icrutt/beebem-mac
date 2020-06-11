@@ -48,7 +48,7 @@ void Disc8271_write(int Address, int Value);
 /*--------------------------------------------------------------------------*/
 void Disc8271_poll_real(void);
 
-#define Disc8271_poll(ncycles) if (Disc8271Trigger<=TotalCycles) Disc8271_poll_real();
+#define Disc8271_poll(ncycles) if (Disc8271Trigger<=BeebEmCommon::TotalCycles) Disc8271_poll_real();
 
 /*--------------------------------------------------------------------------*/
 void Disc8271_reset(void);

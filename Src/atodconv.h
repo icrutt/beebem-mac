@@ -39,6 +39,6 @@ void LoadAtoDUEF(FILE *SUEF);
 extern int AtoDTrigger;  /* For next A to D conversion completion */
 
 void AtoD_poll_real(void);
-#define AtoD_poll(ncycles) if (AtoDTrigger<=TotalCycles) AtoD_poll_real();
+#define AtoD_poll(ncycles) if (AtoDTrigger<=BeebEmCommon::TotalCycles) AtoD_poll_real();
 
 #endif

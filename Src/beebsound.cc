@@ -478,19 +478,19 @@ static void SetFreq(int Channel, int freqval) {
 void SoundTrigger_Real(void) {
   double nowsamps;
   
-  nowsamps = CyclesToSamples(TotalCycles);
+  nowsamps = CyclesToSamples(BeebEmCommon::TotalCycles);
   PlayUpTil(nowsamps);
 
-  SoundTrigger=TotalCycles+SoundAutoTriggerTime;
+  SoundTrigger=BeebEmCommon::TotalCycles+SoundAutoTriggerTime;
 
-//	BeebEmLog::writeLog(" After : TotalCycles = %d, XtraCycles = %d, SoundTrigger = %d\n", 
-//			 TotalCycles, XtraCycles, SoundTrigger, SoundCycles);
+//	BeebEmLog::writeLog(" After : BeebEmCommon::TotalCycles = %d, XtraCycles = %d, SoundTrigger = %d\n", 
+//			 BeebEmCommon::TotalCycles, XtraCycles, SoundTrigger, SoundCycles);
 
 }; /* SoundTrigger_Real */
 
 void Sound_Trigger(int NCycles) {
 
-	if (SoundTrigger<=TotalCycles) SoundTrigger_Real();
+	if (SoundTrigger<=BeebEmCommon::TotalCycles) SoundTrigger_Real();
 	
 	// fprintf(sndlog,"SoundTrigger_Real was called from Sound_Trigger\n"); }
 }
@@ -511,7 +511,7 @@ void SoundChipReset(void) {
 /* Called to enable sound output                                            */
 void SoundInit() {
   ClearTrigger(SoundTrigger);
-  LastBeebCycle=TotalCycles;
+  LastBeebCycle=BeebEmCommon::TotalCycles;
   LastOurTime=(double)LastBeebCycle * (double)SoundSampleRate / 2000000.0;
   OurTime=LastOurTime;
   bufptr=0;
@@ -523,7 +523,7 @@ void SoundInit() {
   SoundBufferSize=SoundSampleRate/50;
   LoadSoundSamples();
   bReRead=true;
-  SoundTrigger=TotalCycles+SoundAutoTriggerTime;
+  SoundTrigger=BeebEmCommon::TotalCycles+SoundAutoTriggerTime;
 }; /* SoundInit */
 
 void SwitchOnSound(void) {

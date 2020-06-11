@@ -466,7 +466,7 @@ void WriteEconetRegister(unsigned char Register, unsigned char Value) {
 // Optimisation - only call real poll routine when something has changed
 
 bool EconetPoll(void) {		//return NMI status
-	if (EconetStateChanged || EconetTrigger<=TotalCycles) {
+	if (EconetStateChanged || EconetTrigger<=BeebEmCommon::TotalCycles) {
 		EconetStateChanged = FALSE;
 
 		// Don't poll if failed to init sockets
@@ -623,7 +623,7 @@ bool EconetPoll_real(void) {		//return NMI status
 	//--------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------
 
-	if (EconetTrigger<=TotalCycles) {
+	if (EconetTrigger<=BeebEmCommon::TotalCycles) {
 		// Only do this bit occasionally as data only comes in from
 		// line occasionally.
 		// Trickle data between fifo registers and ip packets.
@@ -797,7 +797,7 @@ bool EconetPoll_real(void) {		//return NMI status
 	}
 
 	// Reset pseudo flag fill?
-	if (EconetFlagFillTimeoutTrigger<=TotalCycles && FlagFillActive) {
+	if (EconetFlagFillTimeoutTrigger<=BeebEmCommon::TotalCycles && FlagFillActive) {
 		FlagFillActive = false;
 		if (DebugEnabled)
 			DebugDisplayTrace(DEBUG_ECONET, true, "Econet: FlagFill timeout reset");

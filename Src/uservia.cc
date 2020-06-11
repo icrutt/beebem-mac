@@ -67,7 +67,7 @@ int PrinterTrigger = 0;
 static char PrinterFileName[256];
 FILE *PrinterFileHandle = NULL;
 
-extern int DumpAfterEach;
+
 /* My raw VIA state */
 VIAState UserVIAState;
 
@@ -88,7 +88,7 @@ void UserVIAWrite(int Address, int Value) {
 
 static int last_Value = 0xff;
 
-/* cerr << "UserVIAWrite: Address=0x" << hex << Address << " Value=0x" << Value << dec << " at " << TotalCycles << "\n";
+/* cerr << "UserVIAWrite: Address=0x" << hex << Address << " Value=0x" << Value << dec << " at " << BeebEmCommon::TotalCycles << "\n";
   DumpRegs(); */
 
 	if (DebugEnabled) {
@@ -203,13 +203,13 @@ static int last_Value = 0xff;
 
     case 4:
     case 6:
-      /*cerr << "UserVia Reg4 Timer1 lo Counter Write val=0x " << hex << Value << dec << " at " << TotalCycles << "\n"; */
+      /*cerr << "UserVia Reg4 Timer1 lo Counter Write val=0x " << hex << Value << dec << " at " << BeebEmCommon::TotalCycles << "\n"; */
       UserVIAState.timer1l&=0xff00;
       UserVIAState.timer1l|=(Value & 0xff);
       break;
 
     case 5:
-      /*cerr << "UserVia Reg5 Timer1 hi Counter Write val=0x" << hex << Value << dec  << " at " << TotalCycles << "\n"; */
+      /*cerr << "UserVia Reg5 Timer1 hi Counter Write val=0x" << hex << Value << dec  << " at " << BeebEmCommon::TotalCycles << "\n"; */
       UserVIAState.timer1l&=0xff;
       UserVIAState.timer1l|=(Value & 0xff)<<8;
       UserVIAState.timer1c=UserVIAState.timer1l * 2 + 1;
@@ -224,7 +224,7 @@ static int last_Value = 0xff;
       break;
 
     case 7:
-      /*cerr << "UserVia Reg7 Timer1 hi latch Write val=0x" << hex << Value << dec  << " at " << TotalCycles << "\n"; */
+      /*cerr << "UserVia Reg7 Timer1 hi latch Write val=0x" << hex << Value << dec  << " at " << BeebEmCommon::TotalCycles << "\n"; */
       UserVIAState.timer1l&=0xff;
       UserVIAState.timer1l|=(Value & 0xff)<<8;
       UserVIAState.ifr &=0xbf; /* clear timer 1 ifr (this is what Model-B does) */
@@ -284,7 +284,7 @@ static int last_Value = 0xff;
 /* Address is in the range 0-f - with the fe60 stripped out */
 int UserVIARead(int Address) {
   int tmp = 0xff;
-  /* cerr << "UserVIARead: Address=0x" << hex << Address << dec << " at " << TotalCycles << "\n";
+  /* cerr << "UserVIARead: Address=0x" << hex << Address << dec << " at " << BeebEmCommon::TotalCycles << "\n";
   DumpRegs(); */
 
   switch (Address) {
@@ -427,7 +427,7 @@ void UserVIA_poll_real(void) {
   if (UserVIAState.timer1c<-2 && !t1int) {
     t1int = true;
     if ((UserVIAState.timer1hasshot==0) || (UserVIAState.acr & 0x40)) {
-      /*cerr << "UserVIA timer1c - int at " << TotalCycles << "\n"; */
+      /*cerr << "UserVIA timer1c - int at " << BeebEmCommon::TotalCycles << "\n"; */
       UserVIAState.ifr|=0x40; /* Timer 1 interrupt */
       UpdateIFRTopBit();
       if (UserVIAState.acr & 0x80) {
@@ -470,8 +470,8 @@ void UserVIA_poll(unsigned int ncycles) {
   if (!(UserVIAState.acr & 0x20))
 	UserVIAState.timer2c-=ncycles; 
   if ((UserVIAState.timer1c<0) || (UserVIAState.timer2c<0)) UserVIA_poll_real();
-  if (AMXMouseEnabled && AMXTrigger<=TotalCycles) AMXMouseMovement();
-  if (PrinterEnabled && PrinterTrigger <= TotalCycles) PrinterPoll();
+  if (AMXMouseEnabled && AMXTrigger<=BeebEmCommon::TotalCycles) AMXMouseMovement();
+  if (PrinterEnabled && PrinterTrigger <= BeebEmCommon::TotalCycles) PrinterPoll();
   // Do Shift register stuff
 //  if (SRMode==2) {
 	  // Shift IN under control of Clock 2

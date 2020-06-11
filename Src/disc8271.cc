@@ -454,7 +454,7 @@ static void ReadInterrupt(void) {
   DataReg=CommandStatus.CurrentSectorPtr->Data[CommandStatus.ByteWithinSector++];
   /*cerr << "ReadInterrupt called - DataReg=0x" << hex << int(DataReg) << dec << "ByteWithinSector=" << CommandStatus.ByteWithinSector << "\n"; */
 
-  /* DumpAfterEach=1; */
+  /* BeebEmCommon::DumpAfterEach=1; */
   ResultReg=0;
   if (CommandStatus.ByteWithinSector>=CommandStatus.SectorLength) {
     CommandStatus.ByteWithinSector=0;
@@ -1805,7 +1805,7 @@ void Save8271UEF(FILE *SUEF)
 	if (Disc8271Trigger == CycleCountTMax)
 		fput32(Disc8271Trigger,SUEF);
 	else
-		fput32(Disc8271Trigger - TotalCycles,SUEF);
+		fput32(Disc8271Trigger - BeebEmCommon::TotalCycles,SUEF);
 	fputc(ResultReg,SUEF);
 	fputc(StatusReg,SUEF);
 	fputc(DataReg,SUEF);
@@ -1886,7 +1886,7 @@ void Load8271UEF(FILE *SUEF)
 	{
 		Disc8271Trigger=fget32(SUEF);
 		if (Disc8271Trigger != CycleCountTMax)
-			Disc8271Trigger+=TotalCycles;
+			Disc8271Trigger+=BeebEmCommon::TotalCycles;
 
 		ResultReg=fgetc(SUEF);
 		StatusReg=fgetc(SUEF);
