@@ -34,5 +34,5 @@ extern Boolean quitNow;
 extern const char *Version;
 extern const char *VersionDate;
 extern int trace_186;
-
+int BeebEmMain();
 #endif

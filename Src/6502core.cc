@@ -45,8 +45,6 @@
 #include "Arm.h"
 #include "BeebEmLog.hpp"
 
-#define INLINE inline
-
 int CPUDebug=0;
 FILE *InstrLog;
 FILE *osclilog; //=fopen("/oscli.log","wt");
@@ -73,7 +71,7 @@ unsigned char intStatus=0; /* bit set (nums in IRQ_Nums) if interrupt being caus
 unsigned char NMIStatus=0; /* bit set (nums in NMI_Nums) if NMI being caused */
 unsigned int NMILock=0; /* Well I think NMI's are maskable - to stop repeated NMI's - the lock is released when an RTI is done */
 typedef int int16;
-INLINE static void SBCInstrHandler(int16 operand);
+inline static void SBCInstrHandler(int16 operand);
 
 /* Note how GETCFLAG is special since being bit 0 we don't need to test it to get a clean 0/1 */
 #define GETCFLAG ((PSR & FlagC))
@@ -186,7 +184,7 @@ void PollVIAs(unsigned int nCycles);
 void PollHardware(unsigned int Cycles);
 
 /*----------------------------------------------------------------------------*/
-INLINE void Carried() {
+inline void Carried() {
 	// Correct cycle count for indirection across page boundary
 	if (((CurrentInstruction & 0xf)==0x1 ||
 		 (CurrentInstruction & 0xf)==0x9 ||
@@ -276,7 +274,7 @@ void AdvanceCyclesForMemWrite(void)
 
 /*----------------------------------------------------------------------------*/
 
-INLINE int SignExtendByte(signed char in) {
+inline int SignExtendByte(signed char in) {
   /*if (in & 0x80) return(in | 0xffffff00); else return(in); */
   /* I think this should sign extend by virtue of the casts - gcc does anyway - the code
   above will definitly do the trick */
@@ -286,21 +284,21 @@ INLINE int SignExtendByte(signed char in) {
 /*----------------------------------------------------------------------------*/
 /* Set the Z flag if 'in' is 0, and N if bit 7 is set - leave all other bits  */
 /* untouched.                                                                 */
-INLINE static void SetPSRZN(const unsigned char in) {
+inline static void SetPSRZN(const unsigned char in) {
   PSR&=~(FlagZ | FlagN);
   PSR|=((in==0)<<1) | (in & 128);
 }; /* SetPSRZN */
 
 /*----------------------------------------------------------------------------*/
 /* Note: n is 128 for true - not 1                                            */
-INLINE static void SetPSR(int mask,int c,int z,int i,int d,int b, int v, int n) {
+inline static void SetPSR(int mask,int c,int z,int i,int d,int b, int v, int n) {
   PSR&=~mask;
   PSR|=c | (z<<1) | (i<<2) | (d<<3) | (b<<4) | (v<<6) | n;
 } /* SetPSR */
 
 /*----------------------------------------------------------------------------*/
 /* NOTE!!!!! n is 128 or 0 - not 1 or 0                                       */
-INLINE static void SetPSRCZN(int c,int z, int n) {
+inline static void SetPSRCZN(int c,int z, int n) {
   PSR&=~(FlagC | FlagZ | FlagN);
   PSR|=c | (z<<1) | n;
 } /* SetPSRCZN */
@@ -318,25 +316,25 @@ void DumpRegs(void) {
 } /* DumpRegs */
 
 /*----------------------------------------------------------------------------*/
-INLINE static void Push(unsigned char ToPush) {
+inline static void Push(unsigned char ToPush) {
   BEEBWRITEMEM_DIRECT(0x100+StackReg,ToPush);
   StackReg--;
 } /* Push */
 
 /*----------------------------------------------------------------------------*/
-INLINE static unsigned char Pop(void) {
+inline static unsigned char Pop(void) {
   StackReg++;
   return(WholeRam[0x100+StackReg]);
 } /* Pop */
 
 /*----------------------------------------------------------------------------*/
-INLINE static void PushWord(int16 topush) {
+inline static void PushWord(int16 topush) {
   Push((topush>>8) & 255);
   Push(topush & 255);
 } /* PushWord */
 
 /*----------------------------------------------------------------------------*/
-INLINE static int16 PopWord() {
+inline static int16 PopWord() {
   int16 RetValue;
 
   RetValue=Pop();
@@ -346,7 +344,7 @@ INLINE static int16 PopWord() {
 
 /*-------------------------------------------------------------------------*/
 /* Relative addressing mode handler                                        */
-INLINE static int16 RelAddrModeHandler_Data(void) {
+inline static int16 RelAddrModeHandler_Data(void) {
   int EffectiveAddress;
 
   /* For branches - is this correct - i.e. is the program counter incremented
@@ -358,7 +356,7 @@ INLINE static int16 RelAddrModeHandler_Data(void) {
 } /* RelAddrModeHandler */
 
 /*----------------------------------------------------------------------------*/
-INLINE static void ADCInstrHandler(int16 operand) {
+inline static void ADCInstrHandler(int16 operand) {
   /* NOTE! Not sure about C and V flags */
   int TmpResultV,TmpResultC;
   if (!GETDFLAG) {
@@ -399,13 +397,13 @@ INLINE static void ADCInstrHandler(int16 operand) {
 } /* ADCInstrHandler */
 
 /*----------------------------------------------------------------------------*/
-INLINE static void ANDInstrHandler(int16 operand) {
+inline static void ANDInstrHandler(int16 operand) {
   Accumulator=Accumulator & operand;
   PSR&=~(FlagZ | FlagN);
   PSR|=((Accumulator==0)<<1) | (Accumulator & 128);
 } /* ANDInstrHandler */
 
-INLINE static void ASLInstrHandler(int16 address) {
+inline static void ASLInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	Cycles+=1;
@@ -418,7 +416,7 @@ INLINE static void ASLInstrHandler(int16 address) {
 	SetPSRCZN((oldVal & 128)>0, newVal==0,newVal & 128);
 } /* ASLInstrHandler */
 
-INLINE static void TRBInstrHandler(int16 address) {
+inline static void TRBInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	newVal=(Accumulator ^ 255) & oldVal;
@@ -427,7 +425,7 @@ INLINE static void TRBInstrHandler(int16 address) {
 	PSR|=((Accumulator & oldVal)==0) ? 2 : 0;
 } // TRBInstrHandler
 
-INLINE static void TSBInstrHandler(int16 address) {
+inline static void TSBInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	newVal=Accumulator | oldVal;
@@ -436,7 +434,7 @@ INLINE static void TSBInstrHandler(int16 address) {
 	PSR|=((Accumulator & oldVal)==0) ? 2 : 0;
 } // TSBInstrHandler
 
-INLINE static void ASLInstrHandler_Acc(void) {
+inline static void ASLInstrHandler_Acc(void) {
   unsigned char oldVal,newVal;
   /* Accumulator */
   oldVal=Accumulator;
@@ -444,61 +442,61 @@ INLINE static void ASLInstrHandler_Acc(void) {
   SetPSRCZN((oldVal & 128)>0, newVal==0,newVal & 128);
 } /* ASLInstrHandler_Acc */
 
-INLINE static void BCCInstrHandler(void) {
+inline static void BCCInstrHandler(void) {
   if (!GETCFLAG) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else ProgramCounter++;
 } /* BCCInstrHandler */
 
-INLINE static void BCSInstrHandler(void) {
+inline static void BCSInstrHandler(void) {
   if (GETCFLAG) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else ProgramCounter++;
 } /* BCSInstrHandler */
 
-INLINE static void BEQInstrHandler(void) {
+inline static void BEQInstrHandler(void) {
   if (GETZFLAG) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else ProgramCounter++;
 } /* BEQInstrHandler */
 
-INLINE static void BITInstrHandler(int16 operand) {
+inline static void BITInstrHandler(int16 operand) {
   PSR&=~(FlagZ | FlagN | FlagV);
   /* z if result 0, and NV to top bits of operand */
   PSR|=(((Accumulator & operand)==0)<<1) | (operand & 192);
 } /* BITInstrHandler */
 
-INLINE static void BITImmedInstrHandler(int16 operand) {
+inline static void BITImmedInstrHandler(int16 operand) {
 	PSR&=~FlagZ;
 	/* z if result 0, and NV to top bits of operand */
 	PSR|=(((Accumulator & operand)==0)<<1);
 } /* BITImmedInstrHandler */
 
-INLINE static void BMIInstrHandler(void) {
+inline static void BMIInstrHandler(void) {
   if (GETNFLAG) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else ProgramCounter++;
 } /* BMIInstrHandler */
 
-INLINE static void BNEInstrHandler(void) {
+inline static void BNEInstrHandler(void) {
   if (!GETZFLAG) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else ProgramCounter++;
 } /* BNEInstrHandler */
 
-INLINE static void BPLInstrHandler(void) {
+inline static void BPLInstrHandler(void) {
   if (!GETNFLAG) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else ProgramCounter++;
 }; /* BPLInstrHandler */
 
-INLINE static void BRKInstrHandler(void) {
+inline static void BRKInstrHandler(void) {
   if (CPUDebug) {
   fprintf(stderr,"BRK Instruction at 0x%04x after %i instructions. ACCON: 0x%02x ROMSEL: 0x%02x",ProgramCounter,InstrCount,ACCCON,PagedRomReg);
   //fclose(InstrLog);
@@ -511,26 +509,26 @@ INLINE static void BRKInstrHandler(void) {
   ProgramCounter=BeebReadMem(0xfffe) | (BeebReadMem(0xffff)<<8);
 } /* BRKInstrHandler */
 
-INLINE static void BVCInstrHandler(void) {
+inline static void BVCInstrHandler(void) {
   if (!GETVFLAG) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else ProgramCounter++;
 } /* BVCInstrHandler */
 
-INLINE static void BVSInstrHandler(void) {
+inline static void BVSInstrHandler(void) {
   if (GETVFLAG) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else ProgramCounter++;
 } /* BVSInstrHandler */
 
-INLINE static void BRAInstrHandler(void) {
+inline static void BRAInstrHandler(void) {
     ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
 } /* BRAnstrHandler */
 
-INLINE static void CMPInstrHandler(int16 operand) {
+inline static void CMPInstrHandler(int16 operand) {
   /* NOTE! Should we consult D flag ? */
   unsigned char result=Accumulator-operand;
   unsigned char CFlag;
@@ -538,17 +536,17 @@ INLINE static void CMPInstrHandler(int16 operand) {
   SetPSRCZN(CFlag,Accumulator==operand,result & 128);
 } /* CMPInstrHandler */
 
-INLINE static void CPXInstrHandler(int16 operand) {
+inline static void CPXInstrHandler(int16 operand) {
   unsigned char result=(XReg-operand);
   SetPSRCZN(XReg>=operand,XReg==operand,result & 128);
 } /* CPXInstrHandler */
 
-INLINE static void CPYInstrHandler(int16 operand) {
+inline static void CPYInstrHandler(int16 operand) {
   unsigned char result=(YReg-operand);
   SetPSRCZN(YReg>=operand,YReg==operand,result & 128);
 } /* CPYInstrHandler */
 
-INLINE static void DECInstrHandler(int16 address) {
+inline static void DECInstrHandler(int16 address) {
 	unsigned char val;
 	val=ReadPaged(address);
 	Cycles+=1;
@@ -561,22 +559,22 @@ INLINE static void DECInstrHandler(int16 address) {
 	SetPSRZN(val);
 } /* DECInstrHandler */
 
-INLINE static void DEXInstrHandler(void) {
+inline static void DEXInstrHandler(void) {
   XReg=(XReg-1) & 255;
   SetPSRZN(XReg);
 } /* DEXInstrHandler */
 
-INLINE static void DEAInstrHandler(void) {
+inline static void DEAInstrHandler(void) {
   Accumulator=(Accumulator-1) & 255;
   SetPSRZN(Accumulator);
 } /* DEAInstrHandler */
 
-INLINE static void EORInstrHandler(int16 operand) {
+inline static void EORInstrHandler(int16 operand) {
   Accumulator^=operand;
   SetPSRZN(Accumulator);
 } /* EORInstrHandler */
 
-INLINE static void INCInstrHandler(int16 address) {
+inline static void INCInstrHandler(int16 address) {
 	unsigned char val;
 	val=ReadPaged(address);
 	Cycles+=1;
@@ -589,19 +587,19 @@ INLINE static void INCInstrHandler(int16 address) {
 	SetPSRZN(val);
 } /* INCInstrHandler */
 
-INLINE static void INXInstrHandler(void) {
+inline static void INXInstrHandler(void) {
   XReg+=1;
   XReg&=255;
   SetPSRZN(XReg);
 } /* INXInstrHandler */
 
-INLINE static void INAInstrHandler(void) {
+inline static void INAInstrHandler(void) {
   Accumulator+=1;
   Accumulator&=255;
   SetPSRZN(Accumulator);
 } /* INAInstrHandler */
 
-INLINE static void JSRInstrHandler(int16 address) {
+inline static void JSRInstrHandler(int16 address) {
   PushWord(ProgramCounter-1);
   ProgramCounter=address;
 /*  if (ProgramCounter==0xffdd) {
@@ -624,22 +622,22 @@ INLINE static void JSRInstrHandler(int16 address) {
 
 } /* JSRInstrHandler */
 
-INLINE static void LDAInstrHandler(int16 operand) {
+inline static void LDAInstrHandler(int16 operand) {
   Accumulator=operand;
   SetPSRZN(Accumulator);
 } /* LDAInstrHandler */
 
-INLINE static void LDXInstrHandler(int16 operand) {
+inline static void LDXInstrHandler(int16 operand) {
   XReg=operand;
   SetPSRZN(XReg);
 } /* LDXInstrHandler */
 
-INLINE static void LDYInstrHandler(int16 operand) {
+inline static void LDYInstrHandler(int16 operand) {
   YReg=operand;
   SetPSRZN(YReg);
 } /* LDYInstrHandler */
 
-INLINE static void LSRInstrHandler(int16 address) {
+inline static void LSRInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	Cycles+=1;
@@ -652,7 +650,7 @@ INLINE static void LSRInstrHandler(int16 address) {
 	SetPSRCZN((oldVal & 1)>0, newVal==0,0);
 } /* LSRInstrHandler */
 
-INLINE static void LSRInstrHandler_Acc(void) {
+inline static void LSRInstrHandler_Acc(void) {
   unsigned char oldVal,newVal;
   /* Accumulator */
   oldVal=Accumulator;
@@ -660,12 +658,12 @@ INLINE static void LSRInstrHandler_Acc(void) {
   SetPSRCZN((oldVal & 1)>0, newVal==0,0);
 } /* LSRInstrHandler_Acc */
 
-INLINE static void ORAInstrHandler(int16 operand) {
+inline static void ORAInstrHandler(int16 operand) {
   Accumulator=Accumulator | operand;
   SetPSRZN(Accumulator);
 } /* ORAInstrHandler */
 
-INLINE static void ROLInstrHandler(int16 address) {
+inline static void ROLInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	Cycles+=1;
@@ -679,7 +677,7 @@ INLINE static void ROLInstrHandler(int16 address) {
 	SetPSRCZN((oldVal & 128)>0,newVal==0,newVal & 128);
 } /* ROLInstrHandler */
 
-INLINE static void ROLInstrHandler_Acc(void) {
+inline static void ROLInstrHandler_Acc(void) {
 	unsigned char oldVal,newVal;
 	
 	oldVal=Accumulator;
@@ -689,7 +687,7 @@ INLINE static void ROLInstrHandler_Acc(void) {
 	SetPSRCZN((oldVal & 128)>0,newVal==0,newVal & 128);
 } /* ROLInstrHandler_Acc */
 
-INLINE static void RORInstrHandler(int16 address) {
+inline static void RORInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	Cycles+=1;
@@ -703,7 +701,7 @@ INLINE static void RORInstrHandler(int16 address) {
 	SetPSRCZN(oldVal & 1,newVal==0,newVal & 128);
 } /* RORInstrHandler */
 
-INLINE static void RORInstrHandler_Acc(void) {
+inline static void RORInstrHandler_Acc(void) {
   unsigned char oldVal,newVal;
 
   oldVal=Accumulator;
@@ -713,7 +711,7 @@ INLINE static void RORInstrHandler_Acc(void) {
   SetPSRCZN(oldVal & 1,newVal==0,newVal & 128);
 } /* RORInstrHandler_Acc */
 
-INLINE static void SBCInstrHandler(int16 operand) {
+inline static void SBCInstrHandler(int16 operand) {
   /* NOTE! Not sure about C and V flags */
   int TmpResultV,TmpResultC;
   unsigned char nhn,nln;
@@ -761,15 +759,15 @@ INLINE static void SBCInstrHandler(int16 operand) {
   }
 } /* SBCInstrHandler */
 
-INLINE static void STXInstrHandler(int16 address) {
+inline static void STXInstrHandler(int16 address) {
   WritePaged(address,XReg);
 } /* STXInstrHandler */
 
-INLINE static void STYInstrHandler(int16 address) {
+inline static void STYInstrHandler(int16 address) {
   WritePaged(address,YReg);
 } /* STYInstrHandler */
 
-INLINE static void BadInstrHandler(int opcode) {
+inline static void BadInstrHandler(int opcode) {
 	if (!IgnoreIllegalInstructions)
 	{
 #ifdef WIN32
@@ -820,7 +818,7 @@ INLINE static void BadInstrHandler(int opcode) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute  addressing mode handler                                       */
-INLINE static int16 AbsAddrModeHandler_Data(void) {
+inline static int16 AbsAddrModeHandler_Data(void) {
   int FullAddress;
 
   /* Get the address from after the instruction */
@@ -833,7 +831,7 @@ INLINE static int16 AbsAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute  addressing mode handler                                       */
-INLINE static int16 AbsAddrModeHandler_Address(void) {
+inline static int16 AbsAddrModeHandler_Address(void) {
   int FullAddress;
 
   /* Get the address from after the instruction */
@@ -845,13 +843,13 @@ INLINE static int16 AbsAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page addressing mode handler                                       */
-INLINE static int16 ZeroPgAddrModeHandler_Address(void) {
+inline static int16 ZeroPgAddrModeHandler_Address(void) {
   return(ReadPaged(ProgramCounter++));
 } /* ZeroPgAddrModeHandler_Address */
 
 /*-------------------------------------------------------------------------*/
 /* Indexed with X preinc addressing mode handler                           */
-INLINE static int16 IndXAddrModeHandler_Data(void) {
+inline static int16 IndXAddrModeHandler_Data(void) {
   unsigned char ZeroPageAddress;
   int EffectiveAddress;
 
@@ -863,7 +861,7 @@ INLINE static int16 IndXAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Indexed with X preinc addressing mode handler                           */
-INLINE static int16 IndXAddrModeHandler_Address(void) {
+inline static int16 IndXAddrModeHandler_Address(void) {
   unsigned char ZeroPageAddress;
   int EffectiveAddress;
 
@@ -875,7 +873,7 @@ INLINE static int16 IndXAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Indexed with Y postinc addressing mode handler                          */
-INLINE static int16 IndYAddrModeHandler_Data(void) {
+inline static int16 IndYAddrModeHandler_Data(void) {
   int EffectiveAddress;
   unsigned char ZPAddr=ReadPaged(ProgramCounter++);
   EffectiveAddress=WholeRam[ZPAddr]+YReg;
@@ -887,7 +885,7 @@ INLINE static int16 IndYAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Indexed with Y postinc addressing mode handler                          */
-INLINE static int16 IndYAddrModeHandler_Address(void) {
+inline static int16 IndYAddrModeHandler_Address(void) {
   int EffectiveAddress;
   unsigned char ZPAddr=ReadPaged(ProgramCounter++);
   EffectiveAddress=WholeRam[ZPAddr]+YReg;
@@ -899,7 +897,7 @@ INLINE static int16 IndYAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page wih X offset addressing mode handler                          */
-INLINE static int16 ZeroPgXAddrModeHandler_Data(void) {
+inline static int16 ZeroPgXAddrModeHandler_Data(void) {
   int EffectiveAddress;
   EffectiveAddress=(ReadPaged(ProgramCounter++)+XReg) & 255;
   return(WholeRam[EffectiveAddress]);
@@ -907,7 +905,7 @@ INLINE static int16 ZeroPgXAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page wih X offset addressing mode handler                          */
-INLINE static int16 ZeroPgXAddrModeHandler_Address(void) {
+inline static int16 ZeroPgXAddrModeHandler_Address(void) {
   int EffectiveAddress;
   EffectiveAddress=(ReadPaged(ProgramCounter++)+XReg) & 255;
   return(EffectiveAddress);
@@ -915,7 +913,7 @@ INLINE static int16 ZeroPgXAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute with X offset addressing mode handler                          */
-INLINE static int16 AbsXAddrModeHandler_Data(void) {
+inline static int16 AbsXAddrModeHandler_Data(void) {
   int EffectiveAddress;
   GETTWOBYTEFROMPC(EffectiveAddress);
   if ((EffectiveAddress & 0xff00)!=((EffectiveAddress+XReg) & 0xff00)) Carried();
@@ -927,7 +925,7 @@ INLINE static int16 AbsXAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute with X offset addressing mode handler                          */
-INLINE static int16 AbsXAddrModeHandler_Address(void) {
+inline static int16 AbsXAddrModeHandler_Address(void) {
   int EffectiveAddress;
   GETTWOBYTEFROMPC(EffectiveAddress)
   if ((EffectiveAddress & 0xff00)!=((EffectiveAddress+XReg) & 0xff00)) Carried();
@@ -939,7 +937,7 @@ INLINE static int16 AbsXAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute with Y offset addressing mode handler                          */
-INLINE static int16 AbsYAddrModeHandler_Data(void) {
+inline static int16 AbsYAddrModeHandler_Data(void) {
   int EffectiveAddress;
   GETTWOBYTEFROMPC(EffectiveAddress);
   if ((EffectiveAddress & 0xff00)!=((EffectiveAddress+YReg) & 0xff00)) Carried();
@@ -951,7 +949,7 @@ INLINE static int16 AbsYAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute with Y offset addressing mode handler                          */
-INLINE static int16 AbsYAddrModeHandler_Address(void) {
+inline static int16 AbsYAddrModeHandler_Address(void) {
   int EffectiveAddress;
   GETTWOBYTEFROMPC(EffectiveAddress)
   if ((EffectiveAddress & 0xff00)!=((EffectiveAddress+YReg) & 0xff00)) Carried();
@@ -963,7 +961,7 @@ INLINE static int16 AbsYAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Indirect addressing mode handler                                        */
-INLINE static int16 IndAddrModeHandler_Address(void) {
+inline static int16 IndAddrModeHandler_Address(void) {
   /* For jump indirect only */
   int VectorLocation;
   int EffectiveAddress;
@@ -986,7 +984,7 @@ INLINE static int16 IndAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page Indirect addressing mode handler                                        */
-INLINE static int16 ZPIndAddrModeHandler_Address(void) {
+inline static int16 ZPIndAddrModeHandler_Address(void) {
   int VectorLocation;
   int EffectiveAddress;
 
@@ -999,7 +997,7 @@ INLINE static int16 ZPIndAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page Indirect addressing mode handler                                        */
-INLINE static int16 ZPIndAddrModeHandler_Data(void) {
+inline static int16 ZPIndAddrModeHandler_Data(void) {
   int VectorLocation;
   int EffectiveAddress;
 
@@ -1012,7 +1010,7 @@ INLINE static int16 ZPIndAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Pre-indexed absolute Indirect addressing mode handler                                        */
-INLINE static int16 IndAddrXModeHandler_Address(void) {
+inline static int16 IndAddrXModeHandler_Address(void) {
   /* For jump indirect only */
   int VectorLocation;
   int EffectiveAddress;
@@ -1028,7 +1026,7 @@ INLINE static int16 IndAddrXModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page with Y offset addressing mode handler                         */
-INLINE static int16 ZeroPgYAddrModeHandler_Data(void) {
+inline static int16 ZeroPgYAddrModeHandler_Data(void) {
   int EffectiveAddress;
   EffectiveAddress=(ReadPaged(ProgramCounter++)+YReg) & 255;
   return(WholeRam[EffectiveAddress]);
@@ -1036,7 +1034,7 @@ INLINE static int16 ZeroPgYAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page with Y offset addressing mode handler                         */
-INLINE static int16 ZeroPgYAddrModeHandler_Address(void) {
+inline static int16 ZeroPgYAddrModeHandler_Address(void) {
   int EffectiveAddress;
   EffectiveAddress=(ReadPaged(ProgramCounter++)+YReg) & 255;
   return(EffectiveAddress);
@@ -1137,7 +1135,7 @@ void Exec6502Instruction(void) {
   bool iFlagJustCleared;
   bool iFlagJustSet;
    loopc=(DebugEnabled ? 1 : 1024); // Makes debug window more responsive
- std::cout << "loopc: " << loopc <<std::endl;
+ //std::cout << "loopc: " << loopc <<std::endl;
 
     for(loop=0;loop<loopc;loop++) {
 

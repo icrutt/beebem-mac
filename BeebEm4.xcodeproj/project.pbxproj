@@ -61,6 +61,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1730E788249172A500396BA8 /* BeebEmCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeebEmCommon.h; sourceTree = "<group>"; };
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
 		178BCCA52490E1DC0099EB8A /* TestClassWrapper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestClassWrapper.hpp; sourceTree = "<group>"; };
@@ -222,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				19E9FA09086B5C85008741A6 /* 6502core.cc */,
+				1730E788249172A500396BA8 /* BeebEmCommon.h */,
 				173406592487E315005588CC /* 6502core.h */,
 				199193910BF601F20025F5A0 /* Arm.cc */,
 				17E47C15248901090073DF2D /* Arm.h */,

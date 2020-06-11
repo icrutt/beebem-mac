@@ -10,6 +10,7 @@
 #include <iostream>
 #include <thread>
 #include "TestClass.hpp"
+#include "BeebEm-main.h"
 
 TestClass::TestClass()
 {
@@ -28,12 +29,14 @@ void TestClass::mainLoop()
     using namespace std::chrono; // nanoseconds, system_clock, seconds
     using namespace std::this_thread; // sleep_for, sleep_until
     
-    while(1){
-        sleep_for(seconds(delay));
-        testVal += 1;
-        glue->sendValue(testVal);
-        std::cout << "Testval " << testVal <<std::endl;
-    }
+    BeebEmMain();
+    
+//    while(1){
+//        sleep_for(seconds(delay));
+//        testVal += 1;
+//        glue->sendValue(testVal);
+//        std::cout << "Testval " << testVal <<std::endl;
+//    }
 }
 
 void TestClass::registerGlue(GlueInterface* gl){

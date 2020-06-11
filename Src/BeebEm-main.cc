@@ -23,6 +23,8 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <chrono>
+#include <thread>
 #include <Carbon/Carbon.h>
 
 #include "6502core.h"
@@ -445,6 +447,9 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
     // gNumberOfRunningThreads, that reflects the number of threads
     // that are ready to run.
 {
+    using namespace std::chrono; // nanoseconds, system_clock, seconds
+    using namespace std::this_thread; // sleep_for, sleep_until
+    
     static const EventTypeSpec eventSpec = {'KWIN', 'KWIN' };
     OSStatus        err;
     OSStatus        junk;
@@ -496,9 +501,23 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
             if (err == noErr) {
                 //RunApplicationEventLoop();
                 // Instead of main app loop
-                for (int excount = 0; excount<1000; excount++) {
-                    Exec6502Instruction();
-                    if (excount%10==0) std::cout << "Exectuting " << excount << std::endl;
+                while (1) {
+    
+                    int c;
+                    c = 20;
+
+                    // Menu GUI more responsive if running less than real time
+                                    
+                    if ( (mainWin->m_RealTimeTarget != 0) && (mainWin->m_RealTimeTarget < 1) )
+                    {
+                        c = c * mainWin->m_RealTimeTarget;
+                    }
+                    sleep_for(milliseconds(1000));
+                    std::cout << "Executing..." << std::endl;
+                    
+                    for (int i = 0; i < c; ++i)
+                        Exec6502Instruction();
+                    
                 }
             }
 
@@ -513,15 +532,15 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
     }
 }
 	
-int BeebEmMain(int argc,char *argv[]) 
+int BeebEmMain() 
 {
 void *token;
 int i;
 
   BeebEmLog::writeLog("Version: %s %s\n", Version, VersionDate);
 
-  for (i = 0; i < argc; ++i)
-	BeebEmLog::writeLog("Arg %d = %s\n", i, argv[i]);
+//  for (i = 0; i < argc; ++i)
+//	BeebEmLog::writeLog("Arg %d = %s\n", i, argv[i]);
 
   mainWin=new BeebWin();
   BeebEmLog::writeLog("Instantiated BeebWin\n");
@@ -537,7 +556,8 @@ int i;
 
   done = 0;
   
-  if (!mainWin->Initialise(argv[0]))
+//  if (!mainWin->Initialise(argv[0]))
+    if (!mainWin->Initialise(""))
       exit(EXIT_FAILURE);
     BeebEmLog::writeLog("Debug Main 04\n");
 
@@ -549,44 +569,44 @@ int i;
   mainWin->SetSoundMenu();
     BeebEmLog::writeLog("Debug Main 05\n");
 
-  EventTypeSpec    eventTypes[7];
-  EventHandlerUPP  handlerUPP;
-    BeebEmLog::writeLog("Debug Main 06\n");
+//  EventTypeSpec    eventTypes[7];
+//  EventHandlerUPP  handlerUPP;
+//    BeebEmLog::writeLog("Debug Main 06\n");
 
-  eventTypes[0].eventClass = kEventClassKeyboard;
-  eventTypes[0].eventKind  = 1;
-  eventTypes[1].eventClass = kEventClassKeyboard;
-  eventTypes[1].eventKind  = 3;
-  eventTypes[2].eventClass = kEventClassKeyboard;
-  eventTypes[2].eventKind  = 4;
-
-  eventTypes[3].eventClass = kEventClassMouse;
-  eventTypes[3].eventKind  = kEventMouseDown;
-  eventTypes[4].eventClass = kEventClassMouse;
-  eventTypes[4].eventKind  = kEventMouseUp;
-  eventTypes[5].eventClass = kEventClassMouse;
-  eventTypes[5].eventKind  = kEventMouseMoved;
-  eventTypes[6].eventClass = kEventClassMouse;
-  eventTypes[6].eventKind  = kEventMouseDragged;
+//  eventTypes[0].eventClass = kEventClassKeyboard;
+//  eventTypes[0].eventKind  = 1;
+//  eventTypes[1].eventClass = kEventClassKeyboard;
+//  eventTypes[1].eventKind  = 3;
+//  eventTypes[2].eventClass = kEventClassKeyboard;
+//  eventTypes[2].eventKind  = 4;
+//
+//  eventTypes[3].eventClass = kEventClassMouse;
+//  eventTypes[3].eventKind  = kEventMouseDown;
+//  eventTypes[4].eventClass = kEventClassMouse;
+//  eventTypes[4].eventKind  = kEventMouseUp;
+//  eventTypes[5].eventClass = kEventClassMouse;
+//  eventTypes[5].eventKind  = kEventMouseMoved;
+//  eventTypes[6].eventClass = kEventClassMouse;
+//  eventTypes[6].eventKind  = kEventMouseDragged;
     BeebEmLog::writeLog("Debug Main 07\n");
 
-  handlerUPP = NewEventHandlerUPP(EventHandler);
-  InstallApplicationEventHandler (handlerUPP,
-                                7, eventTypes,
-                                NULL, NULL);
-    BeebEmLog::writeLog("Debug Main 08\n");
+//  handlerUPP = NewEventHandlerUPP(EventHandler);
+//  InstallApplicationEventHandler (handlerUPP,
+//                                7, eventTypes,
+//                                NULL, NULL);
+//    BeebEmLog::writeLog("Debug Main 08\n");
 
   //AEInstallEventHandler(kCoreEventClass, kAEOpenDocuments, NewAEEventHandlerUPP(AEodoc), 0, false);
 
-  EventTypeSpec events[] = {
-		{ kEventClassWindow, kEventWindowClosed }
-  };
-    BeebEmLog::writeLog("Debug Main 09\n");
+//  EventTypeSpec events[] = {
+//		{ kEventClassWindow, kEventWindowClosed }
+//  };
+//    BeebEmLog::writeLog("Debug Main 09\n");
 
-  EventTypeSpec commands[] = {
-        { kEventClassCommand, kEventCommandProcess }
-  };
-    BeebEmLog::writeLog("Debug Main 10\n");
+//  EventTypeSpec commands[] = {
+//        { kEventClassCommand, kEventCommandProcess }
+//  };
+//    BeebEmLog::writeLog("Debug Main 10\n");
 
   //InstallWindowEventHandler (mainWin->mWindow,
 //		   NewEventHandlerUPP (MainWindowEventHandler),
@@ -602,7 +622,7 @@ int i;
 //  mainWin->StartRecordingVideo("jon.mov", nil);
   
   // Call the event loop
-    BeebEmLog::writeLog("Debug Main 11\n");
+//    BeebEmLog::writeLog("Debug Main 11\n");
 
   RunApplicationEventLoopWithCooperativeThreadSupport();
 
