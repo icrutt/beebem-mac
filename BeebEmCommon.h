@@ -21,6 +21,7 @@ public:
     static int IgnoreIllegalInstructions;
     static int DumpAfterEach;
     static CycleCountT TotalCycles;
+    static int ProgramCounter;
 };
 
 #endif /* BeebEmCommon_h */

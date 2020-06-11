@@ -14,4 +14,5 @@ int BeebEmCommon::trace {0};
 int BeebEmCommon::trace_186 {0};
 int BeebEmCommon::IgnoreIllegalInstructions {1};
 int BeebEmCommon::DumpAfterEach {0};
+int BeebEmCommon::ProgramCounter;
 CycleCountT BeebEmCommon::TotalCycles{0};

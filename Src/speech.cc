@@ -544,7 +544,7 @@ void tms5220_data_write(struct tms5220 *chip, int data)
     }
     else
     {
-        if (DEBUG_5220) logerror("Ran out of room in the FIFO! - PC = 0x%04x\n", ProgramCounter);
+        if (DEBUG_5220) logerror("Ran out of room in the FIFO! - PC = 0x%04x\n", BeebEmCommon::ProgramCounter);
     }
 	
     /* update the buffer low state */

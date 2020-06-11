@@ -434,7 +434,7 @@ void WriteTubeFromHostSide(unsigned char IOAddr,unsigned char IOData) {
 		DebugDisplayTrace(DEBUG_TUBE, true, info);
 	}
 
-//	BeebEmLog::writeLog("[%04x] Tube: Write from host, addr %X value %02X [%c]\n", ProgramCounter, (int)IOAddr, (int)IOData, (IOData & 0x7f) > 31 ? (IOData & 0x7f) : '.');
+//	BeebEmLog::writeLog("[%04x] Tube: Write from host, addr %X value %02X [%c]\n", BeebEmCommon::ProgramCounter, (int)IOAddr, (int)IOData, (IOData & 0x7f) > 31 ? (IOData & 0x7f) : '.');
 	
 	switch (IOAddr) {
 	case 0:
@@ -578,7 +578,7 @@ void WriteTubeFromParasiteSide(unsigned char IOAddr,unsigned char IOData)
 		return;
 	}
 	
-//	BeebEmLog::writeLog("[%04x] Tube: Write from parasite, addr %X value %02X [%c]\n", ProgramCounter, (int)IOAddr, (int)IOData, (IOData & 0x7f) > 31 ? (IOData & 0x7f) : '.');
+//	BeebEmLog::writeLog("[%04x] Tube: Write from parasite, addr %X value %02X [%c]\n", BeebEmCommon::ProgramCounter, (int)IOAddr, (int)IOData, (IOData & 0x7f) > 31 ? (IOData & 0x7f) : '.');
 
 	if (DebugEnabled) {
 		char info[200];

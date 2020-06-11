@@ -125,7 +125,7 @@ void TeleTextWrite(int Address, int Value)
 	if (!TeleTextAdapterEnabled)
 		return;
 
-    TeleTextLog("TeleTextWrite Address = 0x%02x, Value = 0x%02x, PC = 0x%04x\n", Address, Value, ProgramCounter);
+    TeleTextLog("TeleTextWrite Address = 0x%02x, Value = 0x%02x, PC = 0x%04x\n", Address, Value, BeebEmCommon::ProgramCounter);
 	
     switch (Address)
     {
@@ -177,16 +177,16 @@ int data = 0x00;
 
         if (colPtr == 0x00)
             TeleTextLog("TeleTextRead Reading Row %d, PC = 0x%04x\n", 
-                rowPtr, ProgramCounter);
+                rowPtr, BeebEmCommon::ProgramCounter);
 
         if (colPtr >= 43)
         {
-            TeleTextLog("TeleTextRead Reading Past End Of Row %d, PC = 0x%04x\n", rowPtr, ProgramCounter);
+            TeleTextLog("TeleTextRead Reading Past End Of Row %d, PC = 0x%04x\n", rowPtr, BeebEmCommon::ProgramCounter);
             colPtr = 0;
         }
 
 //        TeleTextLog("TeleTextRead Returning Row %d, Col %d, Data %d, PC = 0x%04x\n", 
-//            rowPtr, colPtr, row[rowPtr][colPtr], ProgramCounter);
+//            rowPtr, colPtr, row[rowPtr][colPtr], BeebEmCommon::ProgramCounter);
         
         data = row[rowPtr][colPtr++];
 
@@ -196,7 +196,7 @@ int data = 0x00;
         break;
     }
 
-    TeleTextLog("TeleTextRead Address = 0x%02x, Value = 0x%02x, PC = 0x%04x\n", Address, data, ProgramCounter);
+    TeleTextLog("TeleTextRead Address = 0x%02x, Value = 0x%02x, PC = 0x%04x\n", Address, data, BeebEmCommon::ProgramCounter);
     
     return data;
 }
@@ -279,7 +279,7 @@ int RetVal;
 				rowPtr = 0x00;
 				colPtr = 0x00;
 
-				TeleTextLog("TeleTextPoll Reading Frame %ld, PC = 0x%04x\n", txtCurFrame, ProgramCounter);
+				TeleTextLog("TeleTextPoll Reading Frame %ld, PC = 0x%04x\n", txtCurFrame, BeebEmCommon::ProgramCounter);
 
 				fseek(txtFile, txtCurFrame * 860L + 3L * 43L, SEEK_SET);
 				fread(buff, 13 * 43, 1, txtFile);

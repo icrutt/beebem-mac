@@ -1124,10 +1124,10 @@ void CRTCWrite(int Address, int Value) {
   if (Address & 1) {
 //	if (CRTCControlReg<14) { fputc(CRTCControlReg,crtclog); fputc(Value,crtclog); }
 //	if (CRTCControlReg<14) {
-//		fprintf(crtclog,"%d (%02X) Written to register %d from %04X\n",Value,Value,CRTCControlReg,ProgramCounter);
+//		fprintf(crtclog,"%d (%02X) Written to register %d from %04X\n",Value,Value,CRTCControlReg,BeebEmCommon::ProgramCounter);
 //	}
 
-//	BeebEmLog::writeLog("%d (0x%02x) Written to register %d from 0x%04x\n", Value, Value, CRTCControlReg, ProgramCounter);
+//	BeebEmLog::writeLog("%d (0x%02x) Written to register %d from 0x%04x\n", Value, Value, CRTCControlReg, BeebEmCommon::ProgramCounter);
 	  
 	if (DebugEnabled && CRTCControlReg<14) {
 		char info[200];

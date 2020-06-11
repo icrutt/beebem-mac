@@ -186,7 +186,7 @@ static void IC32Write(unsigned char Value) {
   }
 
 //  if ( ( (bit == 1) || (bit == 2) ) && (MachineType != 3) )
-//	  fprintf(stderr, "IC32Write %d, %d, 0x%04x, 0x%02x\n", bit, ( (Value & 8) == 8), ProgramCounter, IC32State);
+//	  fprintf(stderr, "IC32Write %d, %d, 0x%04x, 0x%02x\n", bit, ( (Value & 8) == 8), BeebEmCommon::ProgramCounter, IC32State);
 
   LEDs.CapsLock=((IC32State&64)==0);
   LEDs.ShiftLock=((IC32State&128)==0);
@@ -214,11 +214,11 @@ static void IC32Write(unsigned char Value) {
 
   if ( (bit == 2) && ( (Value & 8)  == 0) && (MachineType != 3) )		//  Write Command
   {
-//	  fprintf(stderr, "Speech SlowDataBusWriteValue 0x%02x, 0x%04x\n", SlowDataBusWriteValue, ProgramCounter);
+//	  fprintf(stderr, "Speech SlowDataBusWriteValue 0x%02x, 0x%04x\n", SlowDataBusWriteValue, BeebEmCommon::ProgramCounter);
 	  tms5220_data_w(SlowDataBusWriteValue);
   }
 //  if ( (bit == 1) && ( (Value & 8) == 0) && (MachineType != 3) )		- Read Command
-//	  fprintf(stderr, "Shouldn't happen - Speech SlowDataBusWriteValue 0x%02x, 0x%04x\n", SlowDataBusWriteValue, ProgramCounter);
+//	  fprintf(stderr, "Shouldn't happen - Speech SlowDataBusWriteValue 0x%02x, 0x%04x\n", SlowDataBusWriteValue, BeebEmCommon::ProgramCounter);
   
   DoKbdIntCheck(); /* Should really only if write enable on KBD changes */
 } /* IC32Write */
@@ -234,7 +234,7 @@ void ChipClock(int Cycles) {
 static void SlowDataBusWrite(unsigned char Value) {
   SlowDataBusWriteValue=Value;
 
-//  fprintf(stderr, "SlowDataBusWriteValue 0x%02x, 0x%04x, 0x%02x\n", IC32State, ProgramCounter, Value);
+//  fprintf(stderr, "SlowDataBusWriteValue 0x%02x, 0x%04x, 0x%02x\n", IC32State, BeebEmCommon::ProgramCounter, Value);
 	
 	/*cerr << "Slow data bus write IC32State=" << int(IC32State) << " Value=" << int(Value) << "\n";*/
   if (!(IC32State & 8)) {
@@ -281,16 +281,16 @@ static int SlowDataBusRead(void) {
   
    if ((!(IC32State & 2)) && (MachineType != 3) ) {
     result = tms5220_status_r();
-//    fprintf(stderr, "Speech READ Select SlowDataBusReadValue 0x%02x, 0x%02x, 0x%04x\n", result, IC32State, ProgramCounter);
+//    fprintf(stderr, "Speech READ Select SlowDataBusReadValue 0x%02x, 0x%02x, 0x%04x\n", result, IC32State, BeebEmCommon::ProgramCounter);
   }
 
   if ((!(IC32State & 4)) && (MachineType != 3) ) {
 	  result = 0xff;
-//	  fprintf(stderr, "Ignored - Speech WRITE Select SlowDataBusReadValue 0x%02x, 0x%02x, 0x%04x\n", result, IC32State, ProgramCounter);
+//	  fprintf(stderr, "Ignored - Speech WRITE Select SlowDataBusReadValue 0x%02x, 0x%02x, 0x%04x\n", result, IC32State, BeebEmCommon::ProgramCounter);
   }
 	  
  
-//  BeebEmLog::writeLog("SlowDataBusReadValue  IC32State = 0x%02x, PC = 0x%04x, result = 0x%02x\n", IC32State, ProgramCounter, result);
+//  BeebEmLog::writeLog("SlowDataBusReadValue  IC32State = 0x%02x, PC = 0x%04x, result = 0x%02x\n", IC32State, BeebEmCommon::ProgramCounter, result);
 
   /* cerr << "SlowDataBusRead giving 0x" << hex << result << dec << "\n"; */
   return(result);
@@ -455,7 +455,7 @@ int SysVIARead(int Address) {
 			}
 		  }
 
-//		fprintf(stderr, "SysVIARead 0x%02x, 0x%04x\n", tmp, ProgramCounter);
+//		fprintf(stderr, "SysVIARead 0x%02x, 0x%04x\n", tmp, BeebEmCommon::ProgramCounter);
 
 		UpdateIFRTopBit();
 		break;

@@ -1040,7 +1040,7 @@ void debugADLCprint(void) {
 			(int)ADLC.control1, (int)ADLC.control2, (int)ADLC.control3, (int)ADLC.control4,
 			(int)ADLC.status1, (int)ADLC.status2,
 			(int)ADLC.txfptr, (int)ADLC.rxfptr, FlagFillActive ? 1 : 0,
-			(int)irqcause, (int)sr1b2cause, (int)ProgramCounter);
+			(int)irqcause, (int)sr1b2cause, (int)BeebEmCommon::ProgramCounter);
 	DebugDisplayTrace(DEBUG_ECONET, true, info);
 }
 

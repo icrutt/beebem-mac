@@ -96,7 +96,7 @@ void SASIWrite(int Address, int Value)
 	if (!HardDriveEnabled)
 		return;
 
-//	fprintf(stderr, "SASIWrite Address = 0x%02x, Value = 0x%02x, Phase = %d, PC = 0x%04x\n", Address, Value, sasi.phase, ProgramCounter);
+//	fprintf(stderr, "SASIWrite Address = 0x%02x, Value = 0x%02x, Phase = %d, PC = 0x%04x\n", Address, Value, sasi.phase, BeebEmCommon::ProgramCounter);
 	
     switch (Address)
     {
@@ -147,7 +147,7 @@ int data = 0xff;
         break;
     }
 
-//	fprintf(stderr, "SASIRead Address = 0x%02x, Value = 0x%02x, Phase = %d, PC = 0x%04x\n", Address, data, sasi.phase, ProgramCounter);
+//	fprintf(stderr, "SASIRead Address = 0x%02x, Value = 0x%02x, Phase = %d, PC = 0x%04x\n", Address, data, sasi.phase, BeebEmCommon::ProgramCounter);
 	
     return data;
 }
@@ -332,7 +332,7 @@ void SASIExecute(void)
 	sasi.phase = execute;
 	
 //	fprintf(stderr, "Execute 0x%02x, Param 1=0x%02x, Param 2=0x%02x, Param 3=0x%02x, Param 4=0x%02x, Param 5=0x%02x, Phase = %d, PC = 0x%04x\n", 
-//			sasi.cmd[0], sasi.cmd[1], sasi.cmd[2], sasi.cmd[3], sasi.cmd[4], sasi.cmd[5], sasi.phase, ProgramCounter);
+//			sasi.cmd[0], sasi.cmd[1], sasi.cmd[2], sasi.cmd[3], sasi.cmd[4], sasi.cmd[5], sasi.phase, BeebEmCommon::ProgramCounter);
 	
 	sasi.lun = (sasi.cmd[1]) >> 5;
 
@@ -375,7 +375,7 @@ void SASIExecute(void)
 	}
 	
 	fprintf(stderr, "Unknown Command 0x%02x, Param 1=0x%02x, Param 2=0x%02x, Param 3=0x%02x, Param 4=0x%02x, Param 5=0x%02x, Phase = %d, PC = 0x%04x\n", 
-			sasi.cmd[0], sasi.cmd[1], sasi.cmd[2], sasi.cmd[3], sasi.cmd[4], sasi.cmd[5], sasi.phase, ProgramCounter);
+			sasi.cmd[0], sasi.cmd[1], sasi.cmd[2], sasi.cmd[3], sasi.cmd[4], sasi.cmd[5], sasi.phase, BeebEmCommon::ProgramCounter);
 
 	sasi.status = (sasi.lun << 5) | 0x02;
 	sasi.message = 0x00;
