@@ -44,31 +44,7 @@
 #include "econet.h"
 #include "Arm.h"
 #include "BeebEmLog.hpp"
-
-// Used only by 6502core
-FILE *InstrLog;
-FILE *osclilog; //=fopen("/oscli.log","wt");
-static unsigned int InstrCount;
-static int CurrentInstruction;
-int CPUDebug=0;
-static int Accumulator,XReg,YReg;
-static unsigned char StackReg,PSR;
-static unsigned char IRQCycles;
-typedef int int16;
-inline static void SBCInstrHandler(int16 operand);
-
-/* Number of cycles VIAs advanced for mem read and writes */
-unsigned int ViaCycles;
-
-/* Number of additional cycles for IO read / writes */
-int IOCycles=0;
-
-/* Flag indicating if an interrupt is due */
-bool IntDue=false;
-
-static unsigned char Branched;
-// Branched - 1 if the instruction branched
-// ***************************
+#include "via.h"
 
 // Needs to be passed to the CPU code another way (by registering with the CPU object)
 extern CArm *arm;
@@ -163,7 +139,7 @@ void PollVIAs(unsigned int nCycles);
 void PollHardware(unsigned int Cycles);
 
 /*----------------------------------------------------------------------------*/
-inline void Carried() {
+inline void CPU6502::Carried() {
 	// Correct cycle count for indirection across page boundary
 	if (((CurrentInstruction & 0xf)==0x1 ||
 		 (CurrentInstruction & 0xf)==0x9 ||
@@ -180,7 +156,7 @@ inline void Carried() {
 }
 
 /*----------------------------------------------------------------------------*/
-void DoIntCheck(void)
+void CPU6502::DoIntCheck()
 {
 	if (!IntDue)
 	{
@@ -200,7 +176,7 @@ void DoIntCheck(void)
 /*----------------------------------------------------------------------------*/
 // IO read + write take extra cycle & require sync with 1MHz clock (taken 
 // from Model-b - have not seen this documented anywhere)
-void SyncIO(void)
+void CPU6502::SyncIO()
 {
 	if ((BeebEmCommon::TotalCycles+BeebEmCommon::Cycles) & 1)
 	{
@@ -214,13 +190,13 @@ void SyncIO(void)
 	}
 }
 
-void AdjustForIORead(void)
+void CPU6502::AdjustForIORead()
 {
 	BeebEmCommon::Cycles++;
 	IOCycles += 1;
 	PollVIAs(1);
 }
-void AdjustForIOWrite(void)
+void CPU6502::AdjustForIOWrite()
 {
 	BeebEmCommon::Cycles++;
 	IOCycles += 1;
@@ -228,7 +204,7 @@ void AdjustForIOWrite(void)
 	DoIntCheck();
 }
 /*----------------------------------------------------------------------------*/
-void AdvanceCyclesForMemRead(void)
+void CPU6502::AdvanceCyclesForMemRead()
 {
 	// Advance VIAs to point where mem read happens
 	BeebEmCommon::Cycles += CyclesToMemRead[CurrentInstruction];
@@ -242,7 +218,7 @@ void AdvanceCyclesForMemRead(void)
 		DoIntCheck();
 	}
 }
-void AdvanceCyclesForMemWrite(void)
+void CPU6502::AdvanceCyclesForMemWrite()
 {
 	// Advance VIAs to point where mem write happens
 	BeebEmCommon::Cycles += CyclesToMemWrite[CurrentInstruction];
@@ -253,7 +229,7 @@ void AdvanceCyclesForMemWrite(void)
 
 /*----------------------------------------------------------------------------*/
 
-inline int SignExtendByte(signed char in) {
+inline int CPU6502::SignExtendByte(signed char in) {
   /*if (in & 0x80) return(in | 0xffffff00); else return(in); */
   /* I think this should sign extend by virtue of the casts - gcc does anyway - the code
   above will definitly do the trick */
@@ -263,27 +239,27 @@ inline int SignExtendByte(signed char in) {
 /*----------------------------------------------------------------------------*/
 /* Set the Z flag if 'in' is 0, and N if bit 7 is set - leave all other bits  */
 /* untouched.                                                                 */
-inline static void SetPSRZN(const unsigned char in) {
+inline void CPU6502::SetPSRZN(const unsigned char in) {
   PSR&=~(FlagZ | FlagN);
   PSR|=((in==0)<<1) | (in & 128);
 }; /* SetPSRZN */
 
 /*----------------------------------------------------------------------------*/
 /* Note: n is 128 for true - not 1                                            */
-inline static void SetPSR(int mask,int c,int z,int i,int d,int b, int v, int n) {
+inline void CPU6502::SetPSR(int mask,int c,int z,int i,int d,int b, int v, int n) {
   PSR&=~mask;
   PSR|=c | (z<<1) | (i<<2) | (d<<3) | (b<<4) | (v<<6) | n;
 } /* SetPSR */
 
 /*----------------------------------------------------------------------------*/
 /* NOTE!!!!! n is 128 or 0 - not 1 or 0                                       */
-inline static void SetPSRCZN(int c,int z, int n) {
+inline void CPU6502::SetPSRCZN(int c,int z, int n) {
   PSR&=~(FlagC | FlagZ | FlagN);
   PSR|=c | (z<<1) | n;
 } /* SetPSRCZN */
 
 /*----------------------------------------------------------------------------*/
-void DumpRegs(void) {
+void CPU6502::DumpRegs() {
   static char FlagNames[]="CZIDB-VNczidb-vn";
   int FlagNum;
 
@@ -295,25 +271,25 @@ void DumpRegs(void) {
 } /* DumpRegs */
 
 /*----------------------------------------------------------------------------*/
-inline static void Push(unsigned char ToPush) {
+inline void CPU6502::Push(unsigned char ToPush) {
   BEEBWRITEMEM_DIRECT(0x100+StackReg,ToPush);
   StackReg--;
 } /* Push */
 
 /*----------------------------------------------------------------------------*/
-inline static unsigned char Pop(void) {
+inline unsigned char CPU6502::Pop(void) {
   StackReg++;
   return(WholeRam[0x100+StackReg]);
 } /* Pop */
 
 /*----------------------------------------------------------------------------*/
-inline static void PushWord(int16 topush) {
+inline void CPU6502::PushWord(int16 topush) {
   Push((topush>>8) & 255);
   Push(topush & 255);
 } /* PushWord */
 
 /*----------------------------------------------------------------------------*/
-inline static int16 PopWord() {
+inline int16 CPU6502::PopWord() {
   int16 RetValue;
 
   RetValue=Pop();
@@ -323,7 +299,7 @@ inline static int16 PopWord() {
 
 /*-------------------------------------------------------------------------*/
 /* Relative addressing mode handler                                        */
-inline static int16 RelAddrModeHandler_Data(void) {
+inline int16 CPU6502::RelAddrModeHandler_Data() {
   int EffectiveAddress;
 
   /* For branches - is this correct - i.e. is the program counter incremented
@@ -335,7 +311,7 @@ inline static int16 RelAddrModeHandler_Data(void) {
 } /* RelAddrModeHandler */
 
 /*----------------------------------------------------------------------------*/
-inline static void ADCInstrHandler(int16 operand) {
+inline void CPU6502::ADCInstrHandler(int16 operand) {
   /* NOTE! Not sure about C and V flags */
   int TmpResultV,TmpResultC;
   if (!GETDFLAG) {
@@ -376,13 +352,13 @@ inline static void ADCInstrHandler(int16 operand) {
 } /* ADCInstrHandler */
 
 /*----------------------------------------------------------------------------*/
-inline static void ANDInstrHandler(int16 operand) {
+inline void CPU6502::ANDInstrHandler(int16 operand) {
   Accumulator=Accumulator & operand;
   PSR&=~(FlagZ | FlagN);
   PSR|=((Accumulator==0)<<1) | (Accumulator & 128);
 } /* ANDInstrHandler */
 
-inline static void ASLInstrHandler(int16 address) {
+inline void CPU6502::ASLInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	BeebEmCommon::Cycles+=1;
@@ -395,7 +371,7 @@ inline static void ASLInstrHandler(int16 address) {
 	SetPSRCZN((oldVal & 128)>0, newVal==0,newVal & 128);
 } /* ASLInstrHandler */
 
-inline static void TRBInstrHandler(int16 address) {
+inline void CPU6502::TRBInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	newVal=(Accumulator ^ 255) & oldVal;
@@ -404,7 +380,7 @@ inline static void TRBInstrHandler(int16 address) {
 	PSR|=((Accumulator & oldVal)==0) ? 2 : 0;
 } // TRBInstrHandler
 
-inline static void TSBInstrHandler(int16 address) {
+inline void CPU6502::TSBInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	newVal=Accumulator | oldVal;
@@ -413,7 +389,7 @@ inline static void TSBInstrHandler(int16 address) {
 	PSR|=((Accumulator & oldVal)==0) ? 2 : 0;
 } // TSBInstrHandler
 
-inline static void ASLInstrHandler_Acc(void) {
+inline void CPU6502::ASLInstrHandler_Acc(void) {
   unsigned char oldVal,newVal;
   /* Accumulator */
   oldVal=Accumulator;
@@ -421,61 +397,61 @@ inline static void ASLInstrHandler_Acc(void) {
   SetPSRCZN((oldVal & 128)>0, newVal==0,newVal & 128);
 } /* ASLInstrHandler_Acc */
 
-inline static void BCCInstrHandler(void) {
+inline void CPU6502::BCCInstrHandler(void) {
   if (!GETCFLAG) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else BeebEmCommon::ProgramCounter++;
 } /* BCCInstrHandler */
 
-inline static void BCSInstrHandler(void) {
+inline void CPU6502::BCSInstrHandler(void) {
   if (GETCFLAG) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else BeebEmCommon::ProgramCounter++;
 } /* BCSInstrHandler */
 
-inline static void BEQInstrHandler(void) {
+inline void CPU6502::BEQInstrHandler(void) {
   if (GETZFLAG) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else BeebEmCommon::ProgramCounter++;
 } /* BEQInstrHandler */
 
-inline static void BITInstrHandler(int16 operand) {
+inline void CPU6502::BITInstrHandler(int16 operand) {
   PSR&=~(FlagZ | FlagN | FlagV);
   /* z if result 0, and NV to top bits of operand */
   PSR|=(((Accumulator & operand)==0)<<1) | (operand & 192);
 } /* BITInstrHandler */
 
-inline static void BITImmedInstrHandler(int16 operand) {
+inline void CPU6502::BITImmedInstrHandler(int16 operand) {
 	PSR&=~FlagZ;
 	/* z if result 0, and NV to top bits of operand */
 	PSR|=(((Accumulator & operand)==0)<<1);
 } /* BITImmedInstrHandler */
 
-inline static void BMIInstrHandler(void) {
+inline void CPU6502::BMIInstrHandler(void) {
   if (GETNFLAG) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else BeebEmCommon::ProgramCounter++;
 } /* BMIInstrHandler */
 
-inline static void BNEInstrHandler(void) {
+inline void CPU6502::BNEInstrHandler(void) {
   if (!GETZFLAG) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else BeebEmCommon::ProgramCounter++;
 } /* BNEInstrHandler */
 
-inline static void BPLInstrHandler(void) {
+inline void CPU6502::BPLInstrHandler(void) {
   if (!GETNFLAG) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else BeebEmCommon::ProgramCounter++;
 }; /* BPLInstrHandler */
 
-inline static void BRKInstrHandler(void) {
+inline void CPU6502::BRKInstrHandler(void) {
   if (CPUDebug) {
   fprintf(stderr,"BRK Instruction at 0x%04x after %i instructions. ACCON: 0x%02x ROMSEL: 0x%02x",BeebEmCommon::ProgramCounter,InstrCount,ACCCON,PagedRomReg);
   //fclose(InstrLog);
@@ -488,26 +464,26 @@ inline static void BRKInstrHandler(void) {
   BeebEmCommon::ProgramCounter=BeebReadMem(0xfffe) | (BeebReadMem(0xffff)<<8);
 } /* BRKInstrHandler */
 
-inline static void BVCInstrHandler(void) {
+inline void CPU6502::BVCInstrHandler(void) {
   if (!GETVFLAG) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else BeebEmCommon::ProgramCounter++;
 } /* BVCInstrHandler */
 
-inline static void BVSInstrHandler(void) {
+inline void CPU6502::BVSInstrHandler(void) {
   if (GETVFLAG) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
   } else BeebEmCommon::ProgramCounter++;
 } /* BVSInstrHandler */
 
-inline static void BRAInstrHandler(void) {
+inline void CPU6502::BRAInstrHandler(void) {
     BeebEmCommon::ProgramCounter=RelAddrModeHandler_Data();
     Branched=1;
 } /* BRAnstrHandler */
 
-inline static void CMPInstrHandler(int16 operand) {
+inline void CPU6502::CMPInstrHandler(int16 operand) {
   /* NOTE! Should we consult D flag ? */
   unsigned char result=Accumulator-operand;
   unsigned char CFlag;
@@ -515,17 +491,17 @@ inline static void CMPInstrHandler(int16 operand) {
   SetPSRCZN(CFlag,Accumulator==operand,result & 128);
 } /* CMPInstrHandler */
 
-inline static void CPXInstrHandler(int16 operand) {
+inline void CPU6502::CPXInstrHandler(int16 operand) {
   unsigned char result=(XReg-operand);
   SetPSRCZN(XReg>=operand,XReg==operand,result & 128);
 } /* CPXInstrHandler */
 
-inline static void CPYInstrHandler(int16 operand) {
+inline void CPU6502::CPYInstrHandler(int16 operand) {
   unsigned char result=(YReg-operand);
   SetPSRCZN(YReg>=operand,YReg==operand,result & 128);
 } /* CPYInstrHandler */
 
-inline static void DECInstrHandler(int16 address) {
+inline void CPU6502::DECInstrHandler(int16 address) {
 	unsigned char val;
 	val=ReadPaged(address);
 	BeebEmCommon::Cycles+=1;
@@ -538,22 +514,22 @@ inline static void DECInstrHandler(int16 address) {
 	SetPSRZN(val);
 } /* DECInstrHandler */
 
-inline static void DEXInstrHandler(void) {
+inline void CPU6502::DEXInstrHandler(void) {
   XReg=(XReg-1) & 255;
   SetPSRZN(XReg);
 } /* DEXInstrHandler */
 
-inline static void DEAInstrHandler(void) {
+inline void CPU6502::DEAInstrHandler(void) {
   Accumulator=(Accumulator-1) & 255;
   SetPSRZN(Accumulator);
 } /* DEAInstrHandler */
 
-inline static void EORInstrHandler(int16 operand) {
+inline void CPU6502::EORInstrHandler(int16 operand) {
   Accumulator^=operand;
   SetPSRZN(Accumulator);
 } /* EORInstrHandler */
 
-inline static void INCInstrHandler(int16 address) {
+inline void CPU6502::INCInstrHandler(int16 address) {
 	unsigned char val;
 	val=ReadPaged(address);
 	BeebEmCommon::Cycles+=1;
@@ -566,19 +542,19 @@ inline static void INCInstrHandler(int16 address) {
 	SetPSRZN(val);
 } /* INCInstrHandler */
 
-inline static void INXInstrHandler(void) {
+inline void CPU6502::INXInstrHandler(void) {
   XReg+=1;
   XReg&=255;
   SetPSRZN(XReg);
 } /* INXInstrHandler */
 
-inline static void INAInstrHandler(void) {
+inline void CPU6502::INAInstrHandler(void) {
   Accumulator+=1;
   Accumulator&=255;
   SetPSRZN(Accumulator);
 } /* INAInstrHandler */
 
-inline static void JSRInstrHandler(int16 address) {
+inline void CPU6502::JSRInstrHandler(int16 address) {
   PushWord(BeebEmCommon::ProgramCounter-1);
   BeebEmCommon::ProgramCounter=address;
 /*  if (BeebEmCommon::ProgramCounter==0xffdd) {
@@ -601,22 +577,22 @@ inline static void JSRInstrHandler(int16 address) {
 
 } /* JSRInstrHandler */
 
-inline static void LDAInstrHandler(int16 operand) {
+inline void CPU6502::LDAInstrHandler(int16 operand) {
   Accumulator=operand;
   SetPSRZN(Accumulator);
 } /* LDAInstrHandler */
 
-inline static void LDXInstrHandler(int16 operand) {
+inline void CPU6502::LDXInstrHandler(int16 operand) {
   XReg=operand;
   SetPSRZN(XReg);
 } /* LDXInstrHandler */
 
-inline static void LDYInstrHandler(int16 operand) {
+inline void CPU6502::LDYInstrHandler(int16 operand) {
   YReg=operand;
   SetPSRZN(YReg);
 } /* LDYInstrHandler */
 
-inline static void LSRInstrHandler(int16 address) {
+inline void CPU6502::LSRInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	BeebEmCommon::Cycles+=1;
@@ -629,7 +605,7 @@ inline static void LSRInstrHandler(int16 address) {
 	SetPSRCZN((oldVal & 1)>0, newVal==0,0);
 } /* LSRInstrHandler */
 
-inline static void LSRInstrHandler_Acc(void) {
+inline void CPU6502::LSRInstrHandler_Acc(void) {
   unsigned char oldVal,newVal;
   /* Accumulator */
   oldVal=Accumulator;
@@ -637,12 +613,12 @@ inline static void LSRInstrHandler_Acc(void) {
   SetPSRCZN((oldVal & 1)>0, newVal==0,0);
 } /* LSRInstrHandler_Acc */
 
-inline static void ORAInstrHandler(int16 operand) {
+inline void CPU6502::ORAInstrHandler(int16 operand) {
   Accumulator=Accumulator | operand;
   SetPSRZN(Accumulator);
 } /* ORAInstrHandler */
 
-inline static void ROLInstrHandler(int16 address) {
+inline void CPU6502::ROLInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	BeebEmCommon::Cycles+=1;
@@ -656,7 +632,7 @@ inline static void ROLInstrHandler(int16 address) {
 	SetPSRCZN((oldVal & 128)>0,newVal==0,newVal & 128);
 } /* ROLInstrHandler */
 
-inline static void ROLInstrHandler_Acc(void) {
+inline void CPU6502::ROLInstrHandler_Acc(void) {
 	unsigned char oldVal,newVal;
 	
 	oldVal=Accumulator;
@@ -666,7 +642,7 @@ inline static void ROLInstrHandler_Acc(void) {
 	SetPSRCZN((oldVal & 128)>0,newVal==0,newVal & 128);
 } /* ROLInstrHandler_Acc */
 
-inline static void RORInstrHandler(int16 address) {
+inline void CPU6502::RORInstrHandler(int16 address) {
 	unsigned char oldVal,newVal;
 	oldVal=ReadPaged(address);
 	BeebEmCommon::Cycles+=1;
@@ -680,7 +656,7 @@ inline static void RORInstrHandler(int16 address) {
 	SetPSRCZN(oldVal & 1,newVal==0,newVal & 128);
 } /* RORInstrHandler */
 
-inline static void RORInstrHandler_Acc(void) {
+inline void CPU6502::RORInstrHandler_Acc(void) {
   unsigned char oldVal,newVal;
 
   oldVal=Accumulator;
@@ -690,7 +666,7 @@ inline static void RORInstrHandler_Acc(void) {
   SetPSRCZN(oldVal & 1,newVal==0,newVal & 128);
 } /* RORInstrHandler_Acc */
 
-inline static void SBCInstrHandler(int16 operand) {
+inline void CPU6502::SBCInstrHandler(int16 operand) {
   /* NOTE! Not sure about C and V flags */
   int TmpResultV,TmpResultC;
   unsigned char nhn,nln;
@@ -738,15 +714,15 @@ inline static void SBCInstrHandler(int16 operand) {
   }
 } /* SBCInstrHandler */
 
-inline static void STXInstrHandler(int16 address) {
+inline void CPU6502::STXInstrHandler(int16 address) {
   WritePaged(address,XReg);
 } /* STXInstrHandler */
 
-inline static void STYInstrHandler(int16 address) {
+inline void CPU6502::STYInstrHandler(int16 address) {
   WritePaged(address,YReg);
 } /* STYInstrHandler */
 
-inline static void BadInstrHandler(int opcode) {
+inline void CPU6502::BadInstrHandler(int opcode) {
 	if (!BeebEmCommon::IgnoreIllegalInstructions)
 	{
 #ifdef WIN32
@@ -797,7 +773,7 @@ inline static void BadInstrHandler(int opcode) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute  addressing mode handler                                       */
-inline static int16 AbsAddrModeHandler_Data(void) {
+inline int16 CPU6502::AbsAddrModeHandler_Data(void) {
   int FullAddress;
 
   /* Get the address from after the instruction */
@@ -810,7 +786,7 @@ inline static int16 AbsAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute  addressing mode handler                                       */
-inline static int16 AbsAddrModeHandler_Address(void) {
+inline int16 CPU6502::AbsAddrModeHandler_Address(void) {
   int FullAddress;
 
   /* Get the address from after the instruction */
@@ -822,13 +798,13 @@ inline static int16 AbsAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page addressing mode handler                                       */
-inline static int16 ZeroPgAddrModeHandler_Address(void) {
+inline int16 CPU6502::ZeroPgAddrModeHandler_Address(void) {
   return(ReadPaged(BeebEmCommon::ProgramCounter++));
 } /* ZeroPgAddrModeHandler_Address */
 
 /*-------------------------------------------------------------------------*/
 /* Indexed with X preinc addressing mode handler                           */
-inline static int16 IndXAddrModeHandler_Data(void) {
+inline int16 CPU6502::IndXAddrModeHandler_Data(void) {
   unsigned char ZeroPageAddress;
   int EffectiveAddress;
 
@@ -840,7 +816,7 @@ inline static int16 IndXAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Indexed with X preinc addressing mode handler                           */
-inline static int16 IndXAddrModeHandler_Address(void) {
+inline int16 CPU6502::IndXAddrModeHandler_Address(void) {
   unsigned char ZeroPageAddress;
   int EffectiveAddress;
 
@@ -852,7 +828,7 @@ inline static int16 IndXAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Indexed with Y postinc addressing mode handler                          */
-inline static int16 IndYAddrModeHandler_Data(void) {
+inline int16 CPU6502::IndYAddrModeHandler_Data(void) {
   int EffectiveAddress;
   unsigned char ZPAddr=ReadPaged(BeebEmCommon::ProgramCounter++);
   EffectiveAddress=WholeRam[ZPAddr]+YReg;
@@ -864,7 +840,7 @@ inline static int16 IndYAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Indexed with Y postinc addressing mode handler                          */
-inline static int16 IndYAddrModeHandler_Address(void) {
+inline int16 CPU6502::IndYAddrModeHandler_Address(void) {
   int EffectiveAddress;
   unsigned char ZPAddr=ReadPaged(BeebEmCommon::ProgramCounter++);
   EffectiveAddress=WholeRam[ZPAddr]+YReg;
@@ -876,7 +852,7 @@ inline static int16 IndYAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page wih X offset addressing mode handler                          */
-inline static int16 ZeroPgXAddrModeHandler_Data(void) {
+inline int16 CPU6502::ZeroPgXAddrModeHandler_Data(void) {
   int EffectiveAddress;
   EffectiveAddress=(ReadPaged(BeebEmCommon::ProgramCounter++)+XReg) & 255;
   return(WholeRam[EffectiveAddress]);
@@ -884,7 +860,7 @@ inline static int16 ZeroPgXAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page wih X offset addressing mode handler                          */
-inline static int16 ZeroPgXAddrModeHandler_Address(void) {
+inline int16 CPU6502::ZeroPgXAddrModeHandler_Address(void) {
   int EffectiveAddress;
   EffectiveAddress=(ReadPaged(BeebEmCommon::ProgramCounter++)+XReg) & 255;
   return(EffectiveAddress);
@@ -892,7 +868,7 @@ inline static int16 ZeroPgXAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute with X offset addressing mode handler                          */
-inline static int16 AbsXAddrModeHandler_Data(void) {
+inline int16 CPU6502::AbsXAddrModeHandler_Data(void) {
   int EffectiveAddress;
   GETTWOBYTEFROMPC(EffectiveAddress);
   if ((EffectiveAddress & 0xff00)!=((EffectiveAddress+XReg) & 0xff00)) Carried();
@@ -904,7 +880,7 @@ inline static int16 AbsXAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute with X offset addressing mode handler                          */
-inline static int16 AbsXAddrModeHandler_Address(void) {
+inline int16 CPU6502::AbsXAddrModeHandler_Address(void) {
   int EffectiveAddress;
   GETTWOBYTEFROMPC(EffectiveAddress)
   if ((EffectiveAddress & 0xff00)!=((EffectiveAddress+XReg) & 0xff00)) Carried();
@@ -916,7 +892,7 @@ inline static int16 AbsXAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute with Y offset addressing mode handler                          */
-inline static int16 AbsYAddrModeHandler_Data(void) {
+inline int16 CPU6502::AbsYAddrModeHandler_Data(void) {
   int EffectiveAddress;
   GETTWOBYTEFROMPC(EffectiveAddress);
   if ((EffectiveAddress & 0xff00)!=((EffectiveAddress+YReg) & 0xff00)) Carried();
@@ -928,7 +904,7 @@ inline static int16 AbsYAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Absolute with Y offset addressing mode handler                          */
-inline static int16 AbsYAddrModeHandler_Address(void) {
+inline int16 CPU6502::AbsYAddrModeHandler_Address(void) {
   int EffectiveAddress;
   GETTWOBYTEFROMPC(EffectiveAddress)
   if ((EffectiveAddress & 0xff00)!=((EffectiveAddress+YReg) & 0xff00)) Carried();
@@ -940,7 +916,7 @@ inline static int16 AbsYAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Indirect addressing mode handler                                        */
-inline static int16 IndAddrModeHandler_Address(void) {
+inline int16 CPU6502::IndAddrModeHandler_Address(void) {
   /* For jump indirect only */
   int VectorLocation;
   int EffectiveAddress;
@@ -963,7 +939,7 @@ inline static int16 IndAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page Indirect addressing mode handler                                        */
-inline static int16 ZPIndAddrModeHandler_Address(void) {
+inline int16 CPU6502::ZPIndAddrModeHandler_Address(void) {
   int VectorLocation;
   int EffectiveAddress;
 
@@ -976,7 +952,7 @@ inline static int16 ZPIndAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page Indirect addressing mode handler                                        */
-inline static int16 ZPIndAddrModeHandler_Data(void) {
+inline int16 CPU6502::ZPIndAddrModeHandler_Data(void) {
   int VectorLocation;
   int EffectiveAddress;
 
@@ -989,7 +965,7 @@ inline static int16 ZPIndAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Pre-indexed absolute Indirect addressing mode handler                                        */
-inline static int16 IndAddrXModeHandler_Address(void) {
+inline int16 CPU6502::IndAddrXModeHandler_Address(void) {
   /* For jump indirect only */
   int VectorLocation;
   int EffectiveAddress;
@@ -1005,7 +981,7 @@ inline static int16 IndAddrXModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page with Y offset addressing mode handler                         */
-inline static int16 ZeroPgYAddrModeHandler_Data(void) {
+inline int16 CPU6502::ZeroPgYAddrModeHandler_Data(void) {
   int EffectiveAddress;
   EffectiveAddress=(ReadPaged(BeebEmCommon::ProgramCounter++)+YReg) & 255;
   return(WholeRam[EffectiveAddress]);
@@ -1013,7 +989,7 @@ inline static int16 ZeroPgYAddrModeHandler_Data(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Zero page with Y offset addressing mode handler                         */
-inline static int16 ZeroPgYAddrModeHandler_Address(void) {
+inline int16 CPU6502::ZeroPgYAddrModeHandler_Address(void) {
   int EffectiveAddress;
   EffectiveAddress=(ReadPaged(BeebEmCommon::ProgramCounter++)+YReg) & 255;
   return(EffectiveAddress);
@@ -1021,7 +997,7 @@ inline static int16 ZeroPgYAddrModeHandler_Address(void) {
 
 /*-------------------------------------------------------------------------*/
 /* Initialise 6502core                                                     */
-void Init6502core(void) {
+void CPU6502::Init6502core(void) {
   BeebEmCommon::ProgramCounter=BeebReadMem(0xfffc) | (BeebReadMem(0xfffd)<<8);
   Accumulator=XReg=YReg=0; /* For consistancy of execution */
   StackReg=0xff; /* Initial value ? */
@@ -1032,10 +1008,8 @@ void Init6502core(void) {
   BeebEmCommon::NMILock=0;
 } /* Init6502core */
 
-#include "via.h"
-
 /*-------------------------------------------------------------------------*/
-void DoInterrupt(void) {
+void CPU6502::DoInterrupt(void) {
   PushWord(BeebEmCommon::ProgramCounter);
   Push(PSR & ~FlagB);
   BeebEmCommon::ProgramCounter=BeebReadMem(0xfffe) | (BeebReadMem(0xffff)<<8);
@@ -1044,7 +1018,7 @@ void DoInterrupt(void) {
 } /* DoInterrupt */
 
 /*-------------------------------------------------------------------------*/
-void DoNMI(void) {
+void CPU6502::DoNMI(void) {
   BeebEmCommon::NMILock=1;
   PushWord(BeebEmCommon::ProgramCounter);
   Push(PSR);
@@ -1056,7 +1030,7 @@ void DoNMI(void) {
 int i186_execute(int num_cycles);
 int DebugDisassembleInstruction(int addr, bool host, char *opstr);
 
-void Dis6502(char *str)
+void CPU6502::Dis6502(char *str)
 {
     DebugDisassembleInstruction(BeebEmCommon::ProgramCounter, true, str);
 	
@@ -1071,7 +1045,7 @@ void Dis6502(char *str)
 	sprintf(str + strlen(str), (PSR & FlagN) ? "N" : ".");
 }
 
-void MemoryDump6502(int addr, int count)
+void CPU6502::MemoryDump6502(int addr, int count)
 {
 	int a, b;
 	int s, e;
@@ -1106,7 +1080,7 @@ void MemoryDump6502(int addr, int count)
 
 /*-------------------------------------------------------------------------*/
 /* Execute one 6502 instruction, move program counter on                   */
-void Exec6502Instruction(void) {
+void CPU6502::Exec6502Instruction(void) {
   static int OldNMIStatus;
   int BadCount=0;
   int OldPC;
@@ -2267,7 +2241,7 @@ void Exec6502Instruction(void) {
 } /* Exec6502Instruction */
 
 
-void PollVIAs(unsigned int nCycles)
+void CPU6502::PollVIAs(unsigned int nCycles)
 {
 	if (nCycles != 0)
 	{
@@ -2281,7 +2255,7 @@ void PollVIAs(unsigned int nCycles)
 	}
 }
 
-void PollHardware(unsigned int nCycles)
+void CPU6502::PollHardware(unsigned int nCycles)
 {
 	BeebEmCommon::TotalCycles+=nCycles;
 	
@@ -2327,13 +2301,13 @@ void PollHardware(unsigned int nCycles)
 
 /*-------------------------------------------------------------------------*/
 /* Dump state                                                              */
-void core_dumpstate(void) {
+void CPU6502::core_dumpstate(void) {
   fprintf(stderr, "core:\n");
   DumpRegs();
 }; /* core_dumpstate */
 
 /*-------------------------------------------------------------------------*/
-void Save6502UEF(FILE *SUEF) {
+void CPU6502::Save6502UEF(FILE *SUEF) {
 	fput16(0x0460,SUEF);
 	fput32(16,SUEF);
 	fput16(BeebEmCommon::ProgramCounter,SUEF);
@@ -2349,7 +2323,7 @@ void Save6502UEF(FILE *SUEF) {
 	fput16(0,SUEF);
 }
 
-void Load6502UEF(FILE *SUEF) {
+void CPU6502::Load6502UEF(FILE *SUEF) {
 	int Dlong;
 	BeebEmCommon::ProgramCounter=fget16(SUEF);
 	Accumulator=fgetc(SUEF);
