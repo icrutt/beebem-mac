@@ -23,6 +23,7 @@
 #define BEEBMEM_HEADER
 
 #include "stdio.h"
+#include "6502core.h"
 
 extern int RomWritable[16]; /* Allow writing to ROMs on an individual basis */
 
@@ -78,4 +79,5 @@ void LoadPrivMemUEF(FILE *SUEF);
 void LoadFileMemUEF(FILE *SUEF);
 void LoadSWRMMemUEF(FILE *SUEF);
 void LoadIntegraBHiddenMemUEF(FILE *SUEF);
+void initBeebMem(CPU6502* cpu);
 #endif

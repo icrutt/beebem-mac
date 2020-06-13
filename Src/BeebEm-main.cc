@@ -48,7 +48,8 @@
 extern void * PushSymbolicHotKeyMode(OptionBits inOptions) __attribute__((weak_import));
 extern void PopSymbolicHotKeyMode(void * inToken)          __attribute__((weak_import));
 
-
+static CPU6502* BeebCPU;
+static CArm* arm;
 
 int done = 0;
 #include "via.h"
@@ -516,7 +517,7 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
                     std::cout << "Executing..." << std::endl;
                     
                     for (int i = 0; i < c; ++i)
-                        Exec6502Instruction();
+                        BeebCPU->Exec6502Instruction(arm);
                     
                 }
             }
@@ -537,12 +538,15 @@ int BeebEmMain()
 void *token;
 int i;
 
+    BeebCPU = new CPU6502();
+    
   BeebEmLog::writeLog("Version: %s %s\n", Version, VersionDate);
 
 //  for (i = 0; i < argc; ++i)
 //	BeebEmLog::writeLog("Arg %d = %s\n", i, argv[i]);
 
-  mainWin=new BeebWin();
+  mainWin=new BeebWin(BeebCPU);
+    initBeebMem(BeebCPU);
   BeebEmLog::writeLog("Instantiated BeebWin\n");
   atexit(AtExitHandler);
 

@@ -30,6 +30,7 @@
 #include "port.h"
 #include "video.h"
 #include "BeebEmLog.hpp"
+#include "6502core.h"
 #include <iostream>
 
 typedef union {
@@ -60,6 +61,7 @@ class BeebWin {
 
 	int OldAutoRepeat; /* -1 means we don't know, 0 and 1 are as returned from XGetKeyboardControl */
 	int DataSize;
+    CPU6502* beebCPU;
 
 public:
 	unsigned char cols[256]; /* Beeb colour lookup */
@@ -91,7 +93,7 @@ public:
 
 	bool Initialise(char *home);
 
-	BeebWin();
+	BeebWin(CPU6502* cpu);
 	~BeebWin();
 	void updateLines(int starty, int nlines);
 	void screenblit(int starty, int nlines);

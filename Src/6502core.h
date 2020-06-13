@@ -28,6 +28,7 @@
 #include "port.h"
 #include "stdio.h"
 #include "BeebEmCommon.h"
+#include "Arm.h"
 
 typedef enum IRQ_Nums {
   sysVia,
@@ -167,13 +168,12 @@ private:
     int16 ZeroPgYAddrModeHandler_Address();
 public:
     void Init6502core();           // Initialise 6502core
-    void Exec6502Instruction();    // Execute one 6502 instruction, move program counter on
+    void Exec6502Instruction(CArm* arm);    // Execute one 6502 instruction, move program counter on
     void Save6502UEF(FILE *SUEF);
     void Load6502UEF(FILE *SUEF);
     void SyncIO();
     void AdjustForIORead();
     void AdjustForIOWrite();
-    int i186_execute(int num_cycles);
     void DumpRegs();
 };
 

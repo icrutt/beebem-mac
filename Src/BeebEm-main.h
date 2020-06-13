@@ -27,6 +27,7 @@
 //#define MULTITHREAD
 
 #include "beebwin.h"
+#include "beebmem.h"
 
 extern unsigned char MachineType;
 extern BeebWin *mainWin;

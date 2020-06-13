@@ -5,6 +5,9 @@
 // http://www.davidsharp.com
 //////////////////////////////////////////////////////////////////////
 
+#ifndef ARM_HEADER
+#define ARM_HEADER
+
 #include "TarmacGlobals.h"
 
 // define constants
@@ -256,3 +259,5 @@ private:
 	// END OF TEST ENVIRONMENT VARIABLES
 
 };
+
+#endif

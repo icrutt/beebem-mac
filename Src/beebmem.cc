@@ -94,6 +94,12 @@ int EDCAddr; // Drive control location
 bool NativeFDC; // TRUE for 8271, FALSE for DLL extension
 int FDCType;
 
+static CPU6502* beebCPU;
+
+void initBeebMem(CPU6502* cpu) {
+    beebCPU = cpu;
+}
+
 // Econet NMI enable signals. Decoded from address bus and latched by IC97
 #define INTON	TRUE
 #define INTOFF	FALSE
@@ -320,49 +326,49 @@ int Value = 0xff;
   /* IO space */
   
   if (Address >= 0xfc00 && Address < 0xfe00) {
-	  SyncIO();
-	  AdjustForIORead();
+	  beebCPU->SyncIO();
+	  beebCPU->AdjustForIORead();
   }
   
   /* VIA's first - games seem to do really heavy reaing of these */
   /* Can read from a via using either of the two 16 bytes blocks */
   if ((Address & ~0xf)==0xfe40 || (Address & ~0xf)==0xfe50) {
-	  SyncIO();
+	  beebCPU->SyncIO();
 	  Value = SysVIARead(Address & 0xf);
-	  AdjustForIORead();
+	  beebCPU->AdjustForIORead();
 	  return Value;
   }
   
   if ((Address & ~0xf)==0xfe60 || (Address & ~0xf)==0xfe70) {
-	  SyncIO();
+	  beebCPU->SyncIO();
 	  Value = UserVIARead(Address & 0xf);
-	  AdjustForIORead();
+	  beebCPU->AdjustForIORead();
 	  return Value;
   }
   
   if ((Address & ~7)==0xfe00) {
-	  SyncIO();
+	  beebCPU->SyncIO();
 	  Value = CRTCRead(Address & 0x7);
-	  AdjustForIORead();
+	  beebCPU->AdjustForIORead();
 	  return Value;
   }
   
   if (Address==0xfe08) {
-	  SyncIO();
+	  beebCPU->SyncIO();
 	  Value = Read_ACIA_Status();
-	  AdjustForIORead();
+	  beebCPU->AdjustForIORead();
 	  return Value;
   }
   if (Address==0xfe09) {
-	  SyncIO();
+	  beebCPU->SyncIO();
 	  Value = Read_ACIA_Rx_Data();
-	  AdjustForIORead();
+	  beebCPU->AdjustForIORead();
 	  return Value;
   }
   if (Address==0xfe10) {
-	  SyncIO();
+	  beebCPU->SyncIO();
 	  Value = Read_SERPROC();
-	  AdjustForIORead();
+	  beebCPU->AdjustForIORead();
 	  return Value;
   }
   
@@ -438,9 +444,9 @@ int Value = 0xff;
   }
   
   if ((Address & ~0x1f)==0xfec0 && MachineType!=3) {
-	  SyncIO();
+	  beebCPU->SyncIO();
 	  Value = AtoDRead(Address & 0xf);
-	  AdjustForIORead();
+	  beebCPU->AdjustForIORead();
 	  return Value;
   }
   
@@ -758,48 +764,48 @@ void BeebWriteMem(int Address, unsigned char Value) {
 	/* IO space */
 	
 	if (Address >= 0xfc00 && Address < 0xfe00) {
-		SyncIO();
-		AdjustForIOWrite();
+		beebCPU->SyncIO();
+		beebCPU->AdjustForIOWrite();
 	}
 	
 	/* Can write to a via using either of the two 16 bytes blocks */
 	if ((Address & ~0xf)==0xfe40 || (Address & ~0xf)==0xfe50) {
-		SyncIO();
-		AdjustForIOWrite();
+		beebCPU->SyncIO();
+		beebCPU->AdjustForIOWrite();
 		SysVIAWrite((Address & 0xf),Value);
 		return;
 	}
 	
 	/* Can write to a via using either of the two 16 bytes blocks */
 	if ((Address & ~0xf)==0xfe60 || (Address & ~0xf)==0xfe70) {
-		SyncIO();
-		AdjustForIOWrite();
+		beebCPU->SyncIO();
+		beebCPU->AdjustForIOWrite();
 		UserVIAWrite((Address & 0xf),Value);
 		return;
 	}
 	
 	if ((Address & ~0x7)==0xfe00) {
-		SyncIO();
-		AdjustForIOWrite();
+		beebCPU->SyncIO();
+		beebCPU->AdjustForIOWrite();
 		CRTCWrite(Address & 0x7, Value);
 		return;
 	}
 	
 	if (Address==0xfe08) {
-		SyncIO();
-		AdjustForIOWrite();
+		beebCPU->SyncIO();
+		beebCPU->AdjustForIOWrite();
 		Write_ACIA_Control(Value);
 		return;
 	}
 	if (Address==0xfe09) {
-		SyncIO();
-		AdjustForIOWrite();
+		beebCPU->SyncIO();
+		beebCPU->AdjustForIOWrite();
 		Write_ACIA_Tx_Data(Value);
 		return;
 	}
 	if (Address==0xfe10) {
-		SyncIO();
-		AdjustForIOWrite();
+		beebCPU->SyncIO();
+		beebCPU->AdjustForIOWrite();
 		Write_SERPROC(Value);
 		return;
 	}
@@ -858,8 +864,8 @@ void BeebWriteMem(int Address, unsigned char Value) {
 	}
 	
 	if ((Address & ~0x1f)==0xfec0 && MachineType!=3) {
-		SyncIO();
-		AdjustForIOWrite();
+		beebCPU->SyncIO();
+		beebCPU->AdjustForIOWrite();
 		AtoDWrite((Address & 0xf),Value);
 		return;
 	}

@@ -47,7 +47,7 @@
 #include "via.h"
 
 // Needs to be passed to the CPU code another way (by registering with the CPU object)
-extern CArm *arm;
+
 
 /* Note how GETCFLAG is special since being bit 0 we don't need to test it to get a clean 0/1 */
 #define GETCFLAG ((PSR & FlagC))
@@ -1080,7 +1080,7 @@ void CPU6502::MemoryDump6502(int addr, int count)
 
 /*-------------------------------------------------------------------------*/
 /* Execute one 6502 instruction, move program counter on                   */
-void CPU6502::Exec6502Instruction(void) {
+void CPU6502::Exec6502Instruction(CArm* arm) {
   static int OldNMIStatus;
   int BadCount=0;
   int OldPC;

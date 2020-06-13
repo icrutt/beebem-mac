@@ -337,7 +337,7 @@ bool bit = false;
 	{
 		if(row==-2)
 		{ // Must do a reset!
-			Init6502core();
+			beebCPU->Init6502core();
 			if ( (EnableTube) && (TubeEnabled) ) Init65C02core();
 			if (Tube186Enabled) i86_main();
 			Enable_Z80 = 0;
@@ -448,10 +448,11 @@ int BeebWin::TranslateKey(int vkey, int keyUp, int &row, int &col)
 	return(row);
 }
 
-BeebWin::BeebWin() 
+BeebWin::BeebWin(CPU6502* cpu)
 {
   IBNibRef 		nibRef;
   OSStatus		err;
+    beebCPU = cpu;
 
   // Create a Nib reference passing the name of the nib file (without the .nib extension)
   // CreateNibReference only searches into the application bundle.
@@ -1668,7 +1669,7 @@ void BeebWin::SetSoundMenu(void) {
 }
 
 /****************************************************************************/
-void BeebWin::ResetBeebSystem(unsigned char NewModelType,unsigned char TubeStatus,unsigned char LoadRoms) 
+void BeebWin::ResetBeebSystem(unsigned char NewModelType,unsigned char TubeStatus,unsigned char LoadRoms)
 {
 	BeebReleaseAllKeys();
     BeebEmCommon::SwitchOnCycles=0; // Reset delay
@@ -1677,7 +1678,7 @@ void BeebWin::ResetBeebSystem(unsigned char NewModelType,unsigned char TubeStatu
 	EnableTube=TubeStatus;
 	MachineType=NewModelType;
 	BeebMemInit(LoadRoms,m_ShiftBooted);
-	Init6502core();
+	beebCPU->Init6502core();
 	if (EnableTube) Init65C02core();
 	if (Tube186Enabled) i86_main();
 	Enable_Z80 = 0;
@@ -3737,13 +3738,13 @@ OSStatus err = noErr;
             fprintf(stderr, "Quick Load State selected\n");
 			char FileName[256];
 			sprintf(FileName, "%sbeebstate/quicksave.uef", RomPath);
-			LoadUEFState(FileName);
+			LoadUEFState(beebCPU, FileName);
             break;
 
         case 'quks':
             fprintf(stderr, "Quick Save State selected\n");
 			sprintf(FileName, "%sbeebstate/quicksave.uef", RomPath);
-			SaveUEFState(FileName);
+			SaveUEFState(beebCPU, FileName);
             break;
 
         case 'rsts':
@@ -4545,7 +4546,7 @@ OSErr err = noErr;
 	if ( ! ((strstr(path, ".UEF")) ||(strstr(path, ".UEF"))) )
 		strcat(path, ".uef");
 	
-	SaveUEFState(path);
+	SaveUEFState(beebCPU, path);
 }
 
 void BeebWin::RestoreState()
@@ -4555,7 +4556,7 @@ OSErr err = noErr;
 
 //	err = GetOneFileWithPreview(path, UEFFilterProc);
 	if (err) return;
-	LoadUEFState(path);
+	LoadUEFState(beebCPU,path);
 }
 
 bool BeebWin::PrinterFile()

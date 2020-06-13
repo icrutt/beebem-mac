@@ -47,7 +47,7 @@ unsigned int fget16(FILE *fileptr) {
 	return(tmpvar);
 }
 
-void SaveUEFState(char *StateName) {
+void SaveUEFState(CPU6502* cpu,char *StateName) {
 	UEFState=fopen(StateName,"wb");
 	if (UEFState != NULL)
 	{
@@ -55,7 +55,7 @@ void SaveUEFState(char *StateName) {
 		fputc(0,UEFState); // UEF Header
 		fputc(10,UEFState); fputc(0,UEFState); // Version
 		SaveEmuUEF(UEFState);
-		Save6502UEF(UEFState);
+		cpu->Save6502UEF(UEFState);
 		SaveMemUEF(UEFState);
 		SaveVideoUEF(UEFState);
 		SaveVIAUEF(UEFState);
@@ -80,7 +80,7 @@ void SaveUEFState(char *StateName) {
 	}
 }
 
-void LoadUEFState(char *StateName) {
+void LoadUEFState(CPU6502* cpu,char *StateName) {
 	char errmsg[256];
 	char UEFId[10];
 	long RPos=0,FLength,CPos;
@@ -111,7 +111,7 @@ void LoadUEFState(char *StateName) {
 			sprintf(errmsg,"Block %04X - Length %d (%04X)",Block,Length,Length);
 			//MessageBox(GETHWND,errmsg,"BeebEm",MB_ICONERROR|MB_OK);
 			if (Block==0x046A) LoadEmuUEF(UEFState,Version);
-			if (Block==0x0460) Load6502UEF(UEFState);
+			if (Block==0x0460) cpu->Load6502UEF(UEFState);
 			if (Block==0x0461) LoadRomRegsUEF(UEFState);
 			if (Block==0x0462) LoadMainMemUEF(UEFState);
 			if (Block==0x0463) LoadShadMemUEF(UEFState);
