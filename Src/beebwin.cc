@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <filesystem>
 
 #include "BeebEm-main.h"
 #include "beebwin.h"
@@ -58,6 +59,7 @@
 #include "Arm.h"
 #include "printing.h"
 #include "discedit.h"
+#include "tinyxml2.h"
 
 // #include "keytable_2"
 
@@ -733,7 +735,7 @@ void BeebWin::updateLines(int starty, int nlines)
 void BeebWin::bufferblit1(int starty, int nlines) 
 {
 //	**CARBON**CGrafPtr mWin;
-	register int i, j;
+	int i, j;
 	char *p;
 	
 	++m_ScreenRefreshCount;
@@ -1571,7 +1573,7 @@ bool BeebWin::Initialise(char *home)
 	strcpy(EconetCfgPath, RomPath);
     BeebEmLog::writeLog("Debug BeebWinInit 03\n");
 
-//	LoadPreferences();
+	LoadPreferences();
     BeebEmLog::writeLog("Debug BeebWinInit 04\n");
 
 	// load the default user keymap if it is present
@@ -1937,77 +1939,120 @@ char			Title[100];
 //}
 
 /****************************************************************************/
-//void BeebWin::LoadPreferences()
-//{
-//CFURLRef fileURL;
-//char path[256];
-//CFStringRef pIni;
-//CFMutableDictionaryRef dict;
-//CFStringRef pTitle;
-//int i;
-//char temp[256];
-//
-//int LEDByte;
-//
-//	// Create a URL that specifies the file we will create to
-//	// hold the XML data.
-//    BeebEmLog::writeLog("Debug BeebWinLoadPref 01\n");
-//
-//	sprintf(path, "%sbeebem.ini", RomPath);
-//	pIni = CFStringCreateWithCString (kCFAllocatorDefault, path, kCFStringEncodingASCII);
-//    BeebEmLog::writeLog("Debug BeebWinLoadPref 02\n");
-//
-//	fileURL = CFURLCreateWithFileSystemPath( kCFAllocatorDefault,
-//               pIni,       // file path name
-//               kCFURLPOSIXPathStyle,    // interpret as POSIX path
-//               false );                 // is it a directory?
-//    BeebEmLog::writeLog("Debug BeebWinLoadPref 03\n");
-//    std::cout << "path:" << path << std::endl;
-//
-//	if (fileURL == NULL)
-//	{
-//		fprintf(stderr, "Cannot find beebem.ini\n");
-//		exit(1);
-//	}
-//
-//	dict = (CFMutableDictionaryRef) CreateMyPropertyListFromFile(fileURL);
-//
-//	if (dict == NULL)
-//	{
-//		fprintf(stderr, "Cannot create property file\n");
-//		exit(1);
-//	}
-//
-//	NativeFDC = GetDictNum(dict, CFSTR("NativeFDC"), 1);
-//	FDCType = GetDictNum(dict, CFSTR("FDCType"), 0);
-//	TranslateFDC();
-//
-//	m_WriteProtectOnLoad = GetDictNum(dict, CFSTR("WriteProtectOnLoad"), 1);
-//	MachineType = GetDictNum(dict, CFSTR("MachineType"), 3);
-//	m_isFullScreen = GetDictNum(dict, CFSTR("isFullScreen"), 0);
-//	m_maintainAspectRatio = GetDictNum(dict, CFSTR("MaintainAspectRatio"), 1);
-//	m_MenuIdWinSize = GetDictNum(dict, CFSTR("WindowSize"), 4);
-//	TranslateWindowSize(m_MenuIdWinSize);
-//
-//	m_ShowSpeedAndFPS = GetDictNum(dict, CFSTR("ShowFPS"), 1);
-//	palette_type = (PaletteType) GetDictNum(dict, CFSTR("Monitor"), (PaletteType) RGB);
-//
-//	m_Motion_Blur = GetDictNum(dict, CFSTR("MotionBlur"), 0);
-//
-//	LEDByte = GetDictNum(dict, CFSTR("LEDInformation"), 7);
-//
-//	DiscLedColour = LED_COLOUR_TYPE;
-//	LEDs.ShowDisc = LED_SHOW_DISC;
-//	LEDs.ShowKB = LED_SHOW_KB;
-//
-//	m_MenuIdTiming = GetDictNum(dict, CFSTR("Timing"), IDM_REALTIME);
+
+const tinyxml2::XMLNode* scanForKey(tinyxml2::XMLDocument &xmlDoc,const char* key) {
+    const tinyxml2::XMLElement* plist = xmlDoc.FirstChildElement("plist");
+    if (!plist) std::cout << "XML file incomplete: no plist" << std::endl;;
+    
+    const tinyxml2::XMLNode* dict = plist->FirstChildElement("dict");
+    if (!dict) std::cout << "XML file incomplete: no dict" << std::endl;;
+    
+    const tinyxml2::XMLNode* node = dict->FirstChild();
+    if (!node) std::cout << "XML file incomplete no keys" << std::endl;;
+
+    do {
+        if (strcmp(node->Value(),"key")==0) {
+            if (strcmp(node->FirstChild()->Value(),key)==0) {
+                break;
+            }
+        }
+        node = node->NextSibling();
+    } while (node);
+    if (!node) return NULL;
+    return node->NextSibling();
+}
+
+int findIntKey(tinyxml2::XMLDocument &xmlDoc,const char* key,int def) {
+    const tinyxml2::XMLNode* node = scanForKey(xmlDoc, key);
+    if (!node) return def;
+    if(strcmp(node->Value(),"integer")==0) {
+        int val;
+        sscanf(node->FirstChild()->Value(),"%d",&val);
+        return val;
+    } else {
+        return def;
+    }
+}
+
+const char* findStrKey(tinyxml2::XMLDocument &xmlDoc,const char* key) {
+    const tinyxml2::XMLNode* node = scanForKey(xmlDoc, key);
+    if (!node) return NULL;
+    if(strcmp(node->Value(),"string")==0) {
+        return node->FirstChild()->Value();
+    } else {
+        std::cout << "Not a string: " << node->Value() << std::endl;
+        return NULL;
+    }
+}
+
+void BeebWin::LoadPreferences()
+{
+
+    char path[256];
+    int i;
+    char temp[256];
+    int LEDByte;
+
+    // Create a URL that specifies the file we will create to
+    // hold the XML data.
+    BeebEmLog::writeLog("Debug BeebWinLoadPref 01\n");
+
+	sprintf(path, "%sbeebem.ini", RomPath);
+
+    std::filesystem::path fileURL(path);
+    if (!std::filesystem::exists(fileURL))
+    {
+        fprintf(stderr, "Cannot find beebem.ini\n");
+        exit(1);
+    }
+ 
+    // Load XML document
+    tinyxml2::XMLDocument xmlDoc;
+    tinyxml2::XMLError err = xmlDoc.LoadFile(fileURL.c_str());
+    std::cout << "Loading plist file" << std::endl;
+
+	if (err)
+	{
+		fprintf(stderr, "Cannot create property file\n");
+		exit(1);
+	}
+
+    NativeFDC = findIntKey(xmlDoc,"NativeFDC",1);
+    FDCType = findIntKey(xmlDoc,"FDCType",0);
+	TranslateFDC();
+
+    m_WriteProtectOnLoad = findIntKey(xmlDoc, "WriteProtectOnLoad", 1);
+    MachineType = findIntKey(xmlDoc,"MachineType", 3);
+    m_isFullScreen = findIntKey(xmlDoc,"isFullScreen", 0);
+    m_maintainAspectRatio = findIntKey(xmlDoc,"MaintainAspectRatio", 1);
+    m_MenuIdWinSize = findIntKey(xmlDoc,"WindowSize", 4);
+    TranslateWindowSize(m_MenuIdWinSize);
+    
+	m_WriteProtectOnLoad = findIntKey(xmlDoc, "WriteProtectOnLoad", 1);
+	MachineType = findIntKey(xmlDoc, "MachineType", 3);
+	m_isFullScreen = findIntKey(xmlDoc, "isFullScreen", 0);
+	m_maintainAspectRatio = findIntKey(xmlDoc, "MaintainAspectRatio", 1);
+	m_MenuIdWinSize = findIntKey(xmlDoc, "WindowSize", 4);
+	TranslateWindowSize(m_MenuIdWinSize);
+
+	m_ShowSpeedAndFPS = findIntKey(xmlDoc, "ShowFPS", 1);
+	palette_type = (PaletteType) findIntKey(xmlDoc, "Monitor", (PaletteType) RGB);
+	m_Motion_Blur = findIntKey(xmlDoc, "MotionBlur", 0);
+
+	LEDByte = findIntKey(xmlDoc, "LEDInformation", 7);
+
+	DiscLedColour = LED_COLOUR_TYPE;
+	LEDs.ShowDisc = LED_SHOW_DISC;
+	LEDs.ShowKB = LED_SHOW_KB;
+
+//	m_MenuIdTiming = GetDictNum(dict, "Timing"), IDM_REALTIME);
 //	TranslateTiming(m_MenuIdTiming);
 //
-//	EconetEnabled = GetDictNum(dict, CFSTR("EconetEnabled"), 0);
-//	SpeechDefault = GetDictNum(dict, CFSTR("SpeechEnabled"), 0);
-//	SoundEnabled = GetDictNum(dict, CFSTR("SoundEnabled"), 1);
-//	SoundChipEnabled = GetDictNum(dict, CFSTR("SoundChipEnabled"), 1);
-//	m_MenuIdSampleRate = GetDictNum(dict, CFSTR("SampleRate"), IDM_22050KHZ);
+//	EconetEnabled = GetDictNum(dict, "EconetEnabled"), 0);
+//	SpeechDefault = GetDictNum(dict, "SpeechEnabled"), 0);
+//	SoundEnabled = GetDictNum(dict, "SoundEnabled"), 1);
+//	SoundChipEnabled = GetDictNum(dict, "SoundChipEnabled"), 1);
+//	m_MenuIdSampleRate = GetDictNum(dict, "SampleRate"), IDM_22050KHZ);
 //	TranslateSampleRate();
 //
 //	m_MenuIdVolume = GetDictNum(dict, CFSTR("Volume"), IDM_MEDIUMVOLUME);
@@ -2086,7 +2131,7 @@ char			Title[100];
 //	RTC_Enabled = GetDictNum(dict, CFSTR("RTCEnabled"), 0);
 //
 //	SavePreferences();
-//}
+}
 
 
 /****************************************************************************/

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1711EA4B2497C1E000422F99 /* libtinyxml2.8.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1711EA4A2497C1E000422F99 /* libtinyxml2.8.0.0.dylib */; };
 		178BCCAC2490E1DC0099EB8A /* TestGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA72490E1DC0099EB8A /* TestGlue.cpp */; };
 		178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA82490E1DC0099EB8A /* TestClass.cpp */; };
 		178BCCAE2490E1DC0099EB8A /* TestClassWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCAA2490E1DC0099EB8A /* TestClassWrapper.cpp */; };
@@ -62,6 +63,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1711EA4A2497C1E000422F99 /* libtinyxml2.8.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtinyxml2.8.0.0.dylib; path = ../../../../../../../usr/local/Cellar/tinyxml2/8.0.0/lib/libtinyxml2.8.0.0.dylib; sourceTree = "<group>"; };
 		1730E788249172A500396BA8 /* BeebEmCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeebEmCommon.h; sourceTree = "<group>"; };
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1711EA4B2497C1E000422F99 /* libtinyxml2.8.0.0.dylib in Frameworks */,
 				19E9FA29086B5CA6008741A6 /* CoreAudio.framework in Frameworks */,
 				191656C10B39BBAE00C4FA44 /* IOKit.framework in Frameworks */,
 			);
@@ -188,6 +191,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1711EA492497C1E000422F99 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1711EA4A2497C1E000422F99 /* libtinyxml2.8.0.0.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		17E47C122488FE4D0073DF2D /* Dev Docs */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +228,7 @@
 				C1B784D42145D7020010BDCE /* UserData */,
 				20286C32FDCF999611CA2CEA /* External Frameworks and Libraries */,
 				195DF8CFFE9D517E11CA2CBB /* Products */,
+				1711EA492497C1E000422F99 /* Frameworks */,
 			);
 			name = BeebEm3;
 			sourceTree = "<group>";
@@ -525,6 +537,10 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/tinyxml2/8.0.0/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.g7jjf.beebem;
 				PRODUCT_NAME = BeebEm4;
@@ -556,6 +572,10 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/tinyxml2/8.0.0/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.g7jjf.beebem;
 				PRODUCT_NAME = BeebEm4;
@@ -573,7 +593,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -613,6 +633,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/include;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lz";
@@ -624,7 +645,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;

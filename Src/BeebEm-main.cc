@@ -613,6 +613,7 @@ int BeebEmMain()
 //  mainWin->StartRecordingVideo("jon.mov", nil);
   
   // Call the event loop
+  BeebEmLog::writeLog("Starting main loop\n");
   RunApplicationEventLoopWithCooperativeThreadSupport();
 
   fprintf(stderr, "Shutting Down ...\n");

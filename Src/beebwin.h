@@ -247,7 +247,7 @@ public:
 	void NewDiscImage(int Drive);
 	void EjectDiscImage(int Drive);
 	void ToggleWriteProtect(int Drive);
-//	void LoadPreferences(void);
+	void LoadPreferences(void);
 	void SavePreferences(void);
 	void SetWindowAttributes(bool wasFullScreen);
 	void TranslateAMX(void);
