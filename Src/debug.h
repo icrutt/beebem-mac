@@ -18,8 +18,8 @@ enum DebugType {
 	DEBUG_ECONET
 };
 
-int GetCheckBoxValue(OSType box);
-void SetCheckBoxValue(OSType box, int State);
+//**CARBON**int GetCheckBoxValue(OSType box);
+//**CARBON**void SetCheckBoxValue(OSType box, int State);
 void DebugOpenDialog(void);
 void DebugCloseDialog(void);
 bool DebugDisassembler(int addr, int Accumulator, int XReg, int YReg, int PSR, bool host);

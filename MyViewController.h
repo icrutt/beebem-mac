@@ -18,10 +18,8 @@
 @interface MyViewController: NSViewController <MyDelegate>
 
 @property (strong, nonatomic) MyView *myView;
-@property (strong, nonatomic) IBOutlet NSTextField *label;
 @property (strong, nonatomic) MyModelObject *myObj;
 
-- (IBAction)sayHello:(id)sender;
 - (id) init;
 
 @end

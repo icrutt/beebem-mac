@@ -16,13 +16,6 @@
 
 @synthesize myView;
 
-- (IBAction)sayHello:(id)sender {
-    //[_label setStringValue:@"Hello world!"];
-    [_myObj getCount];
-    NSLog(@"%s","In sayHello");
-    [_myObj toLog];
-}
-
 - (id) init {
     self = [super init];
     NSLog(@"%s","In constructor");
@@ -31,9 +24,8 @@
     return self;
 }
 
-- (void) sendNewValue:(MyModelObject*) sender theVal:(int)theVal {
-    NSLog(@"%s","In delegate");
-    [_label setStringValue:[NSString stringWithFormat:@"%i",theVal]];
+- (void) refreshImage:(MyModelObject *)sender theImage:(NSImage*)theImage {
+    
 }
 
 @end

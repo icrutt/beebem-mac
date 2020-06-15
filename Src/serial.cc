@@ -83,7 +83,7 @@ int map_time[MAX_MAP_LINES];
 bool TapeControlEnabled = false;
 bool TapePlaying = true;
 bool TapeRecording = false;
-void TapeControlOpenFile(char *file_name);
+//void TapeControlOpenFile(char *file_name);
 void TapeControlUpdateCounter(int tape_time);
 void TapeControlStopRecording(bool RefreshControl);
 
@@ -95,7 +95,7 @@ unsigned int SerialBuffer = 0, SerialWriteBuffer = 0;
 
 FILE *serlog;
 
-WindowRef mTCWindow = NULL; 
+//**CARBON**WindowRef mTCWindow = NULL;
 
 void SetACIAStatus(unsigned char bit) {
 	ACIA_Status|=1<<bit;
@@ -110,7 +110,7 @@ void Write_ACIA_Control(unsigned char CReg) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Serial: Write ACIA control %02X", (int)CReg);
-		DebugDisplayTrace(DEBUG_SERIAL, true, info);
+//		DebugDisplayTrace(DEBUG_SERIAL, true, info);
 	}
 
 	ACIA_Control=CReg; // This is done for safe keeping
@@ -159,7 +159,7 @@ void Write_ACIA_Tx_Data(unsigned char Data) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Serial: Write ACIA Tx %02X", (int)Data);
-		DebugDisplayTrace(DEBUG_SERIAL, true, info);
+//		DebugDisplayTrace(DEBUG_SERIAL, true, info);
 	}
 
 	BeebEmCommon::intStatus&=~(1<<serial);
@@ -221,7 +221,7 @@ void Write_SERPROC(unsigned char Data) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Serial: Write serial ULA %02X", (int)Data);
-		DebugDisplayTrace(DEBUG_SERIAL, true, info);
+//		DebugDisplayTrace(DEBUG_SERIAL, true, info);
 	}
 	SP_Control=Data;
 	// Slightly easier this time.
@@ -262,7 +262,7 @@ unsigned char Read_ACIA_Status(void) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Serial: Read ACIA status %02X", (int)ACIA_Status);
-		DebugDisplayTrace(DEBUG_SERIAL, true, info);
+//		DebugDisplayTrace(DEBUG_SERIAL, true, info);
 	}
 
 	return(ACIA_Status);
@@ -300,7 +300,7 @@ unsigned char Read_ACIA_Rx_Data(void) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Serial: Read ACIA Rx %02X", (int)TData);
-		DebugDisplayTrace(DEBUG_SERIAL, true, info);
+//		DebugDisplayTrace(DEBUG_SERIAL, true, info);
 	}
 	return(TData);
 }
@@ -309,7 +309,7 @@ unsigned char Read_SERPROC(void) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Serial: Read serial ULA %02X", (int)SP_Control);
-		DebugDisplayTrace(DEBUG_SERIAL, true, info);
+//		DebugDisplayTrace(DEBUG_SERIAL, true, info);
 	}
 	return(SP_Control);
 }
@@ -575,8 +575,8 @@ void CloseUEF(void) {
 		RxD=0;
 		if (TapeControlEnabled)
 		{
-			const ControlID dbControlID = { 'SLST', 0 };
-			ControlRef dbControl;
+			//**CARBON**const ControlID dbControlID = { 'SLST', 0 };
+			//**CARBON**ControlRef dbControl;
 			
 //			GetControlByID (mTCWindow, &dbControlID, &dbControl);
 //			RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
@@ -601,7 +601,7 @@ void LoadUEF(char *UEFName) {
 	strcpy(UEFTapeName, UEFName);
 
 	if (TapeControlEnabled)
-		TapeControlOpenFile(UEFName);
+//		TapeControlOpenFile(UEFName);
 
 	// Clock values:
 	// 5600 - Normal speed - anything higher is a bit slow
@@ -797,334 +797,334 @@ bool map_file(char *file_name)
 }
 
 //*******************************************************************
-
-OSStatus TCWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    HICommand command; 
-    OSStatus err = noErr;
-    err = GetEventParameter(event, kEventParamDirectObject,
-							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-//    require_noerr (err, CantGetParameter);
-	
-	err = noErr;
-	switch (command.commandID)
-    {
-        case 'tppl':
-            fprintf(stderr, "Tape Control Play selected\n");
-			TapePlaying=true;
-			TapeControlStopRecording(true);
-			TapeAudio.Enabled=Cass_Relay?TRUE:FALSE;
-            break;
-        case 'tpst':
-            fprintf(stderr, "Tape Control Stop selected\n");
-			TapePlaying=false;
-			TapeControlStopRecording(true);
-			TapeAudio.Enabled=FALSE;
-            break;
-        case 'tpej':
-            fprintf(stderr, "Tape Control Eject selected\n");
-			TapeControlStopRecording(false);
-			TapeAudio.Enabled=FALSE;
-			CloseUEF();
-			CloseCSW();
-            break;
-        case 'tprc':
-            fprintf(stderr, "Tape Control Record selected\n");
-
-			SInt16 r;
-			Str255 S1;
-			Str255 S2;
-			
-			if (CSWOpen) break;
-				
-			AlertStdAlertParamRec alertParameters;
-			
-			alertParameters.movable			= true;
-			alertParameters.helpButton		= false;
-			alertParameters.filterProc		= NULL;
-			alertParameters.defaultText		= (StringPtr)kAlertDefaultOKText;
-			alertParameters.cancelText		= (StringPtr)kAlertDefaultCancelText;
-			alertParameters.otherText		= NULL;
-			alertParameters.defaultButton	= kAlertStdAlertOKButton;
-			alertParameters.cancelButton	= kAlertStdAlertCancelButton;
-			alertParameters.position		= kWindowDefaultPosition;
-
-			if (!TapeRecording)
-			{
-				r = 2;				// Cancel
-				if (UEFOpen)
-				{
-
-//					CopyCStringToPascal("Append to current tape file :", S1);
-//					CopyCStringToPascal(UEFTapeName, S2);
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//OSStatus TCWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    HICommand command;
+//    OSStatus err = noErr;
+//    err = GetEventParameter(event, kEventParamDirectObject,
+//							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
+////    require_noerr (err, CantGetParameter);
 //
-//					StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
-					
-					if (r == 1)		// OK
-					{
-						// SendMessage(hwndMap, LB_SETCURSEL, (WPARAM)map_lines-1, 0);
-						
-						const ControlID dbControlID = { 'SLST', 0 };
-						ControlRef dbControl;
-						
-//						GetControlByID (mTCWindow, &dbControlID, &dbControl);
-//						SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &map_lines, kDataBrowserItemsAssign);
-						
-					}
-				}
-				else
-				{
-					// Query for new file name
-					CloseUEF();
-					mainWin->NewTapeImage(UEFTapeName);
-					if (UEFTapeName[0])
-					{
-						r = 1;
-						FILE *fd = fopen(UEFTapeName,"rb");
-						if (fd != NULL)
-						{
-							fclose(fd);
-
-//							CopyCStringToPascal("File already exists", S1);
-//							CopyCStringToPascal("Overwrite file ?", S2);
-//							StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
-						}
-						
-						if (r == 1)		// OK
-						{
-							// Create file
-							if (uef_create(UEFTapeName))
-							{
-								UEFOpen=1;
-							}
-							else
-							{
-//								CopyCStringToPascal("Error creating tape file:", S1);
-//								CopyCStringToPascal(UEFTapeName, S2);
-								alertParameters.cancelButton	= 0;
-//								StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
-								
-								UEFTapeName[0] = 0;
-								r = 2;			// Cancel
-							}
-						}
-					}
-				}
-				
-				if (r == 1)		// OK
-				{
-					TapeRecording=true;
-					TapePlaying=false;
-					TapeAudio.Enabled=Cass_Relay?TRUE:FALSE;
-				}
-			}
-			
-			break;
-			
-        default:
-            err = eventNotHandledErr;
-            break;
-    }
-	
-CantGetParameter:
-		return err;
-}
-
-static OSStatus TCWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    OSStatus err = noErr;
-    switch (GetEventKind(event))
-    {
-        case kEventWindowClosed: 
-			mTCWindow = NULL;
-			TapeControlEnabled = FALSE;
-			map_lines = 0;
-			TapePlaying=true;
-			TapeRecording=false;
-            break;
-        default:
-            err = eventNotHandledErr;
-            break;
-    }
-    
-    return err;
-}
-
-OSStatus TCWindowCallback(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, DataBrowserItemDataRef itemData, Boolean changeValue)
-{
-OSStatus status = noErr;
-char temp[256];
-CFStringRef pTitle;
-	
-//	fprintf(stderr, "Item = %08x, Property = %08x, change = %d\n", itemID, property, changeValue);
-	
-	if (!changeValue)
-	{
-		switch(property)
-		{
-			case 'NAME' :
-				
-				strcpy(temp, map_desc[itemID - 1]);
-				temp[12] = 0;
-				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-//				status = SetDataBrowserItemDataText(itemData, pTitle);
-				CFRelease(pTitle);
-				
-				break;
-
-			case 'BLCK' :
-				
-				strcpy(temp, map_desc[itemID - 1] + 13);
-				temp[2] = 0;
-				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-//				status = SetDataBrowserItemDataText(itemData, pTitle);
-				CFRelease(pTitle);
-				
-				break;
-
-			case 'LENG' :
-				
-				strcpy(temp, map_desc[itemID - 1] + 16);
-				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-//				status = SetDataBrowserItemDataText(itemData, pTitle);
-				CFRelease(pTitle);
-				
-				break;
-				
-			case 3 :
-				int s;
-				s = itemID - 1;
-				if (s >= 0 && s < map_lines)
-				{
-					if (CSWOpen)
-					{
-						csw_ptr = map_time[s];
-					}
-					else
-					{
-						TapeClock=map_time[s];
-					}
-					OldClock=0;
-					TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
-				}
-				break;
-				
-			default:
-				status = errDataBrowserPropertyNotSupported;
-				break;
-		}
-	}
-	else
-		status = errDataBrowserPropertyNotSupported;
-
-	return status;
-}
-
-	
-void TapeControlOpenDialog()
-{
-	int Clock;
-
-	TapeControlEnabled = TRUE;
-
-	IBNibRef 		nibRef;
-	EventTypeSpec TCcommands[] = {
-	{ kEventClassCommand, kEventCommandProcess }
-	};
-		
-	EventTypeSpec TCevents[] = {
-	{ kEventClassWindow, kEventWindowClosed }
-	};
-
-	if (mTCWindow == NULL)
-	{
-		// Create a Nib reference passing the name of the nib file (without the .nib extension)
-		// CreateNibReference only searches into the application bundle.
-//		CreateNibReference(CFSTR("main"), &nibRef);
-//		CreateWindowFromNib(nibRef, CFSTR("Window"), &mTCWindow);
-//		DisposeNibReference(nibRef);
-//		ShowWindow(mTCWindow);
+//	err = noErr;
+//	switch (command.commandID)
+//    {
+//        case 'tppl':
+//            fprintf(stderr, "Tape Control Play selected\n");
+//			TapePlaying=true;
+//			TapeControlStopRecording(true);
+//			TapeAudio.Enabled=Cass_Relay?TRUE:FALSE;
+//            break;
+//        case 'tpst':
+//            fprintf(stderr, "Tape Control Stop selected\n");
+//			TapePlaying=false;
+//			TapeControlStopRecording(true);
+//			TapeAudio.Enabled=FALSE;
+//            break;
+//        case 'tpej':
+//            fprintf(stderr, "Tape Control Eject selected\n");
+//			TapeControlStopRecording(false);
+//			TapeAudio.Enabled=FALSE;
+//			CloseUEF();
+//			CloseCSW();
+//            break;
+//        case 'tprc':
+//            fprintf(stderr, "Tape Control Record selected\n");
 //
-//		InstallWindowEventHandler(mTCWindow,
-//							  NewEventHandlerUPP (TCWindowCommandHandler),
-//							  GetEventTypeCount(TCcommands), TCcommands,
-//							  mTCWindow, NULL);
+//			SInt16 r;
+//			Str255 S1;
+//			Str255 S2;
 //
-//		InstallWindowEventHandler (mTCWindow,
-//								   NewEventHandlerUPP (TCWindowEventHandler),
-//								   GetEventTypeCount(TCevents), TCevents,
-//								   mTCWindow, NULL);
-		
-		const ControlID dbControlID = { 'SLST', 0 };
-		ControlRef dbControl;
-		DataBrowserCallbacks dbCallbacks;
-		
-//		GetControlByID (mTCWindow, &dbControlID, &dbControl);
-		dbCallbacks.version = kDataBrowserLatestCallbacks;
-//		InitDataBrowserCallbacks(&dbCallbacks);
-		dbCallbacks.u.v1.itemDataCallback =
-			NewDataBrowserItemDataUPP( (DataBrowserItemDataProcPtr) TCWindowCallback);
-//		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
-//		SetAutomaticControlDragTrackingEnabledForWindow(mTCWindow, true);
-		
-		if (UEFOpen)
-		{
-			Clock = TapeClock;
-			LoadUEF(UEFTapeName);
-			TapeClock = Clock;
-			TapeControlUpdateCounter(TapeClock);
-		}
+//			if (CSWOpen) break;
+//
+//			AlertStdAlertParamRec alertParameters;
+//
+//			alertParameters.movable			= true;
+//			alertParameters.helpButton		= false;
+//			alertParameters.filterProc		= NULL;
+//			alertParameters.defaultText		= (StringPtr)kAlertDefaultOKText;
+//			alertParameters.cancelText		= (StringPtr)kAlertDefaultCancelText;
+//			alertParameters.otherText		= NULL;
+//			alertParameters.defaultButton	= kAlertStdAlertOKButton;
+//			alertParameters.cancelButton	= kAlertStdAlertCancelButton;
+//			alertParameters.position		= kWindowDefaultPosition;
+//
+//			if (!TapeRecording)
+//			{
+//				r = 2;				// Cancel
+//				if (UEFOpen)
+//				{
+//
+////					CopyCStringToPascal("Append to current tape file :", S1);
+////					CopyCStringToPascal(UEFTapeName, S2);
+////
+////					StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
+//
+//					if (r == 1)		// OK
+//					{
+//						// SendMessage(hwndMap, LB_SETCURSEL, (WPARAM)map_lines-1, 0);
+//
+//						const ControlID dbControlID = { 'SLST', 0 };
+//						ControlRef dbControl;
+//
+////						GetControlByID (mTCWindow, &dbControlID, &dbControl);
+////						SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &map_lines, kDataBrowserItemsAssign);
+//
+//					}
+//				}
+//				else
+//				{
+//					// Query for new file name
+//					CloseUEF();
+//					mainWin->NewTapeImage(UEFTapeName);
+//					if (UEFTapeName[0])
+//					{
+//						r = 1;
+//						FILE *fd = fopen(UEFTapeName,"rb");
+//						if (fd != NULL)
+//						{
+//							fclose(fd);
+//
+////							CopyCStringToPascal("File already exists", S1);
+////							CopyCStringToPascal("Overwrite file ?", S2);
+////							StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
+//						}
+//
+//						if (r == 1)		// OK
+//						{
+//							// Create file
+//							if (uef_create(UEFTapeName))
+//							{
+//								UEFOpen=1;
+//							}
+//							else
+//							{
+////								CopyCStringToPascal("Error creating tape file:", S1);
+////								CopyCStringToPascal(UEFTapeName, S2);
+//								alertParameters.cancelButton	= 0;
+////								StandardAlert( kAlertNoteAlert, S1, S2, &alertParameters, &r);
+//
+//								UEFTapeName[0] = 0;
+//								r = 2;			// Cancel
+//							}
+//						}
+//					}
+//				}
+//
+//				if (r == 1)		// OK
+//				{
+//					TapeRecording=true;
+//					TapePlaying=false;
+//					TapeAudio.Enabled=Cass_Relay?TRUE:FALSE;
+//				}
+//			}
+//
+//			break;
+//
+//        default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//CantGetParameter:
+//		return err;
+//}
+//
+//static OSStatus TCWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    OSStatus err = noErr;
+//    switch (GetEventKind(event))
+//    {
+//        case kEventWindowClosed:
+//			mTCWindow = NULL;
+//			TapeControlEnabled = FALSE;
+//			map_lines = 0;
+//			TapePlaying=true;
+//			TapeRecording=false;
+//            break;
+//        default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//    return err;
+//}
+//
+//OSStatus TCWindowCallback(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, DataBrowserItemDataRef itemData, Boolean changeValue)
+//{
+//OSStatus status = noErr;
+//char temp[256];
+//CFStringRef pTitle;
+//
+////	fprintf(stderr, "Item = %08x, Property = %08x, change = %d\n", itemID, property, changeValue);
+//
+//	if (!changeValue)
+//	{
+//		switch(property)
+//		{
+//			case 'NAME' :
+//
+//				strcpy(temp, map_desc[itemID - 1]);
+//				temp[12] = 0;
+//				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
+////				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				CFRelease(pTitle);
+//
+//				break;
+//
+//			case 'BLCK' :
+//
+//				strcpy(temp, map_desc[itemID - 1] + 13);
+//				temp[2] = 0;
+//				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
+////				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				CFRelease(pTitle);
+//
+//				break;
+//
+//			case 'LENG' :
+//
+//				strcpy(temp, map_desc[itemID - 1] + 16);
+//				pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
+////				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				CFRelease(pTitle);
+//
+//				break;
+//
+//			case 3 :
+//				int s;
+//				s = itemID - 1;
+//				if (s >= 0 && s < map_lines)
+//				{
+//					if (CSWOpen)
+//					{
+//						csw_ptr = map_time[s];
+//					}
+//					else
+//					{
+//						TapeClock=map_time[s];
+//					}
+//					OldClock=0;
+//					TapeTrigger=BeebEmCommon::TotalCycles+TAPECYCLES;
+//				}
+//				break;
+//
+//			default:
+//				status = errDataBrowserPropertyNotSupported;
+//				break;
+//		}
+//	}
+//	else
+//		status = errDataBrowserPropertyNotSupported;
+//
+//	return status;
+//}
 
-		if (CSWOpen)
-		{
-			Clock = csw_ptr;
-			LoadCSW(UEFTapeName);
-			csw_ptr = Clock;
-			TapeControlUpdateCounter(csw_ptr);
-		}
-		
-		
-	}
-}
-
-void TapeControlCloseDialog()
-{
-	if (mTCWindow)
-	{
-//		HideWindow(mTCWindow);
-//		DisposeWindow(mTCWindow);
-	}
-	mTCWindow = NULL;
-	TapeControlEnabled = FALSE;
-	map_lines = 0;
-	TapePlaying=true;
-	TapeRecording=false;
-}
-
-void TapeControlOpenFile(char *UEFName)
-{
-	if (TapeControlEnabled) 
-	{
-		if (CSWOpen == 0)
-		{
-			if (!map_file(UEFName))
-			{
-				char errstr[256];
-				sprintf(errstr, "Cannot open UEF file:\n  %s", UEFName);
-				return;
-			}
-		}
-		const ControlID dbControlID = { 'SLST', 0 };
-		ControlRef dbControl;
-			
-//		GetControlByID (mTCWindow, &dbControlID, &dbControl);
-//		RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
-//		AddDataBrowserItems(dbControl, kDataBrowserNoItem, map_lines, NULL, kDataBrowserItemNoProperty);
-
-		TapeControlUpdateCounter(0);
-
-	}
-}
+	
+//void TapeControlOpenDialog()
+//{
+//	int Clock;
+//
+//	TapeControlEnabled = TRUE;
+//
+//	IBNibRef 		nibRef;
+//	EventTypeSpec TCcommands[] = {
+//	{ kEventClassCommand, kEventCommandProcess }
+//	};
+//
+//	EventTypeSpec TCevents[] = {
+//	{ kEventClassWindow, kEventWindowClosed }
+//	};
+//
+//	if (mTCWindow == NULL)
+//	{
+//		// Create a Nib reference passing the name of the nib file (without the .nib extension)
+//		// CreateNibReference only searches into the application bundle.
+////		CreateNibReference(CFSTR("main"), &nibRef);
+////		CreateWindowFromNib(nibRef, CFSTR("Window"), &mTCWindow);
+////		DisposeNibReference(nibRef);
+////		ShowWindow(mTCWindow);
+////
+////		InstallWindowEventHandler(mTCWindow,
+////							  NewEventHandlerUPP (TCWindowCommandHandler),
+////							  GetEventTypeCount(TCcommands), TCcommands,
+////							  mTCWindow, NULL);
+////
+////		InstallWindowEventHandler (mTCWindow,
+////								   NewEventHandlerUPP (TCWindowEventHandler),
+////								   GetEventTypeCount(TCevents), TCevents,
+////								   mTCWindow, NULL);
+//
+//		const ControlID dbControlID = { 'SLST', 0 };
+//		ControlRef dbControl;
+//		DataBrowserCallbacks dbCallbacks;
+//
+////		GetControlByID (mTCWindow, &dbControlID, &dbControl);
+//		dbCallbacks.version = kDataBrowserLatestCallbacks;
+////		InitDataBrowserCallbacks(&dbCallbacks);
+//		dbCallbacks.u.v1.itemDataCallback =
+//			NewDataBrowserItemDataUPP( (DataBrowserItemDataProcPtr) TCWindowCallback);
+////		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
+////		SetAutomaticControlDragTrackingEnabledForWindow(mTCWindow, true);
+//
+//		if (UEFOpen)
+//		{
+//			Clock = TapeClock;
+//			LoadUEF(UEFTapeName);
+//			TapeClock = Clock;
+//			TapeControlUpdateCounter(TapeClock);
+//		}
+//
+//		if (CSWOpen)
+//		{
+//			Clock = csw_ptr;
+//			LoadCSW(UEFTapeName);
+//			csw_ptr = Clock;
+//			TapeControlUpdateCounter(csw_ptr);
+//		}
+//
+//
+//	}
+//}
+//
+//void TapeControlCloseDialog()
+//{
+//	if (mTCWindow)
+//	{
+////		HideWindow(mTCWindow);
+////		DisposeWindow(mTCWindow);
+//	}
+//	mTCWindow = NULL;
+//	TapeControlEnabled = FALSE;
+//	map_lines = 0;
+//	TapePlaying=true;
+//	TapeRecording=false;
+//}
+//
+//void TapeControlOpenFile(char *UEFName)
+//{
+//	if (TapeControlEnabled)
+//	{
+//		if (CSWOpen == 0)
+//		{
+//			if (!map_file(UEFName))
+//			{
+//				char errstr[256];
+//				sprintf(errstr, "Cannot open UEF file:\n  %s", UEFName);
+//				return;
+//			}
+//		}
+//		const ControlID dbControlID = { 'SLST', 0 };
+//		ControlRef dbControl;
+//
+////		GetControlByID (mTCWindow, &dbControlID, &dbControl);
+////		RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
+////		AddDataBrowserItems(dbControl, kDataBrowserNoItem, map_lines, NULL, kDataBrowserItemNoProperty);
+//
+//		TapeControlUpdateCounter(0);
+//
+//	}
+//}
 
 void TapeControlUpdateCounter(int tape_time)
 {
@@ -1141,8 +1141,8 @@ void TapeControlUpdateCounter(int tape_time)
 
 		//		SendMessage(hwndMap, LB_SETCURSEL, (WPARAM)i, 0);
 
-		const ControlID dbControlID = { 'SLST', 0 };
-		ControlRef dbControl;
+//**CARBON**		const ControlID dbControlID = { 'SLST', 0 };
+//**CARBON**		ControlRef dbControl;
 		
 //		GetControlByID (mTCWindow, &dbControlID, &dbControl);
 		j = i + 1;

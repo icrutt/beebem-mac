@@ -5,6 +5,8 @@
 // http://www.davidsharp.com
 //////////////////////////////////////////////////////////////////////
 
+#include <cstring>
+#include <cstdio>
 #include "ArmDisassembler.h"
 
 char *Arm_disassemble(uint32 address, uint32 instruction, char *buff)

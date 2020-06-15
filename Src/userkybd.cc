@@ -31,7 +31,7 @@ const char *KeyName( int Key );
 int		BBCRow;			// Used to store the Row and Col values while we wait 
 int		BBCCol;			// for a key press from the User.
 
-WindowRef mUKWindow = NULL; 
+//**CARBON**WindowRef mUKWindow = NULL;
 
 // Row,Col  Default values set to transTable1
 int UserKeymap[256][2]={
@@ -106,29 +106,29 @@ int LastButton = 0;
 void ShowKey(int key)
 {
 char Keys[256];
-CFStringRef pTitle;
+//**CARBON**CFStringRef pTitle;
 
 	GetKeysUsed(Keys);
 
 //	fprintf(stderr, "%s\n", Keys);
 
-	const ControlID dbControlID = { 'ass ', 0 };
-	ControlRef dbControl;
+//**CARBON**	const ControlID dbControlID = { 'ass ', 0 };
+//**CARBON**	ControlRef dbControl;
 	
 	//GetControlByID (mUKWindow, &dbControlID, &dbControl);
 
-	pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Keys, kCFStringEncodingASCII);
+//**CARBON**	pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Keys, kCFStringEncodingASCII);
 
     //SetControlData(dbControl, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &pTitle);
 	
-	CFRelease(pTitle);
+//	CFRelease(pTitle);
 	if ( (LastButton != 0) && (LastButton != key) )
 	{
 
-		ControlID dbKeyID;
+//**CARBON**		ControlID dbKeyID;
 		
-		dbKeyID.signature = LastButton;
-		dbKeyID.id = 0;
+//**CARBON**		dbKeyID.signature = LastButton;
+//**CARBON**		dbKeyID.id = 0;
 		
 		//GetControlByID (mUKWindow, &dbKeyID, &dbControl);
 		//SetControlValue(dbControl, 0);
@@ -138,128 +138,128 @@ CFStringRef pTitle;
 
 //*******************************************************************
 
-OSStatus UKWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-	int i;
-    HICommand command; 
-    OSStatus err = noErr;
-    err = GetEventParameter(event, kEventParamDirectObject,
-							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    //require_noerr (err, CantGetParameter);
-	
-	err = noErr;
+//OSStatus UKWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//	int i;
+//    HICommand command;
+//    OSStatus err = noErr;
+//    err = GetEventParameter(event, kEventParamDirectObject,
+//							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
+//    //require_noerr (err, CantGetParameter);
+//
+//	err = noErr;
+//
+//	SetRowCol(command.commandID);
+//
+//	if ((BBCRow == 0) & (BBCCol == 0))
+//	{
+//		switch (command.commandID)
+//		{
+//			case 'ok  ':
+//				UserKeyboardCloseDialog();
+//				break;
+//
+//			case 'rest':
+//				for (i = 0; i < 256; ++i)
+//				{
+//					UserKeymap[i][0] = transTable1[i][0];
+//					UserKeymap[i][1] = transTable1[i][1];
+//				}
+//				if (LastButton != 0)
+//				{
+//					SetRowCol(LastButton);
+//					ShowKey(LastButton);
+//				}
+//				break;
+//
+//			default:
+//				err = eventNotHandledErr;
+//				break;
+//		}
+//	}
+//	else
+//	{
+//		ShowKey(command.commandID);
+//	}
+//
+//CantGetParameter:
+//		return err;
+//}
+//
+//static OSStatus UKWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    OSStatus err = noErr;
+//	char charCode;
+//	int keycode;
+//
+//	switch (GetEventKind(event))
+//	{
+//		case kEventRawKeyDown:
+//			GetEventParameter(event, kEventParamKeyMacCharCodes, typeChar, NULL, sizeof(char), NULL, &charCode);
+//			GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(int), NULL, &keycode);
+//			fprintf(stderr, "Key pressed: code = %d, '%c'\n", keycode, charCode);
+//			if (LastButton != 0)
+//			{
+//				SetBBCKeyForVKEY(keycode);
+//				ShowKey(LastButton);
+//			}
+//			break;
+//
+//        case kEventWindowClosed:
+//			mUKWindow = NULL;
+//            break;
+//
+//		default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//	return err;
+//}
 
-	SetRowCol(command.commandID);
-	
-	if ((BBCRow == 0) & (BBCCol == 0))
-	{
-		switch (command.commandID)
-		{
-			case 'ok  ':
-				UserKeyboardCloseDialog();
-				break;
-				
-			case 'rest':
-				for (i = 0; i < 256; ++i)
-				{
-					UserKeymap[i][0] = transTable1[i][0];
-					UserKeymap[i][1] = transTable1[i][1];
-				}
-				if (LastButton != 0)
-				{
-					SetRowCol(LastButton);
-					ShowKey(LastButton);
-				}
-				break;
-				
-			default:
-				err = eventNotHandledErr;
-				break;
-		}
-	}
-	else
-	{
-		ShowKey(command.commandID);
-	}
-
-CantGetParameter:
-		return err;
-}
-
-static OSStatus UKWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    OSStatus err = noErr;
-	char charCode;
-	int keycode;
-
-	switch (GetEventKind(event)) 
-	{
-		case kEventRawKeyDown:
-			GetEventParameter(event, kEventParamKeyMacCharCodes, typeChar, NULL, sizeof(char), NULL, &charCode);
-			GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(int), NULL, &keycode);
-			fprintf(stderr, "Key pressed: code = %d, '%c'\n", keycode, charCode);
-			if (LastButton != 0)
-			{
-				SetBBCKeyForVKEY(keycode);
-				ShowKey(LastButton);
-			}
-			break;
-
-        case kEventWindowClosed: 
-			mUKWindow = NULL;
-            break;
-        
-		default:
-            err = eventNotHandledErr;
-            break;
-    }
-    
-	return err;
-}
-
-void UserKeyboardOpenDialog()
-{
-	IBNibRef 		nibRef;
-	EventTypeSpec UKcommands[] = {
-	{ kEventClassCommand, kEventCommandProcess }
-	};
-		
-	EventTypeSpec UKevents[] = {
-	{ kEventClassWindow, kEventWindowClosed },
-	{ kEventClassKeyboard, kEventRawKeyDown}
-	};
-
-	if (mUKWindow == NULL)
-	{
-		// Create a Nib reference passing the name of the nib file (without the .nib extension)
-		// CreateNibReference only searches into the application bundle.
-		//CreateNibReference(CFSTR("main"), &nibRef);
-		//CreateWindowFromNib(nibRef, CFSTR("Window1"), &mUKWindow);
-		//DisposeNibReference(nibRef);
-		//ShowWindow(mUKWindow);
-		
-		//InstallWindowEventHandler(mUKWindow,
-		//					  NewEventHandlerUPP (UKWindowCommandHandler),
-		//					  GetEventTypeCount(UKcommands), UKcommands,
-		//					  mUKWindow, NULL);
-		
-		//InstallWindowEventHandler (mUKWindow,
-		//						   NewEventHandlerUPP (UKWindowEventHandler),
-		//						   GetEventTypeCount(UKevents), UKevents,
-		//						   mUKWindow, NULL);
-		
-	}
-}
-
-void UserKeyboardCloseDialog()
-{
-	if (mUKWindow)
-	{
-		//HideWindow(mUKWindow);
-		//DisposeWindow(mUKWindow);
-	}
-	mUKWindow = NULL;
-}
+//void UserKeyboardOpenDialog()
+//{
+//	IBNibRef 		nibRef;
+//	EventTypeSpec UKcommands[] = {
+//	{ kEventClassCommand, kEventCommandProcess }
+//	};
+//
+//	EventTypeSpec UKevents[] = {
+//	{ kEventClassWindow, kEventWindowClosed },
+//	{ kEventClassKeyboard, kEventRawKeyDown}
+//	};
+//
+//	if (mUKWindow == NULL)
+//	{
+//		// Create a Nib reference passing the name of the nib file (without the .nib extension)
+//		// CreateNibReference only searches into the application bundle.
+//		//CreateNibReference(CFSTR("main"), &nibRef);
+//		//CreateWindowFromNib(nibRef, CFSTR("Window1"), &mUKWindow);
+//		//DisposeNibReference(nibRef);
+//		//ShowWindow(mUKWindow);
+//
+//		//InstallWindowEventHandler(mUKWindow,
+//		//					  NewEventHandlerUPP (UKWindowCommandHandler),
+//		//					  GetEventTypeCount(UKcommands), UKcommands,
+//		//					  mUKWindow, NULL);
+//
+//		//InstallWindowEventHandler (mUKWindow,
+//		//						   NewEventHandlerUPP (UKWindowEventHandler),
+//		//						   GetEventTypeCount(UKevents), UKevents,
+//		//						   mUKWindow, NULL);
+//
+//	}
+//}
+//
+//void UserKeyboardCloseDialog()
+//{
+//	if (mUKWindow)
+//	{
+//		//HideWindow(mUKWindow);
+//		//DisposeWindow(mUKWindow);
+//	}
+//	mUKWindow = NULL;
+//}
 
 /****************************************************************************/
 void SetBBCKeyForVKEY( int Key )
@@ -512,84 +512,84 @@ void SetRowCol( int ctrlID )
 
 }
 
-bool LoadUserKeyboard( const char *path )
-{
-	CFStringRef keyboardFile = CFStringCreateWithCString(kCFAllocatorDefault, path, kCFStringEncodingASCII);
-	CFURLRef	keyboardFileUrl = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,    
-																keyboardFile,			// file path name
-																kCFURLPOSIXPathStyle,	// interpret as POSIX path        
-																false);					// is it a directory?
-	
-	if (keyboardFileUrl == NULL)
-	{
-		fprintf(stderr, "Cannot create keyboard file URL for file %s\n", path);
-		return false;
-	}
-	
-	CFMutableDictionaryRef dict = (CFMutableDictionaryRef) CreateMyPropertyListFromFile(keyboardFileUrl);
-	
-	if (dict == NULL)
-	{
-		fprintf(stderr, "Cannot create property file\n");
-		return false;
-	}
-	
-	for (int i = 0; i < 256; ++i)
-	{		
-		char key [256];
-		sprintf(key, "Row%d", i);
-		CFStringRef keyRef = CFStringCreateWithCString (kCFAllocatorDefault, key, kCFStringEncodingASCII);
-		UserKeymap[i][0] = GetDictNum(dict, keyRef, transTable1[i][0]);
-		CFRelease(keyRef);
-		
-		sprintf(key, "Col%d", i);
-		keyRef = CFStringCreateWithCString (kCFAllocatorDefault, key, kCFStringEncodingASCII);
-		UserKeymap[i][1] = GetDictNum(dict, keyRef, transTable1[i][1]);
-		CFRelease(keyRef);
-	}
-	
-	return true;
-}
-
-void SaveUserKeyboard( char *path )
-{
-	// Create a dictionary for the keyboard mappings.
-	CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault,
-															0,
-															&kCFTypeDictionaryKeyCallBacks,
-															&kCFTypeDictionaryValueCallBacks);
-	
-	if (dict == NULL)
-	{
-		fprintf(stderr, "Cannot create property file\n");
-		return;
-	}
-	
-	// Put the keymap rows/columns into the dictionary.
-	for (int i = 0; i < 256; ++i)
-	{		
-		char key [256];
-		sprintf(key, "Row%d", i);
-		CFStringRef keyRef = CFStringCreateWithCString (kCFAllocatorDefault, key, kCFStringEncodingASCII);
-		AddDictNum(dict, keyRef, UserKeymap[i][0]);
-		CFRelease(keyRef);
-		
-		sprintf(key, "Col%d", i);
-		keyRef = CFStringCreateWithCString (kCFAllocatorDefault, key, kCFStringEncodingASCII);
-		AddDictNum(dict, keyRef, UserKeymap[i][1]);
-		CFRelease(keyRef);
-	}
-	
-	// create a URL for the keymap file to be saved
-	CFStringRef keyboardFile = CFStringCreateWithCString(kCFAllocatorDefault, path, kCFStringEncodingASCII);
-	CFURLRef	keyboardFileUrl = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,    
-																keyboardFile,			// file path name
-																kCFURLPOSIXPathStyle,	// interpret as POSIX path        
-																false);					// is it a directory?
-	
-	WriteMyPropertyListToFile(dict, keyboardFileUrl);
-	
-	CFRelease(dict);
-	CFRelease(keyboardFileUrl);
-	CFRelease(keyboardFile);
-}
+//bool LoadUserKeyboard( const char *path )
+//{
+//	CFStringRef keyboardFile = CFStringCreateWithCString(kCFAllocatorDefault, path, kCFStringEncodingASCII);
+//	CFURLRef	keyboardFileUrl = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,    
+//																keyboardFile,			// file path name
+//																kCFURLPOSIXPathStyle,	// interpret as POSIX path        
+//																false);					// is it a directory?
+//	
+//	if (keyboardFileUrl == NULL)
+//	{
+//		fprintf(stderr, "Cannot create keyboard file URL for file %s\n", path);
+//		return false;
+//	}
+//	
+//	CFMutableDictionaryRef dict = (CFMutableDictionaryRef) CreateMyPropertyListFromFile(keyboardFileUrl);
+//	
+//	if (dict == NULL)
+//	{
+//		fprintf(stderr, "Cannot create property file\n");
+//		return false;
+//	}
+//	
+//	for (int i = 0; i < 256; ++i)
+//	{		
+//		char key [256];
+//		sprintf(key, "Row%d", i);
+//		CFStringRef keyRef = CFStringCreateWithCString (kCFAllocatorDefault, key, kCFStringEncodingASCII);
+//		UserKeymap[i][0] = GetDictNum(dict, keyRef, transTable1[i][0]);
+//		CFRelease(keyRef);
+//		
+//		sprintf(key, "Col%d", i);
+//		keyRef = CFStringCreateWithCString (kCFAllocatorDefault, key, kCFStringEncodingASCII);
+//		UserKeymap[i][1] = GetDictNum(dict, keyRef, transTable1[i][1]);
+//		CFRelease(keyRef);
+//	}
+//	
+//	return true;
+//}
+//
+//void SaveUserKeyboard( char *path )
+//{
+//	// Create a dictionary for the keyboard mappings.
+//	CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault,
+//															0,
+//															&kCFTypeDictionaryKeyCallBacks,
+//															&kCFTypeDictionaryValueCallBacks);
+//	
+//	if (dict == NULL)
+//	{
+//		fprintf(stderr, "Cannot create property file\n");
+//		return;
+//	}
+//	
+//	// Put the keymap rows/columns into the dictionary.
+//	for (int i = 0; i < 256; ++i)
+//	{		
+//		char key [256];
+//		sprintf(key, "Row%d", i);
+//		CFStringRef keyRef = CFStringCreateWithCString (kCFAllocatorDefault, key, kCFStringEncodingASCII);
+//		AddDictNum(dict, keyRef, UserKeymap[i][0]);
+//		CFRelease(keyRef);
+//		
+//		sprintf(key, "Col%d", i);
+//		keyRef = CFStringCreateWithCString (kCFAllocatorDefault, key, kCFStringEncodingASCII);
+//		AddDictNum(dict, keyRef, UserKeymap[i][1]);
+//		CFRelease(keyRef);
+//	}
+//	
+//	// create a URL for the keymap file to be saved
+//	CFStringRef keyboardFile = CFStringCreateWithCString(kCFAllocatorDefault, path, kCFStringEncodingASCII);
+//	CFURLRef	keyboardFileUrl = CFURLCreateWithFileSystemPath(kCFAllocatorDefault,    
+//																keyboardFile,			// file path name
+//																kCFURLPOSIXPathStyle,	// interpret as POSIX path        
+//																false);					// is it a directory?
+//	
+//	WriteMyPropertyListToFile(dict, keyboardFileUrl);
+//	
+//	CFRelease(dict);
+//	CFRelease(keyboardFileUrl);
+//	CFRelease(keyboardFile);
+//}

@@ -271,92 +271,92 @@ LSItemInfoRecord outInfo;
 	return display;
 }*/
 
-OSErr SaveFile(char *path, FSSpec *fs) 
-{
-//NavReplyRecord    myReply;
-//NavDialogOptions    myDialogOptions;
-//NavEventUPP    myEventUPP = NULL;
-OSErr        myErr = noErr;
-OSType	fileTypeToSave = 'TEXT', fileCreator = 'jjf0';
-
-  // specify the options for the dialog box
-  //NavGetDefaultDialogOptions(&myDialogOptions);
-  //myDialogOptions.dialogOptionFlags += kNavNoTypePopup;
-  //myDialogOptions.dialogOptionFlags += kNavDontAutoTranslate;
-  
-  // prompt the user for a file
-  //myErr = NavPutFile(NULL, &myReply, &myDialogOptions, myEventUPP, fileTypeToSave, fileCreator, NULL);
-
-  /*if ((myErr == noErr) && myReply.validRecord) {
-    AEKeyword    myKeyword;
-    DescType    myActualType;
-    Size      myActualSize = 0;
-	FSSpec		theFSSpec;
-	FSRef       theFSRef;
-    
-    myErr = AEGetNthPtr(&(myReply.selection), 1, typeFSS, &myKeyword, &myActualType, &theFSSpec, sizeof(FSSpec), &myActualSize);
-
-    if ((myErr == noErr) && myReply.validRecord)
-	{
-		myErr = FSpCreate(&theFSSpec, fileCreator, fileTypeToSave, smSystemScript);
-		myErr = FSpMakeFSRef(&theFSSpec, &theFSRef);
-		UInt8 *ptr;
-		ptr = (UInt8 *) path;
-		FSRefMakePath(&theFSRef, ptr, 255);
-		fprintf(stderr, "Picked %s\n", path);
-		unlink(path);
-		if (fs) memcpy(fs, &theFSSpec, sizeof(FSSpec));
-	}
-		
-    NavDisposeReply(&myReply);
-  }*/
-
-  //DisposeNavEventUPP(myEventUPP);
-
-  return (myErr);
-}
-
-OSErr SaveFileMov(char *path, FSSpec *fs) 
-{
-	//NavReplyRecord    myReply;
-	//NavDialogOptions    myDialogOptions;
-	//NavEventUPP    myEventUPP = NULL;
-	OSErr        myErr = noErr;
-	OSType	fileTypeToSave = 'MooV', fileCreator = 'TVOD';
-	
-	// specify the options for the dialog box
-	//NavGetDefaultDialogOptions(&myDialogOptions);
-	//myDialogOptions.dialogOptionFlags += kNavNoTypePopup;
-	//myDialogOptions.dialogOptionFlags += kNavDontAutoTranslate;
-	
-	// prompt the user for a file
-	//myErr = NavPutFile(NULL, &myReply, &myDialogOptions, myEventUPP, fileTypeToSave, fileCreator, NULL);
-	
-	/*if ((myErr == noErr) && myReply.validRecord) {
-		AEKeyword    myKeyword;
-		DescType    myActualType;
-		Size      myActualSize = 0;
-		FSSpec		theFSSpec;
-		FSRef       theFSRef;
-		
-		myErr = AEGetNthPtr(&(myReply.selection), 1, typeFSS, &myKeyword, &myActualType, &theFSSpec, sizeof(FSSpec), &myActualSize);
-		
-		if ((myErr == noErr) && myReply.validRecord)
-		{
-			myErr = FSpCreate(&theFSSpec, fileCreator, fileTypeToSave, smSystemScript);
-			myErr = FSpMakeFSRef(&theFSSpec, &theFSRef);
-			UInt8 *ptr;
-			ptr = (UInt8 *) path;
-			FSRefMakePath(&theFSRef, ptr, 255);
-			fprintf(stderr, "Picked %s\n", path);
-			unlink(path);
-			if (fs) memcpy(fs, &theFSSpec, sizeof(FSSpec));
-		}
-		
-		NavDisposeReply(&myReply);
-	}*/
-	
-	//DisposeNavEventUPP(myEventUPP);
-	
-	return (myErr);
-}
+//OSErr SaveFile(char *path, FSSpec *fs) 
+//{
+////NavReplyRecord    myReply;
+////NavDialogOptions    myDialogOptions;
+////NavEventUPP    myEventUPP = NULL;
+//OSErr        myErr = noErr;
+//OSType	fileTypeToSave = 'TEXT', fileCreator = 'jjf0';
+//
+//  // specify the options for the dialog box
+//  //NavGetDefaultDialogOptions(&myDialogOptions);
+//  //myDialogOptions.dialogOptionFlags += kNavNoTypePopup;
+//  //myDialogOptions.dialogOptionFlags += kNavDontAutoTranslate;
+//  
+//  // prompt the user for a file
+//  //myErr = NavPutFile(NULL, &myReply, &myDialogOptions, myEventUPP, fileTypeToSave, fileCreator, NULL);
+//
+//  /*if ((myErr == noErr) && myReply.validRecord) {
+//    AEKeyword    myKeyword;
+//    DescType    myActualType;
+//    Size      myActualSize = 0;
+//	FSSpec		theFSSpec;
+//	FSRef       theFSRef;
+//    
+//    myErr = AEGetNthPtr(&(myReply.selection), 1, typeFSS, &myKeyword, &myActualType, &theFSSpec, sizeof(FSSpec), &myActualSize);
+//
+//    if ((myErr == noErr) && myReply.validRecord)
+//	{
+//		myErr = FSpCreate(&theFSSpec, fileCreator, fileTypeToSave, smSystemScript);
+//		myErr = FSpMakeFSRef(&theFSSpec, &theFSRef);
+//		UInt8 *ptr;
+//		ptr = (UInt8 *) path;
+//		FSRefMakePath(&theFSRef, ptr, 255);
+//		fprintf(stderr, "Picked %s\n", path);
+//		unlink(path);
+//		if (fs) memcpy(fs, &theFSSpec, sizeof(FSSpec));
+//	}
+//		
+//    NavDisposeReply(&myReply);
+//  }*/
+//
+//  //DisposeNavEventUPP(myEventUPP);
+//
+//  return (myErr);
+//}
+//
+//OSErr SaveFileMov(char *path, FSSpec *fs) 
+//{
+//	//NavReplyRecord    myReply;
+//	//NavDialogOptions    myDialogOptions;
+//	//NavEventUPP    myEventUPP = NULL;
+//	OSErr        myErr = noErr;
+//	OSType	fileTypeToSave = 'MooV', fileCreator = 'TVOD';
+//	
+//	// specify the options for the dialog box
+//	//NavGetDefaultDialogOptions(&myDialogOptions);
+//	//myDialogOptions.dialogOptionFlags += kNavNoTypePopup;
+//	//myDialogOptions.dialogOptionFlags += kNavDontAutoTranslate;
+//	
+//	// prompt the user for a file
+//	//myErr = NavPutFile(NULL, &myReply, &myDialogOptions, myEventUPP, fileTypeToSave, fileCreator, NULL);
+//	
+//	/*if ((myErr == noErr) && myReply.validRecord) {
+//		AEKeyword    myKeyword;
+//		DescType    myActualType;
+//		Size      myActualSize = 0;
+//		FSSpec		theFSSpec;
+//		FSRef       theFSRef;
+//		
+//		myErr = AEGetNthPtr(&(myReply.selection), 1, typeFSS, &myKeyword, &myActualType, &theFSSpec, sizeof(FSSpec), &myActualSize);
+//		
+//		if ((myErr == noErr) && myReply.validRecord)
+//		{
+//			myErr = FSpCreate(&theFSSpec, fileCreator, fileTypeToSave, smSystemScript);
+//			myErr = FSpMakeFSRef(&theFSSpec, &theFSRef);
+//			UInt8 *ptr;
+//			ptr = (UInt8 *) path;
+//			FSRefMakePath(&theFSRef, ptr, 255);
+//			fprintf(stderr, "Picked %s\n", path);
+//			unlink(path);
+//			if (fs) memcpy(fs, &theFSSpec, sizeof(FSSpec));
+//		}
+//		
+//		NavDisposeReply(&myReply);
+//	}*/
+//	
+//	//DisposeNavEventUPP(myEventUPP);
+//	
+//	return (myErr);
+//}

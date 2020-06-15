@@ -2289,12 +2289,12 @@ void CPU6502::PollHardware(unsigned int nCycles)
 	if (EconetEnabled && EconetPoll()) {
 		if (EconetNMIenabled ) { 
 			BeebEmCommon::NMIStatus|=1<<nmi_econet;
-			if (DebugEnabled)
-				DebugDisplayTrace(DEBUG_ECONET, true, "Econet: NMI asserted");
+//			if (DebugEnabled)
+				//DebugDisplayTrace(DEBUG_ECONET, true, "Econet: NMI asserted");
 		}
 		else {
-			if (DebugEnabled)
-				DebugDisplayTrace(DEBUG_ECONET, true, "Econet: NMI requested but supressed");
+//			if (DebugEnabled)
+				//DebugDisplayTrace(DEBUG_ECONET, true, "Econet: NMI requested but supressed");
 		}
 	}
 }

@@ -925,7 +925,7 @@ void VideoDoScanLine(void) {
       SysVIATriggerCA1Int(0);
       DoCA1Int=0;
     }; 
-
+     // std::cout << "VideoDoScanLine: " << FrameNum << " " << VideoState.CharLine << " " << VideoState.PixmapLine << std::endl;
     /* Clear the next 20 scan lines */
     if (!FrameNum) {
       if (VScreenAdjust>0 && VideoState.PixmapLine==0)
@@ -950,6 +950,7 @@ void VideoDoScanLine(void) {
       VideoState.CharLine++;
       VideoState.InCharLineUp=0;
     }
+
 
     if (VideoState.CharLine>CRTC_VerticalTotal) {
       // Changed so that whole screen is still visible after *TV255
@@ -978,7 +979,7 @@ void VideoDoScanLine(void) {
   } else {
     /* Non teletext. */
 
-    /* Clear the scan line */
+/* Clear the scan line */
     if (!FrameNum)
       memset(mainWin->GetLinePtr(VideoState.PixmapLine),mainWin->cols[0],800);
 
@@ -1013,6 +1014,7 @@ void VideoDoScanLine(void) {
       }
     }
     else {
+
       VideoState.PixmapLine++;
     }
 
@@ -1132,7 +1134,7 @@ void CRTCWrite(int Address, int Value) {
 	if (DebugEnabled && CRTCControlReg<14) {
 		char info[200];
 		sprintf(info, "CRTC: Write register %X value %02X", (int)CRTCControlReg, Value);
-		DebugDisplayTrace(DEBUG_VIDEO, true, info);
+//		DebugDisplayTrace(DEBUG_VIDEO, true, info);
 	}
 
 	switch (CRTCControlReg) {
@@ -1373,7 +1375,7 @@ void DebugVideoState()
 {
 
 	char info[200];
-	DebugDisplayInfo("");
+	//DebugDisplayInfo("");
 
 	sprintf(info, "CRTC: HTot=%02X HDis=%02X HSyn=%02X SWid=%02X VTot=%02X VAdj=%02X VDis=%02X VSyn=%02X",
 		(int)CRTC_HorizontalTotal,
@@ -1384,7 +1386,7 @@ void DebugVideoState()
 		(int)CRTC_VerticalTotalAdjust,
 		(int)CRTC_VerticalDisplayed,
 		(int)CRTC_VerticalSyncPos);
-	DebugDisplayInfo(info);
+	//DebugDisplayInfo(info);
 //	BeebEmLog::writeLog("%s\n", info);
 	
 	sprintf(info, "CRTC: IntD=%02X SLCh=%02X CurS=%02X CurE=%02X ScrS=%02X%02X CurP=%02X%02X VidULA=%02X",
@@ -1397,7 +1399,7 @@ void DebugVideoState()
 		(int)CRTC_CursorPosHigh,
 		(int)CRTC_CursorPosLow,
 		(int)VideoULA_ControlReg);
-	DebugDisplayInfo(info);
+	//DebugDisplayInfo(info);
 //	BeebEmLog::writeLog("%s\n", info);
 }
 

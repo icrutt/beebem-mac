@@ -240,7 +240,7 @@ unsigned char TmpData;
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Tube: Read from host, addr %X value %02X", (int)IOAddr, (int)TmpData);
-		DebugDisplayTrace(DEBUG_TUBE, true, info);
+//		DebugDisplayTrace(DEBUG_TUBE, true, info);
 	}
 
 	return TmpData;
@@ -254,7 +254,7 @@ void WriteTorchTubeFromHostSide(unsigned char IOAddr,unsigned char IOData)
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Tube: Write from host, addr %X value %02X", (int)IOAddr, (int)IOData);
-		DebugDisplayTrace(DEBUG_TUBE, true, info);
+//		DebugDisplayTrace(DEBUG_TUBE, true, info);
 	}
 
 	if ( (IOAddr == 0x02) && (IOData == 0xff) ) TorchTubeActive = 1;
@@ -326,7 +326,7 @@ unsigned char ReadTorchTubeFromParasiteSide(unsigned char IOAddr)
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Tube: Read from para, addr %X value %02X", (int)IOAddr, (int)TmpData);
-		DebugDisplayTrace(DEBUG_TUBE, false, info);
+//		DebugDisplayTrace(DEBUG_TUBE, false, info);
 	}
 
 	return TmpData;
@@ -340,7 +340,7 @@ void WriteTorchTubeFromParasiteSide(unsigned char IOAddr,unsigned char IOData)
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Tube: Write from para, addr %X value %02X", (int)IOAddr, (int)IOData);
-		DebugDisplayTrace(DEBUG_TUBE, false, info);
+//		DebugDisplayTrace(DEBUG_TUBE, false, info);
 	}
 
 	switch (IOAddr) {
@@ -417,7 +417,7 @@ unsigned char ReadTubeFromHostSide(unsigned char IOAddr) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Tube: Read from host, addr %X value %02X", (int)IOAddr, (int)TmpData);
-		DebugDisplayTrace(DEBUG_TUBE, true, info);
+//		DebugDisplayTrace(DEBUG_TUBE, true, info);
 	}
 
 	return TmpData;
@@ -431,7 +431,7 @@ void WriteTubeFromHostSide(unsigned char IOAddr,unsigned char IOData) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Tube: Write from host, addr %X value %02X", (int)IOAddr, (int)IOData);
-		DebugDisplayTrace(DEBUG_TUBE, true, info);
+//		DebugDisplayTrace(DEBUG_TUBE, true, info);
 	}
 
 //	BeebEmLog::writeLog("[%04x] Tube: Write from host, addr %X value %02X [%c]\n", BeebEmCommon::ProgramCounter, (int)IOAddr, (int)IOData, (IOData & 0x7f) > 31 ? (IOData & 0x7f) : '.');
@@ -564,7 +564,7 @@ unsigned char ReadTubeFromParasiteSide(unsigned char IOAddr) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Tube: Read from para, addr %X value %02X", (int)IOAddr, (int)TmpData);
-		DebugDisplayTrace(DEBUG_TUBE, false, info);
+//		DebugDisplayTrace(DEBUG_TUBE, false, info);
 	}
 
 	return TmpData;
@@ -583,7 +583,7 @@ void WriteTubeFromParasiteSide(unsigned char IOAddr,unsigned char IOData)
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "Tube: Write from para, addr %X value %02X", (int)IOAddr, (int)IOData);
-		DebugDisplayTrace(DEBUG_TUBE, false, info);
+//		DebugDisplayTrace(DEBUG_TUBE, false, info);
 	}
 
 	switch (IOAddr) {
@@ -2492,7 +2492,7 @@ void DebugTubeState(void)
 {
 	char info[200];
 
-	DebugDisplayInfo("");
+	//DebugDisplayInfo("");
 
 	sprintf(info, "HostTube: R1=%02X R2=%02X R3=%02X R4=%02X R1n=%02X R3n=%02X",
 		(int)R1HStatus | R1Status,
@@ -2501,7 +2501,7 @@ void DebugTubeState(void)
 		(int)R4HStatus,
 		(int)R1PHPtr,
 		(int)R3PHPtr);
-	DebugDisplayInfo(info);
+	//DebugDisplayInfo(info);
 	
 	sprintf(info, "ParaTube: R1=%02X R2=%02X R3=%02X R4=%02X R3n=%02X",
 		(int)R1PStatus | R1Status,
@@ -2510,7 +2510,7 @@ void DebugTubeState(void)
 		(int)R4PStatus,
 		(int)R3HPPtr);
 	
-	DebugDisplayInfo(info);
+	//DebugDisplayInfo(info);
 }
 
 /*-------------------------------------------------------------------------*/

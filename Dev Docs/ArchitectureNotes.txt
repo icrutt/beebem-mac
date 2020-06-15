@@ -15,3 +15,76 @@ discedit.cc
 main.cc
     Seems to be the code that deals with the Carbon interface
     
+List of menu references:
+
+amx1    m_MenuIdAMXSize == 1
+amx3    m_MenuIdAMXSize == 2
+amx6    m_MenuIdAMXSize == 3
+amxl    AMXLRForMiddle
+amxo    AMXMouseEnabled
+axm1    m_MenuIdAMXAdjust == 4
+axm3    m_MenuIdAMXAdjust == 5
+axm5    m_MenuIdAMXAdjust == 6
+axp1    m_MenuIdAMXAdjust == 3
+axp3    m_MenuIdAMXAdjust == 2
+axp5    m_MenuIdAMXAdjust == 1
+az80    AcornZ80
+bbcb    MachineType == 0
+bbci    MachineType == 1
+bbcm    MachineType == 3
+bbcp    MachineType == 2
+ddso    DiscDriveSoundEnabled
+dkm     m_MenuIdKeyMapping == 0
+docu    BeebEmCommon::OpCodes == 1
+enet    EconetEnabled == 1
+extr    BeebEmCommon::OpCodes == 2
+full    BeebEmCommon::OpCodes == 3
+hard    BeebEmCommon::BHardware
+hdre    HardDriveEnabled
+igil    BeebEmCommon::IgnoreIllegalInstructions
+invb    m_Invert
+kmas    m_KeyMapAS
+ledd    LEDs.ShowDisc
+ledg    DiscLedColour == 1
+ledk    LEDs.ShowKB
+ledr    DiscLedColour == 0
+mb2f    m_Motion_Blur == 1
+mb4f    m_Motion_Blur == 2
+mb8f    m_Motion_Blur == 3
+mbof    m_Motion_Blur == 0
+mona    palette_type == AMBER
+monb    palette_type == BW
+mong    palette_type == GREEN
+monr    palette_type == RGB
+msea    m_MenuIdSticks == 1
+msed    m_MenuIdSticks == 2
+ofwm    m_FreezeWhenInactive
+prnt    PrinterEnabled
+rs42    SerialPortEnabled
+sdep    EthernetPortEnabled
+sdts    TouchScreenEnabled
+sfps    m_ShowSpeedAndFPS
+sndc    SoundChipEnabled
+snev    SoundExponentialVolume
+sond    SoundEnabled
+sped    SpeechEnabled
+t186    Tube186Enabled
+tarm    ArmTube
+tpcr    RelaySoundEnabled
+tpfa    TapeClockSpeed == 750
+tpmf    TapeClockSpeed == 1600
+tpms    TapeClockSpeed == 3200
+tpno    TapeClockSpeed == 5600
+tpso    TapeSoundEnabled
+tpul    UnlockTape
+tube    TubeEnabled
+txtd    TeleTextData
+txte    TeleTextAdapterEnabled
+txts    TeleTextServer
+tz80    TorchTube
+udkm    m_MenuIdKeyMapping == 1
+uprm    RTC_Enabled
+vmar    m_maintainAspectRatio
+wpol    m_WriteProtectOnLoad
+wrp0    m_WriteProtectDisc[0]
+wrp1    m_WriteProtectDisc[1]

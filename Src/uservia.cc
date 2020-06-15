@@ -45,7 +45,7 @@ unsigned char RTC_ram[8] = {0x12, 0x01, 0x05, 0x00, 0x05, 0x00, 0x07, 0x00};
 
 int RTC_Enabled = 0;
 
-WindowRef mBreakOutWindow = NULL; 
+//**CARBON** WindowRef mBreakOutWindow = NULL;
 
 int	BitKey;			// Used to store the bit key pressed while we wait 
 int BitKeys[8] = {29, 18, 19, 20, 21, 23, 22, 26};
@@ -94,7 +94,7 @@ static int last_Value = 0xff;
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "UsrVia: Write address %X value %02X", (int)(Address & 0xf), Value & 0xff);
-		DebugDisplayTrace(DEBUG_USERVIA, true, info);
+//		DebugDisplayTrace(DEBUG_USERVIA, true, info);
 	}
 
   switch (Address) {
@@ -104,7 +104,7 @@ static int last_Value = 0xff;
         UserVIAState.ifr&=0xf7 ;
         UpdateIFRTopBit();
       };
-		if (mBreakOutWindow) ShowOutputs(UserVIAState.orb);
+		//**CARBON**if (mBreakOutWindow) ShowOutputs(UserVIAState.orb);
 			if (RTC_Enabled)
 			{
 				if ( ((last_Value & 0x02) == 0x02) && ((Value & 0x02) == 0x00) )		// falling clock edge
@@ -302,7 +302,7 @@ int UserVIARead(int Address) {
 		RTC_data = RTC_data >> 1;
 	  }
 
-	  if (mBreakOutWindow) ShowInputs(tmp);
+	  //**CARBON**if (mBreakOutWindow) ShowInputs(tmp);
 
 	  if (AMXMouseEnabled) {
         if (AMXLRForMiddle) {
@@ -407,7 +407,7 @@ int UserVIARead(int Address) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "UsrVia: Read address %X value %02X", (int)(Address & 0xf), tmp & 0xff);
-		DebugDisplayTrace(DEBUG_USERVIA, true, info);
+//		DebugDisplayTrace(DEBUG_USERVIA, true, info);
 	}
 
   return(tmp);
@@ -641,309 +641,312 @@ void DebugUserViaState()
 }
 
 //*******************************************************************
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//OSStatus BreakOutWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//	int bit;
+////**CARBON**    HICommand command;
+////**CARBON**    OSStatus err = noErr;
+////**CARBON**    err = GetEventParameter(event, kEventParamDirectObject,
+////**CARBON**							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
+//    //require_noerr (err, CantGetParameter);
+//
+////**CARBON**	err = noErr;
+//
+////	fprintf(stderr, "commandID = 0x%08x\n", command.commandID);
+//
+////**CARBON**	SetBitKey(command.commandID);
+//
+////**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+////	if (BitKey == -1)
+////	{
+////
+////		switch (command.commandID)
+////    {
+////        case 'uib7':
+////			bit = GetValue(command.commandID);
+////          fprintf(stderr, "User Input B7 - bit = %d\n", bit);
+////			if ((UserVIAState.ddrb & 0x80) == 0x00)
+////			{
+////				if (bit == 1) UserVIAState.irb &= ~0x80; else UserVIAState.irb |= 0x80;
+////			}
+////			break;
+////        case 'uib6':
+////			bit = GetValue(command.commandID);
+//////          fprintf(stderr, "User Input B6 - bit = %d\n", bit);
+////			if ((UserVIAState.ddrb & 0x40) == 0x00)
+////			{
+////				if (bit == 1) UserVIAState.irb &= ~0x40; else UserVIAState.irb |= 0x40;
+////			}
+////			break;
+////        case 'uib5':
+////			bit = GetValue(command.commandID);
+//////          fprintf(stderr, "User Input B5 - bit = %d\n", bit);
+////			if ((UserVIAState.ddrb & 0x20) == 0x00)
+////			{
+////				if (bit == 1) UserVIAState.irb &= ~0x20; else UserVIAState.irb |= 0x20;
+////			}
+////			break;
+////        case 'uib4':
+////			bit = GetValue(command.commandID);
+//////          fprintf(stderr, "User Input B4 - bit = %d\n", bit);
+////			if ((UserVIAState.ddrb & 0x10) == 0x00)
+////			{
+////				if (bit == 1) UserVIAState.irb &= ~0x10; else UserVIAState.irb |= 0x10;
+////			}
+////			break;
+////        case 'uib3':
+////			bit = GetValue(command.commandID);
+//////          fprintf(stderr, "User Input B3 - bit = %d\n", bit);
+////			if ((UserVIAState.ddrb & 0x08) == 0x00)
+////			{
+////				if (bit == 1) UserVIAState.irb &= ~0x08; else UserVIAState.irb |= 0x08;
+////			}
+////			break;
+////        case 'uib2':
+////			bit = GetValue(command.commandID);
+//////          fprintf(stderr, "User Input B2 - bit = %d\n", bit);
+////			if ((UserVIAState.ddrb & 0x04) == 0x00)
+////			{
+////				if (bit == 1) UserVIAState.irb &= ~0x04; else UserVIAState.irb |= 0x04;
+////			}
+////			break;
+////        case 'uib1':
+////			bit = GetValue(command.commandID);
+//////          fprintf(stderr, "User Input B1 - bit = %d\n", bit);
+////			if ((UserVIAState.ddrb & 0x02) == 0x00)
+////			{
+////				if (bit == 1) UserVIAState.irb &= ~0x02; else UserVIAState.irb |= 0x02;
+////			}
+////			break;
+////        case 'uib0':
+////			bit = GetValue(command.commandID);
+//////          fprintf(stderr, "User Input B0 - bit = %d\n", bit);
+////			if ((UserVIAState.ddrb & 0x01) == 0x00)
+////			{
+////				if (bit == 1) UserVIAState.irb &= ~0x01; else UserVIAState.irb |= 0x01;
+////			}
+////			break;
+////
+////        default:
+////            err = eventNotHandledErr;
+////            break;
+////    }
+////
+////	}
+////	else
+////		{
+////			ShowBitKey(BitKey, command.commandID);
+////		}
+////**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//
+//CantGetParameter:
+//		return err;
+//}
 
-OSStatus BreakOutWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-	int bit;
-    HICommand command; 
-    OSStatus err = noErr;
-    err = GetEventParameter(event, kEventParamDirectObject,
-							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    //require_noerr (err, CantGetParameter);
-	
-	err = noErr;
-
-//	fprintf(stderr, "commandID = 0x%08x\n", command.commandID);
-	
-	SetBitKey(command.commandID);
-	
-	if (BitKey == -1)
-	{
-
-		switch (command.commandID)
-    {
-        case 'uib7':
-			bit = GetValue(command.commandID);
-//          fprintf(stderr, "User Input B7 - bit = %d\n", bit);
-			if ((UserVIAState.ddrb & 0x80) == 0x00)
-			{
-				if (bit == 1) UserVIAState.irb &= ~0x80; else UserVIAState.irb |= 0x80;
-			}
-			break;
-        case 'uib6':
-			bit = GetValue(command.commandID);
-//          fprintf(stderr, "User Input B6 - bit = %d\n", bit);
-			if ((UserVIAState.ddrb & 0x40) == 0x00)
-			{
-				if (bit == 1) UserVIAState.irb &= ~0x40; else UserVIAState.irb |= 0x40;
-			}
-			break;
-        case 'uib5':
-			bit = GetValue(command.commandID);
-//          fprintf(stderr, "User Input B5 - bit = %d\n", bit);
-			if ((UserVIAState.ddrb & 0x20) == 0x00)
-			{
-				if (bit == 1) UserVIAState.irb &= ~0x20; else UserVIAState.irb |= 0x20;
-			}
-			break;
-        case 'uib4':
-			bit = GetValue(command.commandID);
-//          fprintf(stderr, "User Input B4 - bit = %d\n", bit);
-			if ((UserVIAState.ddrb & 0x10) == 0x00)
-			{
-				if (bit == 1) UserVIAState.irb &= ~0x10; else UserVIAState.irb |= 0x10;
-			}
-			break;
-        case 'uib3':
-			bit = GetValue(command.commandID);
-//          fprintf(stderr, "User Input B3 - bit = %d\n", bit);
-			if ((UserVIAState.ddrb & 0x08) == 0x00)
-			{
-				if (bit == 1) UserVIAState.irb &= ~0x08; else UserVIAState.irb |= 0x08;
-			}
-			break;
-        case 'uib2':
-			bit = GetValue(command.commandID);
-//          fprintf(stderr, "User Input B2 - bit = %d\n", bit);
-			if ((UserVIAState.ddrb & 0x04) == 0x00)
-			{
-				if (bit == 1) UserVIAState.irb &= ~0x04; else UserVIAState.irb |= 0x04;
-			}
-			break;
-        case 'uib1':
-			bit = GetValue(command.commandID);
-//          fprintf(stderr, "User Input B1 - bit = %d\n", bit);
-			if ((UserVIAState.ddrb & 0x02) == 0x00)
-			{
-				if (bit == 1) UserVIAState.irb &= ~0x02; else UserVIAState.irb |= 0x02;
-			}
-			break;
-        case 'uib0':
-			bit = GetValue(command.commandID);
-//          fprintf(stderr, "User Input B0 - bit = %d\n", bit);
-			if ((UserVIAState.ddrb & 0x01) == 0x00)
-			{
-				if (bit == 1) UserVIAState.irb &= ~0x01; else UserVIAState.irb |= 0x01;
-			}
-			break;
-			
-        default:
-            err = eventNotHandledErr;
-            break;
-    }
-
-	}
-	else
-		{
-			ShowBitKey(BitKey, command.commandID);
-		}
-
-CantGetParameter:
-		return err;
-}
-
-static OSStatus BreakOutWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    OSStatus err = noErr;
-	char charCode;
-	int keycode;
-
-    switch (GetEventKind(event))
-    {
-
-		case kEventRawKeyDown:
-			GetEventParameter(event, kEventParamKeyMacCharCodes, typeChar, NULL, sizeof(char), NULL, &charCode);
-			GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(int), NULL, &keycode);
-//			fprintf(stderr, "Key pressed: code = %d, '%c'\n", keycode, charCode);
-			if (LastBitButton != 0)
-			{
-				BitKeys[BitKey] = keycode;
-				ShowBitKey(BitKey, LastBitButton);
-			}
-			break;
-			
-		case kEventWindowClosed: 
-			mBreakOutWindow = NULL;
-			mainWin->SetMenuCommandIDCheck('upbo', false);
-            break;
-
-        default:
-            err = eventNotHandledErr;
-            break;
-    }
-    
-    return err;
-}
-
-void BreakOutOpenDialog()
-{
-
-	IBNibRef 		nibRef;
-	EventTypeSpec BreakOutCommands[] = {
-	{ kEventClassCommand, kEventCommandProcess }
-	};
-		
-	EventTypeSpec BreakOutEvents[] = {
-	{ kEventClassWindow, kEventWindowClosed },
-	{ kEventClassKeyboard, kEventRawKeyDown}
-	};
-
-	if (mBreakOutWindow == NULL)
-	{
-		// Create a Nib reference passing the name of the nib file (without the .nib extension)
-		// CreateNibReference only searches into the application bundle.
-		//CreateNibReference(CFSTR("main"), &nibRef);
-		//CreateWindowFromNib(nibRef, CFSTR("Window3"), &mBreakOutWindow);
-		//DisposeNibReference(nibRef);
-		//ShowWindow(mBreakOutWindow);
-		
-		//InstallWindowEventHandler(mBreakOutWindow,
-		//					  NewEventHandlerUPP (BreakOutWindowCommandHandler),
-		//					  GetEventTypeCount(BreakOutCommands), BreakOutCommands,
-		//					  mBreakOutWindow, NULL);
-		
-		//InstallWindowEventHandler (mBreakOutWindow,
-		//						   NewEventHandlerUPP (BreakOutWindowEventHandler),
-		//						   GetEventTypeCount(BreakOutEvents), BreakOutEvents,
-		//						   mBreakOutWindow, NULL);
-		
-		ShowInputs( (UserVIAState.orb & UserVIAState.ddrb) | (UserVIAState.irb & (~UserVIAState.ddrb)) );
-		ShowOutputs(UserVIAState.orb);
-		
-		ShowBitKey(0, '0   ');
-		ShowBitKey(1, '1   ');
-		ShowBitKey(2, '2   ');
-		ShowBitKey(3, '3   ');
-		ShowBitKey(4, '4   ');
-		ShowBitKey(5, '5   ');
-		ShowBitKey(6, '6   ');
-		ShowBitKey(7, '7   ');
-
-	
-	}
-}
-
-void BreakOutCloseDialog()
-{
-	if (mBreakOutWindow)
-	{
-		//HideWindow(mBreakOutWindow);
-		//DisposeWindow(mBreakOutWindow);
-	}
-	mBreakOutWindow = NULL;
-	mainWin->SetMenuCommandIDCheck('upbo', false);
-}
-
-int GetValue(OSType box)
-
-{
-	ControlID dbControlID;
-	ControlRef dbControl;
-	int ret;
-	
-	dbControlID.signature = box;
-	dbControlID.id = 0;
-	//GetControlByID (mBreakOutWindow, &dbControlID, &dbControl);
-	//ret = GetControlValue(dbControl);
-	return ret;
-}
-
-void SetValue(OSType box, int State)
-{
-	ControlID dbControlID;
-	ControlRef dbControl;
-	
-	dbControlID.signature = box;
-	dbControlID.id = 0;
-	//GetControlByID (mBreakOutWindow, &dbControlID, &dbControl);
-	//SetControlValue(dbControl, State);
-}
-
-void ShowOutputs(unsigned char data)
-{
-static unsigned char last_data = 0;
-unsigned char changed_bits;
-	
-	if (mBreakOutWindow)
-	{
-		if (data != last_data)
-		{
-			changed_bits = data ^ last_data;
-			if (changed_bits & 0x80) { if ((UserVIAState.ddrb & 0x80) == 0x80) SetValue('uob7', (data & 0x80) != 0); else SetValue('uob7', 0); }
-			if (changed_bits & 0x40) { if ((UserVIAState.ddrb & 0x40) == 0x40) SetValue('uob6', (data & 0x40) != 0); else SetValue('uob6', 0); }
-			if (changed_bits & 0x20) { if ((UserVIAState.ddrb & 0x20) == 0x20) SetValue('uob5', (data & 0x20) != 0); else SetValue('uob5', 0); }
-			if (changed_bits & 0x10) { if ((UserVIAState.ddrb & 0x10) == 0x10) SetValue('uob4', (data & 0x10) != 0); else SetValue('uob4', 0); }
-			if (changed_bits & 0x08) { if ((UserVIAState.ddrb & 0x08) == 0x08) SetValue('uob3', (data & 0x08) != 0); else SetValue('uob3', 0); }
-			if (changed_bits & 0x04) { if ((UserVIAState.ddrb & 0x04) == 0x04) SetValue('uob2', (data & 0x04) != 0); else SetValue('uob2', 0); }
-			if (changed_bits & 0x02) { if ((UserVIAState.ddrb & 0x02) == 0x02) SetValue('uob1', (data & 0x02) != 0); else SetValue('uob1', 0); }
-			if (changed_bits & 0x01) { if ((UserVIAState.ddrb & 0x01) == 0x01) SetValue('uob0', (data & 0x01) != 0); else SetValue('uob0', 0); }
-			last_data = data;
-		}
-	}
-}
-
-void ShowInputs(unsigned char data)
-{
-static unsigned char last_data = 0;
-unsigned char changed_bits;
-
-	if (mBreakOutWindow)
-	{
-		if (data != last_data)
-		{
-			changed_bits = data ^ last_data;
-			if (changed_bits & 0x80) { if ((UserVIAState.ddrb & 0x80) == 0x00) SetValue('uib7', (data & 0x80) == 0); else SetValue('uib7', 0); }
-			if (changed_bits & 0x40) { if ((UserVIAState.ddrb & 0x40) == 0x00) SetValue('uib6', (data & 0x40) == 0); else SetValue('uib6', 0); }
-			if (changed_bits & 0x20) { if ((UserVIAState.ddrb & 0x20) == 0x00) SetValue('uib5', (data & 0x20) == 0); else SetValue('uib5', 0); }
-			if (changed_bits & 0x10) { if ((UserVIAState.ddrb & 0x10) == 0x00) SetValue('uib4', (data & 0x10) == 0); else SetValue('uib4', 0); }
-			if (changed_bits & 0x08) { if ((UserVIAState.ddrb & 0x08) == 0x00) SetValue('uib3', (data & 0x08) == 0); else SetValue('uib3', 0); }
-			if (changed_bits & 0x04) { if ((UserVIAState.ddrb & 0x04) == 0x00) SetValue('uib2', (data & 0x04) == 0); else SetValue('uib2', 0); }
-			if (changed_bits & 0x02) { if ((UserVIAState.ddrb & 0x02) == 0x00) SetValue('uib1', (data & 0x02) == 0); else SetValue('uib1', 0); }
-			if (changed_bits & 0x01) { if ((UserVIAState.ddrb & 0x01) == 0x00) SetValue('uib0', (data & 0x01) == 0); else SetValue('uib0', 0); }
-			last_data = data;
-		}
-	}
-}
-
-void ShowBitKey(int key, int ctrlID)
-{
-char Keys[256];
-CFStringRef pTitle;
-
-	strcpy(Keys, BitKeyName(BitKeys[key]));
-
-//	fprintf(stderr, "Setting button text to '%s'\n", Keys);
-
-	ControlID dbKeyID;
-	ControlRef dbControl;
-	
-	dbKeyID.signature = ctrlID;
-	dbKeyID.id = 0;
-	
-	//GetControlByID (mBreakOutWindow, &dbKeyID, &dbControl);
-
-	pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Keys, kCFStringEncodingASCII);
-
-    //SetControlTitleWithCFString(dbControl, pTitle);
-	
-	CFRelease(pTitle);
-
-	if ( (LastBitButton != 0) && (LastBitButton != ctrlID) )
-	{
-
-		ControlID dbKeyID;
-		
-		dbKeyID.signature = LastBitButton;
-		dbKeyID.id = 0;
-		
-		//GetControlByID (mBreakOutWindow, &dbKeyID, &dbControl);
-
-		//SetControlValue(dbControl, 0);
-	}
-
-	LastBitButton = ctrlID;
-
-}
+//static OSStatus BreakOutWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//{
+//    OSStatus err = noErr;
+//	char charCode;
+//	int keycode;
+//
+//    switch (GetEventKind(event))
+//    {
+//
+//		case kEventRawKeyDown:
+//			GetEventParameter(event, kEventParamKeyMacCharCodes, typeChar, NULL, sizeof(char), NULL, &charCode);
+//			GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(int), NULL, &keycode);
+////			fprintf(stderr, "Key pressed: code = %d, '%c'\n", keycode, charCode);
+//			if (LastBitButton != 0)
+//			{
+//				BitKeys[BitKey] = keycode;
+//				ShowBitKey(BitKey, LastBitButton);
+//			}
+//			break;
+//
+//		case kEventWindowClosed:
+//			mBreakOutWindow = NULL;
+//			//**CARBON**   mainWin->SetMenuCommandIDCheck('upbo', false);
+//            break;
+//
+//        default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//    return err;
+//}
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//void BreakOutOpenDialog()
+//{
+//
+//	IBNibRef 		nibRef;
+//	EventTypeSpec BreakOutCommands[] = {
+//	{ kEventClassCommand, kEventCommandProcess }
+//	};
+//
+//	EventTypeSpec BreakOutEvents[] = {
+//	{ kEventClassWindow, kEventWindowClosed },
+//	{ kEventClassKeyboard, kEventRawKeyDown}
+//	};
+//
+//	if (mBreakOutWindow == NULL)
+//	{
+//		// Create a Nib reference passing the name of the nib file (without the .nib extension)
+//		// CreateNibReference only searches into the application bundle.
+//		//CreateNibReference(CFSTR("main"), &nibRef);
+//		//CreateWindowFromNib(nibRef, CFSTR("Window3"), &mBreakOutWindow);
+//		//DisposeNibReference(nibRef);
+//		//ShowWindow(mBreakOutWindow);
+//
+//		//InstallWindowEventHandler(mBreakOutWindow,
+//		//					  NewEventHandlerUPP (BreakOutWindowCommandHandler),
+//		//					  GetEventTypeCount(BreakOutCommands), BreakOutCommands,
+//		//					  mBreakOutWindow, NULL);
+//
+//		//InstallWindowEventHandler (mBreakOutWindow,
+//		//						   NewEventHandlerUPP (BreakOutWindowEventHandler),
+//		//						   GetEventTypeCount(BreakOutEvents), BreakOutEvents,
+//		//						   mBreakOutWindow, NULL);
+//
+//		ShowInputs( (UserVIAState.orb & UserVIAState.ddrb) | (UserVIAState.irb & (~UserVIAState.ddrb)) );
+//		ShowOutputs(UserVIAState.orb);
+//
+//		ShowBitKey(0, '0   ');
+//		ShowBitKey(1, '1   ');
+//		ShowBitKey(2, '2   ');
+//		ShowBitKey(3, '3   ');
+//		ShowBitKey(4, '4   ');
+//		ShowBitKey(5, '5   ');
+//		ShowBitKey(6, '6   ');
+//		ShowBitKey(7, '7   ');
+//
+//
+//	}
+//}
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//void BreakOutCloseDialog()
+//{
+//	if (mBreakOutWindow)
+//	{
+//		//HideWindow(mBreakOutWindow);
+//		//DisposeWindow(mBreakOutWindow);
+//	}
+//	mBreakOutWindow = NULL;
+//	//**CARBON**   mainWin->SetMenuCommandIDCheck('upbo', false);
+//}
+//
+//int GetValue(OSType box)
+//
+//{
+//	ControlID dbControlID;
+//	ControlRef dbControl;
+//	int ret;
+//
+//	dbControlID.signature = box;
+//	dbControlID.id = 0;
+//	//GetControlByID (mBreakOutWindow, &dbControlID, &dbControl);
+//	//ret = GetControlValue(dbControl);
+//	return ret;
+//}
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//void SetValue(OSType box, int State)
+//{
+//	ControlID dbControlID;
+//	ControlRef dbControl;
+//
+//	dbControlID.signature = box;
+//	dbControlID.id = 0;
+//	//GetControlByID (mBreakOutWindow, &dbControlID, &dbControl);
+//	//SetControlValue(dbControl, State);
+//}
+//
+//void ShowOutputs(unsigned char data)
+//{
+//static unsigned char last_data = 0;
+//unsigned char changed_bits;
+//
+//	if (mBreakOutWindow)
+//	{
+//		if (data != last_data)
+//		{
+//			changed_bits = data ^ last_data;
+//			if (changed_bits & 0x80) { if ((UserVIAState.ddrb & 0x80) == 0x80) SetValue('uob7', (data & 0x80) != 0); else SetValue('uob7', 0); }
+//			if (changed_bits & 0x40) { if ((UserVIAState.ddrb & 0x40) == 0x40) SetValue('uob6', (data & 0x40) != 0); else SetValue('uob6', 0); }
+//			if (changed_bits & 0x20) { if ((UserVIAState.ddrb & 0x20) == 0x20) SetValue('uob5', (data & 0x20) != 0); else SetValue('uob5', 0); }
+//			if (changed_bits & 0x10) { if ((UserVIAState.ddrb & 0x10) == 0x10) SetValue('uob4', (data & 0x10) != 0); else SetValue('uob4', 0); }
+//			if (changed_bits & 0x08) { if ((UserVIAState.ddrb & 0x08) == 0x08) SetValue('uob3', (data & 0x08) != 0); else SetValue('uob3', 0); }
+//			if (changed_bits & 0x04) { if ((UserVIAState.ddrb & 0x04) == 0x04) SetValue('uob2', (data & 0x04) != 0); else SetValue('uob2', 0); }
+//			if (changed_bits & 0x02) { if ((UserVIAState.ddrb & 0x02) == 0x02) SetValue('uob1', (data & 0x02) != 0); else SetValue('uob1', 0); }
+//			if (changed_bits & 0x01) { if ((UserVIAState.ddrb & 0x01) == 0x01) SetValue('uob0', (data & 0x01) != 0); else SetValue('uob0', 0); }
+//			last_data = data;
+//		}
+//	}
+//}
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//void ShowInputs(unsigned char data)
+//{
+//static unsigned char last_data = 0;
+//unsigned char changed_bits;
+//
+//	if (mBreakOutWindow)
+//	{
+//		if (data != last_data)
+//		{
+//			changed_bits = data ^ last_data;
+//			if (changed_bits & 0x80) { if ((UserVIAState.ddrb & 0x80) == 0x00) SetValue('uib7', (data & 0x80) == 0); else SetValue('uib7', 0); }
+//			if (changed_bits & 0x40) { if ((UserVIAState.ddrb & 0x40) == 0x00) SetValue('uib6', (data & 0x40) == 0); else SetValue('uib6', 0); }
+//			if (changed_bits & 0x20) { if ((UserVIAState.ddrb & 0x20) == 0x00) SetValue('uib5', (data & 0x20) == 0); else SetValue('uib5', 0); }
+//			if (changed_bits & 0x10) { if ((UserVIAState.ddrb & 0x10) == 0x00) SetValue('uib4', (data & 0x10) == 0); else SetValue('uib4', 0); }
+//			if (changed_bits & 0x08) { if ((UserVIAState.ddrb & 0x08) == 0x00) SetValue('uib3', (data & 0x08) == 0); else SetValue('uib3', 0); }
+//			if (changed_bits & 0x04) { if ((UserVIAState.ddrb & 0x04) == 0x00) SetValue('uib2', (data & 0x04) == 0); else SetValue('uib2', 0); }
+//			if (changed_bits & 0x02) { if ((UserVIAState.ddrb & 0x02) == 0x00) SetValue('uib1', (data & 0x02) == 0); else SetValue('uib1', 0); }
+//			if (changed_bits & 0x01) { if ((UserVIAState.ddrb & 0x01) == 0x00) SetValue('uib0', (data & 0x01) == 0); else SetValue('uib0', 0); }
+//			last_data = data;
+//		}
+//	}
+//}
+//
+//void ShowBitKey(int key, int ctrlID)
+//{
+//char Keys[256];
+//CFStringRef pTitle;
+//
+//	strcpy(Keys, BitKeyName(BitKeys[key]));
+//
+////	fprintf(stderr, "Setting button text to '%s'\n", Keys);
+//
+//	ControlID dbKeyID;
+//	ControlRef dbControl;
+//
+//	dbKeyID.signature = ctrlID;
+//	dbKeyID.id = 0;
+//
+//	//GetControlByID (mBreakOutWindow, &dbKeyID, &dbControl);
+//
+//	pTitle = CFStringCreateWithCString (kCFAllocatorDefault, Keys, kCFStringEncodingASCII);
+//
+//    //SetControlTitleWithCFString(dbControl, pTitle);
+//
+//	CFRelease(pTitle);
+//
+//	if ( (LastBitButton != 0) && (LastBitButton != ctrlID) )
+//	{
+//
+//		ControlID dbKeyID;
+//
+//		dbKeyID.signature = LastBitButton;
+//		dbKeyID.id = 0;
+//
+//		//GetControlByID (mBreakOutWindow, &dbKeyID, &dbControl);
+//
+//		//SetControlValue(dbControl, 0);
+//	}
+//
+//	LastBitButton = ctrlID;
+//
+//}
 
 const char *BitKeyName( int Key )
 {

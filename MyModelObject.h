@@ -27,6 +27,7 @@
 -(void) getCount;
 -(void) toLog;
 -(id) init;
+-(void) backgroundTask;
 
 @end
 

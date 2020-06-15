@@ -14,7 +14,6 @@
 -(void) getCount {
     NSLog(@"%s","In getCount");
     count = tc.getValue();
-    [self.delegate sendNewValue:self theVal:count];
 }
 
 -(void) toLog {
@@ -23,8 +22,13 @@
 
 -(id) init {
     self = [super init];
-    tc.startMainLoop();
+    [self performSelectorInBackground:@selector(backgroundTask) withObject:self];
+    NSLog(@"%s","Launched background task");
     return self;
+}
+
+-(void) backgroundTask {
+    tc.startMainLoop();
 }
 
 @end

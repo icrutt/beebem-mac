@@ -9,16 +9,16 @@
 
 extern unsigned char TouchScreenEnabled;
 extern unsigned char EthernetPortEnabled;
-extern WindowRef mSerialPortWindow; 
+//**CARBON** extern WindowRef mSerialPortWindow;
 extern int mSerialHandle;
-extern WindowRef mEthernetPortWindow; 
+//**CARBON** extern WindowRef mEthernetPortWindow;
 extern int mEthernetHandle;
 
 void EthernetPortOpenDialog();
 void EthernetPortCloseDialog();
-OSStatus MyEthernetPortStatusThread(void *parameter);
-OSStatus MyEthernetPortReadThread(void *parameter);
-OSStatus MyListenThread(void *parameter);
+//**CARBON**OSStatus MyEthernetPortStatusThread(void *parameter);
+//**CARBON**OSStatus MyEthernetPortReadThread(void *parameter);
+//**CARBON**OSStatus MyListenThread(void *parameter);
 void EthernetPortOpen(void);
 bool EthernetPortPoll(void);
 void EthernetPortClose(void);
@@ -39,8 +39,8 @@ void SerialPortOpenDialog();
 void SerialPortCloseDialog();
 int OpenSerialPort(const char *bsdPath);
 void CloseSerialPort(int fileDescriptor);
-OSStatus MySerialReadThread(void *parameter);
-OSStatus MySerialStatusThread(void *parameter);
+//**CARBON**OSStatus MySerialReadThread(void *parameter);
+//**CARBON**OSStatus MySerialStatusThread(void *parameter);
 void SetSerialPortFormat(int Data_Bits, int Stop_Bits, int Parity, int RTS);
 void SetSerialPortBaud(int Tx_Rate, int Rx_Rate);
 void SerialPortWrite(unsigned char TDR);

@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <chrono>
 #include <thread>
-#include <Carbon/Carbon.h>
+#include <MacTypes.h>
 
 #include "BeebEmCommon.h"
 #include "6502core.h"
@@ -45,11 +45,12 @@
 #include "BeebEm-main.h"
 #include "BeebEmLog.hpp"
 
-extern void * PushSymbolicHotKeyMode(OptionBits inOptions) __attribute__((weak_import));
-extern void PopSymbolicHotKeyMode(void * inToken)          __attribute__((weak_import));
+//**CARBON**extern void * PushSymbolicHotKeyMode(OptionBits inOptions) __attribute__((weak_import));
+//**CARBON**extern void PopSymbolicHotKeyMode(void * inToken)          __attribute__((weak_import));
 
 static CPU6502* BeebCPU;
 static CArm* arm;
+typedef unsigned char Boolean;
 
 int done = 0;
 #include "via.h"
@@ -62,384 +63,385 @@ const char *Version="4.0a";
 const char *VersionDate="22nd July 2017";
 
 void AtExitHandler(void) {
-  delete mainWin;
+    delete mainWin;
+    delete BeebCPU;
 }; /* AtExitHandler */
 
-static pascal OSErr AEodoc(const AppleEvent *theEvent, AppleEvent *theReply, long refCon)
-{
-	OSErr 		err;
-	FSRef		ref;
-	AEDescList	docList;
-	AEKeyword	keywd;
-
-	DescType	rtype;
-	Size		acsize;
-	long		count;
-	
-	#pragma unused (theReply, refCon)
-	
-//	if (running)
+//static pascal OSErr AEodoc(const AppleEvent *theEvent, AppleEvent *theReply, long refCon)
+//{
+//	OSErr 		err;
+//	FSRef		ref;
+//	AEDescList	docList;
+//	AEKeyword	keywd;
+//
+//	DescType	rtype;
+//	Size		acsize;
+//	long		count;
+//
+//	#pragma unused (theReply, refCon)
+//
+////	if (running)
+////		return noErr;
+//
+//	err = AEGetParamDesc(theEvent, keyDirectObject, typeAEList, &docList);
+//	if (err)
 //		return noErr;
-
-	err = AEGetParamDesc(theEvent, keyDirectObject, typeAEList, &docList);
-	if (err)
-		return noErr;
-	
-	err = AECountItems(&docList, &count);
-	if (err || (count != 1))
-	{
-		err = AEDisposeDesc(&docList);
-		return noErr;
-	}
-	
-	err = AEGetNthPtr(&docList, 1, typeFSRef, &keywd, &rtype, &ref, sizeof(FSRef), &acsize);
-	if (err == noErr)
-	{
-		char path[256];
-		UInt8 *ptr;
-		ptr = (UInt8 *) path;
-		FSRefMakePath(&ref, ptr, 255);
-		fprintf(stderr, "Autoran with %s\n", path);
-		if (mainWin)
-		{
-			if (strstr(path, ".uef")) mainWin->LoadTapeFromPath(path);
-			else if (strstr(path, ".UEF")) mainWin->LoadTapeFromPath(path);
-			else if (strstr(path, ".csw")) mainWin->LoadTapeFromPath(path);
-			else if (strstr(path, ".CSW")) mainWin->LoadTapeFromPath(path);
-			else {
-				mainWin->LoadDisc(0, path);
-				mainWin->m_ShiftBooted = true;
-				mainWin->ResetBeebSystem(MachineType, TubeEnabled, 0);
-				BeebKeyDown(0, 0);
-				
-			}
-		}
-    }
-		
-	err = AEDisposeDesc(&docList);
-
-	return err;
-}
-
-static OSStatus MainWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    OSStatus err = noErr;
-
-	switch (GetEventKind(event))
-    {
-        case kEventWindowClosed: 
-			quitNow = true;
-            //QuitApplicationEventLoop();
-            break;
-        default:
-            err = eventNotHandledErr;
-            break;
-    }
-    
-    return err;
-}
-
-static OSStatus MainWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    HICommand command; 
-//    WindowRef window = (WindowRef) userData;
-    OSStatus err = noErr;
-    err = GetEventParameter(event, kEventParamDirectObject,
-        typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    //require_noerr (err, CantGetParameter);
-
-	err = mainWin->HandleCommand(command.commandID);
-    
-CantGetParameter:
-    return err;
-}
-
-static OSStatus EventHandler (EventHandlerCallRef handler, EventRef event, void *data)
-{
-char charCode;
-int keycode;
-static int ctrl = 0x0000;
-int LastShift, LastCtrl, LastCaps, LastCmd;
-int NewShift, NewCtrl, NewCaps;
-static int NewCmd = 0;
-
-  switch (GetEventClass(event)) 
-  {
-  case kEventClassKeyboard:
-    
-//	fprintf(stderr, "Key Event Kind %d\n", GetEventKind(event));
-	
-    switch (GetEventKind(event)) 
-	{
-      case kEventRawKeyDown:
-        GetEventParameter(event, kEventParamKeyMacCharCodes, typeChar, NULL, sizeof(char), NULL, &charCode);
-        GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(int), NULL, &keycode);
-//      fprintf(stderr, "Key pressed: code = %d, '%c'\n", keycode, charCode);
-		if ( (NewCmd) && (keycode == 6) )
-		{
-//			fprintf(stderr, "cmd-Z pressed, NewCmd = %d\n", NewCmd);
-			if (mainWin->m_isFullScreen)
-			{
-				//EndFullScreen(mainWin->m_RestoreState, nil);
-				mainWin->m_isFullScreen = 0;
-				mainWin->SetMenuCommandIDCheck('vfsc', false);
-			}
-		} else if ( (NewCmd) && (NewCtrl) && (keycode == 1) )
-		{
-//			fprintf(stderr, "ctrl-cmd-S pressed, NewCmd = %d\n", NewCmd);
-			mainWin->m_PrintScreen = true;
-		} else if ( (NewCmd) && (keycode == 8) )
-		{
-//			fprintf(stderr, "cmd-C pressed, NewCmd = %d\n", NewCmd);
-			mainWin->doCopy();
-		} else if ( (NewCmd) && (keycode == 9) )
-		{
-//			fprintf(stderr, "cmd-V pressed, NewCmd = %d\n", NewCmd);
-			mainWin->doPaste();
-		} else if ( (NewCmd) && (keycode == 17) )
-		{
-			trace_186 = 1 - trace_186;
-		}
-	  else
-		{
-			mainWin->KeyDown(keycode);
-		}
-		break;
-      case kEventRawKeyUp:
-        GetEventParameter(event, kEventParamKeyMacCharCodes, typeChar, NULL, sizeof(char), NULL, &charCode);
-        GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(int), NULL, &keycode);
-//        fprintf(stderr, "Key released: code = %d, '%c'\n", keycode, charCode);
-		mainWin->KeyUp(keycode);
-		break;
-      case 4:
-        GetEventParameter(event, kEventParamKeyModifiers, typeUInt32, NULL, sizeof(int), NULL, &keycode);
-	    LastCmd = ctrl & 0x0100;
-		LastShift = ctrl & 0x0200;
-		LastCtrl = ctrl & 0x1000;
-		LastCaps = ctrl & 0x0800;
-		NewShift = keycode & 0x0200;
-		NewCtrl = keycode & 0x1000;
-		NewCaps = keycode & 0x0800;
-	    NewCmd = keycode & 0x0100;
-
-//		fprintf(stderr, "Key modifier : code = %08x\n", keycode);
-		
-		if (LastShift != NewShift) if (LastShift) mainWin->KeyUp(200); else mainWin->KeyDown(200);
-		if (LastCtrl  != NewCtrl)  if (LastCtrl)  mainWin->KeyUp(201); else mainWin->KeyDown(201);
-		if (LastCaps  != NewCaps)  if (LastCaps)  mainWin->KeyUp(202); else mainWin->KeyDown(202);
-		ctrl = keycode;
-      break;
-    }
-    break;
-
-  case kEventClassMouse:
-
-//	BeebEmLog::writeLog("Key Event Kind %d\n", GetEventKind(event));
-	
-	Point posn;
-	EventMouseButton btn;
-	HIPoint wposn;
-
-    switch (GetEventKind(event)) 
-	{
-      case kEventMouseDown:
-        GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
-        GetEventParameter(event, kEventParamMouseButton, typeMouseButton, NULL, sizeof(EventMouseButton), NULL, &btn);
-        GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
-//        BeebEmLog::writeLog("Mouse Down : Screen X = %d, Screen Y = %d, Button = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, btn, wposn.x, wposn.y);
-		if ( (wposn.x > 0) && (wposn.y > 0) )
-		{
-			switch (btn)
-			{
-			case kEventMouseButtonPrimary:
-				mainWin->SetMousestickButton(TRUE);
-				AMXButtons |= AMX_LEFT_BUTTON;
-				break;
-			case kEventMouseButtonSecondary:
-				AMXButtons |= AMX_RIGHT_BUTTON;
-				break;
-			case kEventMouseButtonTertiary:
-				AMXButtons |= AMX_MIDDLE_BUTTON;
-				break;
-			}
-		}
-		break;
-      case kEventMouseUp:
-        GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
-        GetEventParameter(event, kEventParamMouseButton, typeMouseButton, NULL, sizeof(EventMouseButton), NULL, &btn);
-        GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
-//        BeebEmLog::writeLog("Mouse Up : Screen X = %d, Screen Y = %d, Button = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, btn, wposn.x, wposn.y);
-		if ( (wposn.x > 0) && (wposn.y > 0) )
-			switch (btn)
-			{
-			case kEventMouseButtonPrimary:
-				mainWin->SetMousestickButton(FALSE);
-				AMXButtons &= ~AMX_LEFT_BUTTON;
-				break;
-			case kEventMouseButtonSecondary:
-				AMXButtons &= ~AMX_RIGHT_BUTTON;
-				break;
-			case kEventMouseButtonTertiary:
-				AMXButtons &= ~AMX_MIDDLE_BUTTON;
-				break;
-			}
-		break;
-      case kEventMouseMoved:
-        GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
-        GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
-//        BeebEmLog::writeLog("Mouse Moved : Screen X = %d, Screen Y = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, wposn.x, wposn.y);
-			if ( (wposn.x > 0) && (wposn.y > 20) )
-			{
-				mainWin->ScaleMousestick( (int) wposn.x, (int) wposn.y - 21);
-				mainWin->SetAMXPosition( (int) wposn.x, (int) wposn.y - 21);		// take off height of menu bar
-			}
-      break;
-      case kEventMouseDragged:
-		  GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
-		  GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
-//          BeebEmLog::writeLog("Mouse Dragged : Screen X = %d, Screen Y = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, wposn.x, wposn.y);
-		  if ( (wposn.x > 0) && (wposn.y > 20) )
-		  {
-			  mainWin->ScaleMousestick( (int) wposn.x, (int) wposn.y - 21);
-			  mainWin->SetAMXPosition( (int) wposn.x, (int) wposn.y - 21);		// take off height of menu bar
-		  }
-	  break;
-    }
-
-	break;
-  }
-
-  return eventNotHandledErr;
-  
-}
+//
+//	err = AECountItems(&docList, &count);
+//	if (err || (count != 1))
+//	{
+//		err = AEDisposeDesc(&docList);
+//		return noErr;
+//	}
+//
+//	err = AEGetNthPtr(&docList, 1, typeFSRef, &keywd, &rtype, &ref, sizeof(FSRef), &acsize);
+//	if (err == noErr)
+//	{
+//		char path[256];
+//		UInt8 *ptr;
+//		ptr = (UInt8 *) path;
+//		FSRefMakePath(&ref, ptr, 255);
+//		fprintf(stderr, "Autoran with %s\n", path);
+//		if (mainWin)
+//		{
+//			if (strstr(path, ".uef")) mainWin->LoadTapeFromPath(path);
+//			else if (strstr(path, ".UEF")) mainWin->LoadTapeFromPath(path);
+//			else if (strstr(path, ".csw")) mainWin->LoadTapeFromPath(path);
+//			else if (strstr(path, ".CSW")) mainWin->LoadTapeFromPath(path);
+//			else {
+//				mainWin->LoadDisc(0, path);
+//				mainWin->m_ShiftBooted = true;
+//				mainWin->ResetBeebSystem(MachineType, TubeEnabled, 0);
+//				BeebKeyDown(0, 0);
+//
+//			}
+//		}
+//    }
+//
+//	err = AEDisposeDesc(&docList);
+//
+//	return err;
+//}
+//
+//static OSStatus MainWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    OSStatus err = noErr;
+//
+//	switch (GetEventKind(event))
+//    {
+//        case kEventWindowClosed:
+//			quitNow = true;
+//            //QuitApplicationEventLoop();
+//            break;
+//        default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//    return err;
+//}
+//
+//static OSStatus MainWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    HICommand command;
+////    WindowRef window = (WindowRef) userData;
+//    OSStatus err = noErr;
+//    err = GetEventParameter(event, kEventParamDirectObject,
+//        typeHICommand, NULL, sizeof(HICommand), NULL, &command);
+//    //require_noerr (err, CantGetParameter);
+//
+//	err = mainWin->HandleCommand(command.commandID);
+//
+//CantGetParameter:
+//    return err;
+//}
+//
+//static OSStatus EventHandler (EventHandlerCallRef handler, EventRef event, void *data)
+//{
+//char charCode;
+//int keycode;
+//static int ctrl = 0x0000;
+//int LastShift, LastCtrl, LastCaps, LastCmd;
+//int NewShift, NewCtrl, NewCaps;
+//static int NewCmd = 0;
+//
+//  switch (GetEventClass(event))
+//  {
+//  case kEventClassKeyboard:
+//
+////	fprintf(stderr, "Key Event Kind %d\n", GetEventKind(event));
+//
+//    switch (GetEventKind(event))
+//	{
+//      case kEventRawKeyDown:
+//        GetEventParameter(event, kEventParamKeyMacCharCodes, typeChar, NULL, sizeof(char), NULL, &charCode);
+//        GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(int), NULL, &keycode);
+////      fprintf(stderr, "Key pressed: code = %d, '%c'\n", keycode, charCode);
+//		if ( (NewCmd) && (keycode == 6) )
+//		{
+////			fprintf(stderr, "cmd-Z pressed, NewCmd = %d\n", NewCmd);
+//			if (mainWin->m_isFullScreen)
+//			{
+//				//EndFullScreen(mainWin->m_RestoreState, nil);
+//				mainWin->m_isFullScreen = 0;
+//				//**CARBON**   mainWin->SetMenuCommandIDCheck('vfsc', false);
+//			}
+//		} else if ( (NewCmd) && (NewCtrl) && (keycode == 1) )
+//		{
+////			fprintf(stderr, "ctrl-cmd-S pressed, NewCmd = %d\n", NewCmd);
+//			mainWin->m_PrintScreen = true;
+//		} else if ( (NewCmd) && (keycode == 8) )
+//		{
+////			fprintf(stderr, "cmd-C pressed, NewCmd = %d\n", NewCmd);
+//			mainWin->doCopy();
+//		} else if ( (NewCmd) && (keycode == 9) )
+//		{
+////			fprintf(stderr, "cmd-V pressed, NewCmd = %d\n", NewCmd);
+//			mainWin->doPaste();
+//		} else if ( (NewCmd) && (keycode == 17) )
+//		{
+//			trace_186 = 1 - trace_186;
+//		}
+//	  else
+//		{
+//			mainWin->KeyDown(keycode);
+//		}
+//		break;
+//      case kEventRawKeyUp:
+//        GetEventParameter(event, kEventParamKeyMacCharCodes, typeChar, NULL, sizeof(char), NULL, &charCode);
+//        GetEventParameter(event, kEventParamKeyCode, typeUInt32, NULL, sizeof(int), NULL, &keycode);
+////        fprintf(stderr, "Key released: code = %d, '%c'\n", keycode, charCode);
+//		mainWin->KeyUp(keycode);
+//		break;
+//      case 4:
+//        GetEventParameter(event, kEventParamKeyModifiers, typeUInt32, NULL, sizeof(int), NULL, &keycode);
+//	    LastCmd = ctrl & 0x0100;
+//		LastShift = ctrl & 0x0200;
+//		LastCtrl = ctrl & 0x1000;
+//		LastCaps = ctrl & 0x0800;
+//		NewShift = keycode & 0x0200;
+//		NewCtrl = keycode & 0x1000;
+//		NewCaps = keycode & 0x0800;
+//	    NewCmd = keycode & 0x0100;
+//
+////		fprintf(stderr, "Key modifier : code = %08x\n", keycode);
+//
+//		if (LastShift != NewShift) if (LastShift) mainWin->KeyUp(200); else mainWin->KeyDown(200);
+//		if (LastCtrl  != NewCtrl)  if (LastCtrl)  mainWin->KeyUp(201); else mainWin->KeyDown(201);
+//		if (LastCaps  != NewCaps)  if (LastCaps)  mainWin->KeyUp(202); else mainWin->KeyDown(202);
+//		ctrl = keycode;
+//      break;
+//    }
+//    break;
+//
+//  case kEventClassMouse:
+//
+////	BeebEmLog::writeLog("Key Event Kind %d\n", GetEventKind(event));
+//
+//	Point posn;
+//	EventMouseButton btn;
+//	HIPoint wposn;
+//
+//    switch (GetEventKind(event))
+//	{
+//      case kEventMouseDown:
+//        GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
+//        GetEventParameter(event, kEventParamMouseButton, typeMouseButton, NULL, sizeof(EventMouseButton), NULL, &btn);
+//        GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
+////        BeebEmLog::writeLog("Mouse Down : Screen X = %d, Screen Y = %d, Button = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, btn, wposn.x, wposn.y);
+//		if ( (wposn.x > 0) && (wposn.y > 0) )
+//		{
+//			switch (btn)
+//			{
+//			case kEventMouseButtonPrimary:
+//				mainWin->SetMousestickButton(TRUE);
+//				AMXButtons |= AMX_LEFT_BUTTON;
+//				break;
+//			case kEventMouseButtonSecondary:
+//				AMXButtons |= AMX_RIGHT_BUTTON;
+//				break;
+//			case kEventMouseButtonTertiary:
+//				AMXButtons |= AMX_MIDDLE_BUTTON;
+//				break;
+//			}
+//		}
+//		break;
+//      case kEventMouseUp:
+//        GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
+//        GetEventParameter(event, kEventParamMouseButton, typeMouseButton, NULL, sizeof(EventMouseButton), NULL, &btn);
+//        GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
+////        BeebEmLog::writeLog("Mouse Up : Screen X = %d, Screen Y = %d, Button = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, btn, wposn.x, wposn.y);
+//		if ( (wposn.x > 0) && (wposn.y > 0) )
+//			switch (btn)
+//			{
+//			case kEventMouseButtonPrimary:
+//				mainWin->SetMousestickButton(FALSE);
+//				AMXButtons &= ~AMX_LEFT_BUTTON;
+//				break;
+//			case kEventMouseButtonSecondary:
+//				AMXButtons &= ~AMX_RIGHT_BUTTON;
+//				break;
+//			case kEventMouseButtonTertiary:
+//				AMXButtons &= ~AMX_MIDDLE_BUTTON;
+//				break;
+//			}
+//		break;
+//      case kEventMouseMoved:
+//        GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
+//        GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
+////        BeebEmLog::writeLog("Mouse Moved : Screen X = %d, Screen Y = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, wposn.x, wposn.y);
+//			if ( (wposn.x > 0) && (wposn.y > 20) )
+//			{
+//				mainWin->ScaleMousestick( (int) wposn.x, (int) wposn.y - 21);
+//				mainWin->SetAMXPosition( (int) wposn.x, (int) wposn.y - 21);		// take off height of menu bar
+//			}
+//      break;
+//      case kEventMouseDragged:
+//		  GetEventParameter(event, kEventParamMouseLocation, typeQDPoint, NULL, sizeof(Point), NULL, &posn);
+//		  GetEventParameter(event, kEventParamWindowMouseLocation, typeHIPoint, NULL, sizeof(HIPoint), NULL, &wposn);
+////          BeebEmLog::writeLog("Mouse Dragged : Screen X = %d, Screen Y = %d, Window X = %f, Window Y = %f\n", posn.h, posn.v, wposn.x, wposn.y);
+//		  if ( (wposn.x > 0) && (wposn.y > 20) )
+//		  {
+//			  mainWin->ScaleMousestick( (int) wposn.x, (int) wposn.y - 21);
+//			  mainWin->SetAMXPosition( (int) wposn.x, (int) wposn.y - 21);		// take off height of menu bar
+//		  }
+//	  break;
+//    }
+//
+//	break;
+//  }
+//
+//  return eventNotHandledErr;
+//
+//}
 
 extern SInt32 gNumberOfRunningThreads;
     // This variable must be maintained by your thread scheduling
     // code to accurately reflect the number of threads that are
     // ready and need time for computation.
 
-static EventHandlerUPP gQuitEventHandlerUPP;   // -> QuitEventHandler
+//static EventHandlerUPP gQuitEventHandlerUPP;   // -> QuitEventHandler
 
-static pascal OSStatus QuitEventHandler(EventHandlerCallRef inHandlerCallRef,EventRef inEvent, void *inUserData)
+//static pascal OSStatus QuitEventHandler(EventHandlerCallRef inHandlerCallRef,EventRef inEvent, void *inUserData)
     // This event handler is used to override the kEventClassApplication/
     // kEventAppQuit event while inside our event loop (EventLoopEventHandler).
     // It simply calls through to the next handler and, if that handler returns
     // noErr (indicating that the application is doing to quit), it sets
     // a Boolean to tell our event loop to quit as well.
-{
-    OSStatus err;
+//{
+//    OSStatus err;
+//
+//    err = CallNextEventHandler(inHandlerCallRef, inEvent);
+//    if (err == noErr) {
+//        *((Boolean *) inUserData) = true;
+//    }
+//
+//    return err;
+//}
 
-    err = CallNextEventHandler(inHandlerCallRef, inEvent);
-    if (err == noErr) {
-        *((Boolean *) inUserData) = true;
-    }
+//static EventHandlerUPP gEventLoopEventHandlerUPP;   // -> EventLoopEventHandler
 
-    return err;
-}
-
-static EventHandlerUPP gEventLoopEventHandlerUPP;   // -> EventLoopEventHandler
-
-static pascal OSStatus EventLoopEventHandler(EventHandlerCallRef inHandlerCallRef,EventRef inEvent, void *inUserData)
-    // This code contains the standard Carbon event dispatch loop,
-    // as per "Inside Macintosh: Handling Carbon Events", Listing 3-10,
-    // except:
-    //
-    // o this loop supports yielding to cooperative threads based on the
-    //   application maintaining the gNumberOfRunningThreads global
-    //   variable, and
-    //
-    // o it also works around a problem with the Inside Macintosh code
-    //   which unexpectedly quits when run on traditional Mac OS 9.
-    //
-    // See RunApplicationEventLoopWithCooperativeThreadSupport for
-    // an explanation of why this is inside a Carbon event handler.
-    //
-    // The code in Inside Mac has a problem in that it quits the
-    // event loop when ReceiveNextEvent returns an error.  This is
-    // wrong because ReceiveNextEvent can return eventLoopQuitErr
-    // when you call WakeUpProcess on traditional Mac OS.  So, rather
-    // than relying on an error from ReceiveNextEvent, this routine tracks
-    // whether the application is really quitting by installing a
-    // customer handler for the kEventClassApplication/kEventAppQuit
-    // Carbon event.  All the custom handler does is call through
-    // to the previous handler and, if it returns noErr (which indicates
-    // the application is quitting, it sets quitNow so that our event
-    // loop quits.
-    //
-    // Note that this approach continues to support QuitApplicationEventLoop,
-    // which is a simple wrapper that just posts a kEventClassApplication/
-    // kEventAppQuit event to the event loop.
-{
-    OSStatus        err;
-    OSStatus        junk;
-    EventHandlerRef installedHandler;
-    EventTargetRef  theTarget;
-    EventRef        theEvent;
-    EventTimeout    timeToWaitForEvent;
-	
-    static const EventTypeSpec eventSpec = {kEventClassApplication, kEventAppQuit};
-
-    quitNow = false;
-
-    // Install our override on the kEventClassApplication, kEventAppQuit event.
-
-    err = InstallEventHandler(GetApplicationEventTarget(), gQuitEventHandlerUPP,
-                              1, &eventSpec, &quitNow, &installedHandler);
-
-	if (err == noErr) {
-
-        // Run our event loop until quitNow is set.
-
-        theTarget = GetEventDispatcherTarget();
-        do {
-            timeToWaitForEvent = kEventDurationNoWait;
-            err = ReceiveNextEvent(0, NULL, timeToWaitForEvent,
-                                   true, &theEvent);
-            if (err == noErr) {
-                (void) SendEventToEventTarget(theEvent, theTarget);
-                ReleaseEvent(theEvent);
-            }
-
-			//if ( (mainWin->m_FreezeWhenInactive) && (IsWindowCollapsed(mainWin->mWindow)) )
-			//{
-			//	usleep(1000 * 500);		// sleep for 0.5 secs
-			//}
-			//else
-			//{
-			//	int c;
-			//	c = 20;
-
-// Menu GUI more responsive if running less than real time
-				
-			//	if ( (mainWin->m_RealTimeTarget != 0) && (mainWin->m_RealTimeTarget < 1) )
-			//	{
-			//		c = c * mainWin->m_RealTimeTarget;
-			//	}
-			//
-			//	for (int i = 0; i < c; ++i)
-			//		if (!quitNow) Exec6502Instruction();
-			//}
-			
-//			Point p;
-//			GetMouse(&p);
-//			BeebEmLog::writeLog("Mouse At : Window X = %d, Window Y = %d\n", p.h, p.v);
-//			mainWin->ScaleMousestick( p.h, p.v);
-//			mainWin->SetAMXPosition( p.h, p.v);
-
-        } while ( ! quitNow );
-
-        // Clean up.
-
-		junk = RemoveEventHandler(installedHandler);
-
-    }
-
-    // So we can tell when our event loop quit.
-
-//    SysBeep(10);
-
-    return err;
-}
+//static pascal OSStatus EventLoopEventHandler(EventHandlerCallRef inHandlerCallRef,EventRef inEvent, void *inUserData)
+//    // This code contains the standard Carbon event dispatch loop,
+//    // as per "Inside Macintosh: Handling Carbon Events", Listing 3-10,
+//    // except:
+//    //
+//    // o this loop supports yielding to cooperative threads based on the
+//    //   application maintaining the gNumberOfRunningThreads global
+//    //   variable, and
+//    //
+//    // o it also works around a problem with the Inside Macintosh code
+//    //   which unexpectedly quits when run on traditional Mac OS 9.
+//    //
+//    // See RunApplicationEventLoopWithCooperativeThreadSupport for
+//    // an explanation of why this is inside a Carbon event handler.
+//    //
+//    // The code in Inside Mac has a problem in that it quits the
+//    // event loop when ReceiveNextEvent returns an error.  This is
+//    // wrong because ReceiveNextEvent can return eventLoopQuitErr
+//    // when you call WakeUpProcess on traditional Mac OS.  So, rather
+//    // than relying on an error from ReceiveNextEvent, this routine tracks
+//    // whether the application is really quitting by installing a
+//    // customer handler for the kEventClassApplication/kEventAppQuit
+//    // Carbon event.  All the custom handler does is call through
+//    // to the previous handler and, if it returns noErr (which indicates
+//    // the application is quitting, it sets quitNow so that our event
+//    // loop quits.
+//    //
+//    // Note that this approach continues to support QuitApplicationEventLoop,
+//    // which is a simple wrapper that just posts a kEventClassApplication/
+//    // kEventAppQuit event to the event loop.
+//{
+//    OSStatus        err;
+//    OSStatus        junk;
+//    EventHandlerRef installedHandler;
+//    EventTargetRef  theTarget;
+//    EventRef        theEvent;
+//    EventTimeout    timeToWaitForEvent;
+//
+//    static const EventTypeSpec eventSpec = {kEventClassApplication, kEventAppQuit};
+//
+//    quitNow = false;
+//
+//    // Install our override on the kEventClassApplication, kEventAppQuit event.
+//
+//    err = InstallEventHandler(GetApplicationEventTarget(), gQuitEventHandlerUPP,
+//                              1, &eventSpec, &quitNow, &installedHandler);
+//
+//	if (err == noErr) {
+//
+//        // Run our event loop until quitNow is set.
+//
+//        theTarget = GetEventDispatcherTarget();
+//        do {
+//            timeToWaitForEvent = kEventDurationNoWait;
+//            err = ReceiveNextEvent(0, NULL, timeToWaitForEvent,
+//                                   true, &theEvent);
+//            if (err == noErr) {
+//                (void) SendEventToEventTarget(theEvent, theTarget);
+//                ReleaseEvent(theEvent);
+//            }
+//
+//			//if ( (mainWin->m_FreezeWhenInactive) && (IsWindowCollapsed(mainWin->mWindow)) )
+//			//{
+//			//	usleep(1000 * 500);		// sleep for 0.5 secs
+//			//}
+//			//else
+//			//{
+//			//	int c;
+//			//	c = 20;
+//
+//// Menu GUI more responsive if running less than real time
+//
+//			//	if ( (mainWin->m_RealTimeTarget != 0) && (mainWin->m_RealTimeTarget < 1) )
+//			//	{
+//			//		c = c * mainWin->m_RealTimeTarget;
+//			//	}
+//			//
+//			//	for (int i = 0; i < c; ++i)
+//			//		if (!quitNow) Exec6502Instruction();
+//			//}
+//
+////			Point p;
+////			GetMouse(&p);
+////			BeebEmLog::writeLog("Mouse At : Window X = %d, Window Y = %d\n", p.h, p.v);
+////			mainWin->ScaleMousestick( p.h, p.v);
+////			mainWin->SetAMXPosition( p.h, p.v);
+//
+//        } while ( ! quitNow );
+//
+//        // Clean up.
+//
+//		junk = RemoveEventHandler(installedHandler);
+//
+//    }
+//
+//    // So we can tell when our event loop quit.
+//
+////    SysBeep(10);
+//
+//    return err;
+//}
 
 static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
     // A reimplementation of RunApplicationEventLoop that supports
@@ -451,27 +453,27 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
     using namespace std::chrono; // nanoseconds, system_clock, seconds
     using namespace std::this_thread; // sleep_for, sleep_until
     
-    static const EventTypeSpec eventSpec = {'KWIN', 'KWIN' };
+//    static const EventTypeSpec eventSpec = {'KWIN', 'KWIN' };
     OSStatus        err;
     OSStatus        junk;
-    EventHandlerRef installedHandler;
-    EventRef        dummyEvent;
+//    EventHandlerRef installedHandler;
+//    EventRef        dummyEvent;
 
-    dummyEvent = nil;
+//    dummyEvent = nil;
 
     // Create a UPP for EventLoopEventHandler and QuitEventHandler
     // (if we haven't already done so).
 
     err = noErr;
-    if (gEventLoopEventHandlerUPP == nil) {
-        gEventLoopEventHandlerUPP = NewEventHandlerUPP(EventLoopEventHandler);
-    }
-    if (gQuitEventHandlerUPP == nil) {
-        gQuitEventHandlerUPP = NewEventHandlerUPP(QuitEventHandler);
-    }
-    if (gEventLoopEventHandlerUPP == nil || gQuitEventHandlerUPP == nil) {
-        err = memFullErr;
-    }
+//    if (gEventLoopEventHandlerUPP == nil) {
+//        gEventLoopEventHandlerUPP = NewEventHandlerUPP(EventLoopEventHandler);
+//    }
+//    if (gQuitEventHandlerUPP == nil) {
+//        gQuitEventHandlerUPP = NewEventHandlerUPP(QuitEventHandler);
+//    }
+//    if (gEventLoopEventHandlerUPP == nil || gQuitEventHandlerUPP == nil) {
+//        err = memFullErr;
+//    }
 
     // Install EventLoopEventHandler, create a dummy event and post it,
     // and then call RunApplicationEventLoop.  The rationale for this
@@ -490,14 +492,14 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
     // standard event handlers are installed while our event loop runs.
 
     if (err == noErr) {
-        err = InstallEventHandler(GetApplicationEventTarget(), gEventLoopEventHandlerUPP,
-                                  1, &eventSpec, nil, &installedHandler);
+//        err = InstallEventHandler(GetApplicationEventTarget(), gEventLoopEventHandlerUPP,
+//                                  1, &eventSpec, nil, &installedHandler);
         if (err == noErr) {
-            err = MacCreateEvent(nil, 'KWIN', 'KWIN', GetCurrentEventTime(),
-                                  kEventAttributeNone, &dummyEvent);
+//            err = MacCreateEvent(nil, 'KWIN', 'KWIN', GetCurrentEventTime(),
+//                                  kEventAttributeNone, &dummyEvent);
             if (err == noErr) {
-                err = PostEventToQueue(GetMainEventQueue(), dummyEvent,
-                                  kEventPriorityHigh);
+//                err = PostEventToQueue(GetMainEventQueue(), dummyEvent,
+//                                  kEventPriorityHigh);
             }
             if (err == noErr) {
                 //RunApplicationEventLoop();
@@ -513,8 +515,8 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
                     {
                         c = c * mainWin->m_RealTimeTarget;
                     }
-                    sleep_for(milliseconds(1000));
-                    std::cout << "Executing..." << std::endl;
+                    //sleep_for(milliseconds(1000));
+                    //std::cout << "Executing..." << std::endl;
                     
                     for (int i = 0; i < c; ++i)
                         BeebCPU->Exec6502Instruction(arm);
@@ -522,124 +524,106 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
                 }
             }
 
-            junk = RemoveEventHandler(installedHandler);
+//            junk = RemoveEventHandler(installedHandler);
         }
     }
 
     // Clean up.
 
-    if (dummyEvent != nil) {
-        ReleaseEvent(dummyEvent);
-    }
+//    if (dummyEvent != nil) {
+//        ReleaseEvent(dummyEvent);
+//    }
 }
 	
 int BeebEmMain() 
 {
-void *token;
-int i;
+    void *token;
 
-    BeebCPU = new CPU6502();
+    BeebEmLog::writeLog("Version: %s %s\n", Version, VersionDate);
     
-  BeebEmLog::writeLog("Version: %s %s\n", Version, VersionDate);
-
-//  for (i = 0; i < argc; ++i)
-//	BeebEmLog::writeLog("Arg %d = %s\n", i, argv[i]);
-
-  mainWin=new BeebWin(BeebCPU);
+    // Instantiate components
+    BeebCPU = new CPU6502();
+    mainWin = new BeebWin(BeebCPU);
     initBeebMem(BeebCPU);
-  BeebEmLog::writeLog("Instantiated BeebWin\n");
-  atexit(AtExitHandler);
+    atexit(AtExitHandler);  // AtExitHandler deletes objects instantiated above
 
-  BeebEmLog::writeLog("Debug Main 01\n");
-  if (PushSymbolicHotKeyMode != NULL)
-  {
-    BeebEmLog::writeLog("Debug Main 02\n");
-      token = PushSymbolicHotKeyMode(kHIHotKeyModeAllDisabled);
-  }
-    BeebEmLog::writeLog("Debug Main 03\n");
-
-  done = 0;
+    BeebEmLog::writeLog("Instantiated Components\n");
+    
+//**CARBON**    if (PushSymbolicHotKeyMode != NULL)
+//**CARBON**    {
+//**CARBON**        // **CARBON** Disables Hotkey Mode
+//**CARBON**        token = PushSymbolicHotKeyMode(kHIHotKeyModeAllDisabled);
+//**CARBON**    }
   
-//  if (!mainWin->Initialise(argv[0]))
-    if (!mainWin->Initialise(""))
-      exit(EXIT_FAILURE);
-    BeebEmLog::writeLog("Debug Main 04\n");
+    // Initialise Main Window
+    if (!mainWin->Initialise("")) exit(EXIT_FAILURE);
 
-//  SoundReset();
   if (SoundEnabled) SoundInit();
   if (SpeechDefault) tms5220_start();
   mainWin->ResetBeebSystem(MachineType,TubeEnabled,1); 
   mainWin->SetRomMenu();
   mainWin->SetSoundMenu();
-    BeebEmLog::writeLog("Debug Main 05\n");
 
-//  EventTypeSpec    eventTypes[7];
-//  EventHandlerUPP  handlerUPP;
-//    BeebEmLog::writeLog("Debug Main 06\n");
+//**CARBON**  EventTypeSpec    eventTypes[7];
+//**CARBON**  EventHandlerUPP  handlerUPP;
 
-//  eventTypes[0].eventClass = kEventClassKeyboard;
-//  eventTypes[0].eventKind  = 1;
-//  eventTypes[1].eventClass = kEventClassKeyboard;
-//  eventTypes[1].eventKind  = 3;
-//  eventTypes[2].eventClass = kEventClassKeyboard;
-//  eventTypes[2].eventKind  = 4;
+//**CARBON**  eventTypes[0].eventClass = kEventClassKeyboard;
+//**CARBON**  eventTypes[0].eventKind  = 1;
+//**CARBON**  eventTypes[1].eventClass = kEventClassKeyboard;
+//**CARBON**  eventTypes[1].eventKind  = 3;
+//**CARBON**  eventTypes[2].eventClass = kEventClassKeyboard;
+//**CARBON**  eventTypes[2].eventKind  = 4;
 //
-//  eventTypes[3].eventClass = kEventClassMouse;
-//  eventTypes[3].eventKind  = kEventMouseDown;
-//  eventTypes[4].eventClass = kEventClassMouse;
-//  eventTypes[4].eventKind  = kEventMouseUp;
-//  eventTypes[5].eventClass = kEventClassMouse;
-//  eventTypes[5].eventKind  = kEventMouseMoved;
-//  eventTypes[6].eventClass = kEventClassMouse;
-//  eventTypes[6].eventKind  = kEventMouseDragged;
-    BeebEmLog::writeLog("Debug Main 07\n");
+//**CARBON**  eventTypes[3].eventClass = kEventClassMouse;
+//**CARBON**  eventTypes[3].eventKind  = kEventMouseDown;
+//**CARBON**  eventTypes[4].eventClass = kEventClassMouse;
+//**CARBON**  eventTypes[4].eventKind  = kEventMouseUp;
+//**CARBON**  eventTypes[5].eventClass = kEventClassMouse;
+//**CARBON**  eventTypes[5].eventKind  = kEventMouseMoved;
+//**CARBON**  eventTypes[6].eventClass = kEventClassMouse;
+//**CARBON**  eventTypes[6].eventKind  = kEventMouseDragged;
 
-//  handlerUPP = NewEventHandlerUPP(EventHandler);
-//  InstallApplicationEventHandler (handlerUPP,
-//                                7, eventTypes,
-//                                NULL, NULL);
-//    BeebEmLog::writeLog("Debug Main 08\n");
+//**CARBON**  handlerUPP = NewEventHandlerUPP(EventHandler);
+//**CARBON**  InstallApplicationEventHandler (handlerUPP,
+//**CARBON**                                7, eventTypes,
+//**CARBON**                                NULL, NULL);
 
-  //AEInstallEventHandler(kCoreEventClass, kAEOpenDocuments, NewAEEventHandlerUPP(AEodoc), 0, false);
+//**CARBON** AEInstallEventHandler(kCoreEventClass, kAEOpenDocuments, NewAEEventHandlerUPP(AEodoc), 0, false);
 
-//  EventTypeSpec events[] = {
-//		{ kEventClassWindow, kEventWindowClosed }
-//  };
-//    BeebEmLog::writeLog("Debug Main 09\n");
+//**CARBON**  EventTypeSpec events[] = {
+//**CARBON**		{ kEventClassWindow, kEventWindowClosed }
+//**CARBON**  };
+//**CARBON**    BeebEmLog::writeLog("Debug Main 09\n");
 
-//  EventTypeSpec commands[] = {
-//        { kEventClassCommand, kEventCommandProcess }
-//  };
-//    BeebEmLog::writeLog("Debug Main 10\n");
+//**CARBON**  EventTypeSpec commands[] = {
+//**CARBON**        { kEventClassCommand, kEventCommandProcess }
+//**CARBON**  };
 
-  //InstallWindowEventHandler (mainWin->mWindow,
-//		   NewEventHandlerUPP (MainWindowEventHandler),
-//		   GetEventTypeCount(events), events,
-//		   mainWin->mWindow, NULL);
+//**CARBON**  InstallWindowEventHandler (mainWin->mWindow,
+//**CARBON**		   NewEventHandlerUPP (MainWindowEventHandler),
+//**CARBON**		   GetEventTypeCount(events), events,
+//**CARBON**		   mainWin->mWindow, NULL);
 
-//  InstallWindowEventHandler(mainWin->mWindow,
- //           NewEventHandlerUPP (MainWindowCommandHandler),
-  //          GetEventTypeCount(commands), commands,
-   //         mainWin->mWindow, NULL);
+//**CARBON**  InstallWindowEventHandler(mainWin->mWindow,
+//**CARBON**           NewEventHandlerUPP (MainWindowCommandHandler),
+//**CARBON**           GetEventTypeCount(commands), commands,
+//**CARBON**           mainWin->mWindow, NULL);
 
 
 //  mainWin->StartRecordingVideo("jon.mov", nil);
   
   // Call the event loop
-//    BeebEmLog::writeLog("Debug Main 11\n");
-
   RunApplicationEventLoopWithCooperativeThreadSupport();
 
   fprintf(stderr, "Shutting Down ...\n");
   BeebEmLog::closeLog();
-
   
   SoundReset();
 	
-  if (PopSymbolicHotKeyMode != NULL)
-  {
-     PopSymbolicHotKeyMode(token);
-  }
+//**CARBON**  if (PopSymbolicHotKeyMode != NULL)
+//**CARBON**  {
+//**CARBON**     PopSymbolicHotKeyMode(token);
+//**CARBON**  }
   
   return(0);
 } /* main */

@@ -7,6 +7,7 @@
 //
 
 #include "BeebEmLog.hpp"
+#include <cstdarg>
 
 // Data members
 FILE* BeebEmLog::tlog=NULL;

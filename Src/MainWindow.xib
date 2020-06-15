@@ -8,11 +8,7 @@
         <customObject id="-2" userLabel="File's Owner"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="JHv-1W-Pcp" customClass="MyViewController">
-            <connections>
-                <outlet property="label" destination="mLc-1a-Bj0" id="vRK-hZ-e0G"/>
-            </connections>
-        </customObject>
+        <customObject id="JHv-1W-Pcp" customClass="MyViewController"/>
         <customObject id="oCU-yr-AKf" customClass="NSFontManager"/>
         <window title="BBC Emulator" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
@@ -23,51 +19,33 @@
                 <rect key="frame" x="0.0" y="0.0" width="640" height="512"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cdI-co-ZGC">
-                        <rect key="frame" x="289" y="192" width="81" height="32"/>
+                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E4w-K6-aBX">
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="512"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1bS-Nr-jT1">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="sayHello:" target="JHv-1W-Pcp" id="T4a-vw-sUT"/>
-                        </connections>
-                    </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mLc-1a-Bj0">
-                        <rect key="frame" x="302" y="371" width="37" height="16"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="PTM-bw-XBq">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
+                    </customView>
                 </subviews>
             </view>
             <point key="canvasLocation" x="132" y="147"/>
         </window>
         <menu title="Main Menu" systemMenu="main" id="FC2-H9-8gP">
             <items>
-                <menuItem title="NewApplication" id="Uop-AT-IYB">
+                <menuItem title="BeebEm" id="Uop-AT-IYB">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="NewApplication" systemMenu="apple" id="Lhc-yv-uyC">
+                    <menu key="submenu" title="BeebEm" systemMenu="apple" id="Lhc-yv-uyC">
                         <items>
-                            <menuItem title="About NewApplication" id="hPl-NU-EAl">
+                            <menuItem title="About BeebEm" id="hPl-NU-EAl">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-1" id="WYb-hb-YDC"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="K3x-J7-yDz"/>
-                            <menuItem title="Preferences…" keyEquivalent="," id="7nD-A7-Wqh"/>
                             <menuItem isSeparatorItem="YES" id="vLu-UI-asf"/>
                             <menuItem title="Services" id="Ojs-Zb-rmS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Services" systemMenu="services" id="Fjy-Ue-hUZ"/>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="cGK-QL-dbD"/>
-                            <menuItem title="Hide NewApplication" keyEquivalent="h" id="vhD-Ic-C4K">
+                            <menuItem title="Hide BeebEm" keyEquivalent="h" id="vhD-Ic-C4K">
                                 <connections>
                                     <action selector="hide:" target="-1" id="swA-K8-1K9"/>
                                 </connections>
@@ -85,7 +63,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="cUU-nk-97g"/>
-                            <menuItem title="Quit NewApplication" keyEquivalent="q" id="d65-4n-giq">
+                            <menuItem title="Quit BeebEm" keyEquivalent="q" id="d65-4n-giq">
                                 <connections>
                                     <action selector="terminate:" target="-1" id="jpR-7r-R4z"/>
                                 </connections>
@@ -97,61 +75,90 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="File" id="iJU-dM-cf4">
                         <items>
-                            <menuItem title="New" keyEquivalent="n" id="xmb-Ca-kXk">
-                                <connections>
-                                    <action selector="newDocument:" target="-1" id="HkB-Ba-O25"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Open…" keyEquivalent="o" id="tbT-6Z-9gA">
-                                <connections>
-                                    <action selector="openDocument:" target="-1" id="JaI-tL-FRS"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Open Recent" id="Y8M-Vo-GEs">
+                            <menuItem title="Run Disc" keyEquivalent="r" id="fAh-DA-Yxf"/>
+                            <menuItem isSeparatorItem="YES" id="AVJ-qc-lem"/>
+                            <menuItem title="Load Disc 0" keyEquivalent="0" id="vng-Jt-3nC"/>
+                            <menuItem title="Load Disc 1" keyEquivalent="1" id="vOE-dX-TPu"/>
+                            <menuItem isSeparatorItem="YES" id="aj7-gV-hnI"/>
+                            <menuItem title="Load Tape" keyEquivalent="t" id="fOh-uw-IWJ"/>
+                            <menuItem isSeparatorItem="YES" id="EOL-Tp-OWj"/>
+                            <menuItem title="Disc Options" id="kcX-zP-a6d">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="cuZ-b4-zeo">
+                                <menu key="submenu" title="Disc Options" id="rf5-AK-np5">
                                     <items>
-                                        <menuItem title="Clear Menu" id="aMg-67-xkp">
+                                        <menuItem title="New Disc 0" keyEquivalent="d" id="wCx-cd-xkY"/>
+                                        <menuItem title="New Disc 1" keyEquivalent="D" id="fo0-c1-G5F"/>
+                                        <menuItem title="Eject Disc 0" keyEquivalent="e" id="nsn-ym-YLk"/>
+                                        <menuItem title="Eject Disc 1" keyEquivalent="E" id="9xk-Jg-mhh"/>
+                                        <menuItem title="Write Protect 0" keyEquivalent="w" id="qeu-TL-B3h"/>
+                                        <menuItem title="Write Protect 1" keyEquivalent="W" id="Zeg-Oz-6PA"/>
+                                        <menuItem title="Protect on Load" id="yI6-nE-20r">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="clearRecentDocuments:" target="-1" id="UgX-Yr-wdT"/>
-                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="4AO-At-Cpz"/>
-                            <menuItem title="Close" keyEquivalent="w" id="MUP-et-a0g">
-                                <connections>
-                                    <action selector="performClose:" target="-1" id="igg-I8-khJ"/>
-                                </connections>
+                            <menuItem isSeparatorItem="YES" id="h7S-KQ-zaH"/>
+                            <menuItem title="Reset" keyEquivalent="R" id="toz-RI-ZMM"/>
+                            <menuItem isSeparatorItem="YES" id="FyR-p4-vPb"/>
+                            <menuItem title="Load State" keyEquivalent="l" id="hae-9R-WLM"/>
+                            <menuItem title="Save State" keyEquivalent="s" id="Ssl-yn-9uI"/>
+                            <menuItem title="Quick Load" keyEquivalent="L" id="O4a-S4-rSj"/>
+                            <menuItem title="Quick Save" keyEquivalent="S" id="W0k-PX-rNz"/>
+                            <menuItem isSeparatorItem="YES" id="nZe-lf-pOQ"/>
+                            <menuItem title="Video Options" id="7hA-RF-Lp8">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Video Options" id="JNr-Cx-nNY">
+                                    <items>
+                                        <menuItem title="Record @ 768x576" id="g6j-fp-6Lj">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Record @ Display Resolution" id="n8Y-5C-qgV">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Record at 1/2 Display Resolution" id="N4s-Iv-U9w">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Record at 1/4 Display Resolution" id="UzZ-Wm-Fft">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="C3T-S6-GBb"/>
+                                        <menuItem title="Skip 0 Frames" id="2Ua-Wh-C7T">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Skip 1 Frame" id="wde-FX-CR2">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Skip 2 Frames" id="KCU-Cf-f3h">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Skip 3 Frames" id="SfA-hU-hH3">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Skip 4 Frames" id="Prp-nR-fgv">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Skip 5 Frames" id="Mfh-xB-F4K">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
-                            <menuItem title="Save…" keyEquivalent="s" id="OEA-tH-Wu2">
-                                <connections>
-                                    <action selector="saveDocument:" target="-1" id="hSk-UY-SPX"/>
-                                </connections>
+                            <menuItem title="Capture Video" id="Tyl-ed-hOD">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
-                            <menuItem title="Save As…" keyEquivalent="S" id="t21-Lq-mUf">
-                                <connections>
-                                    <action selector="saveDocumentAs:" target="-1" id="pG7-Ze-0DB"/>
-                                </connections>
+                            <menuItem title="End Video" id="57L-bu-Z7Z">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
-                            <menuItem title="Revert to Saved" keyEquivalent="r" id="yTP-VR-vyz">
-                                <connections>
-                                    <action selector="revertDocumentToSaved:" target="-1" id="4X6-TY-euf"/>
-                                </connections>
+                            <menuItem isSeparatorItem="YES" id="mk4-I4-Qep"/>
+                            <menuItem title="Invert Background" keyEquivalent="i" id="HJq-zp-Ix8"/>
+                            <menuItem title="Page Setup..." keyEquivalent="P" id="MqH-ns-RKS"/>
+                            <menuItem title="Print Window..." keyEquivalent="p" id="nk1-bG-nbL"/>
+                            <menuItem title="Copy Window To Clipboard" keyEquivalent="c" id="RLy-sC-bjX">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="cwo-ir-o2J"/>
-                            <menuItem title="Page Setup…" keyEquivalent="P" id="8zN-eB-q0U">
-                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
-                                <connections>
-                                    <action selector="runPageLayout:" target="-1" id="QRc-Mu-7Tj"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Print…" keyEquivalent="p" id="b65-kp-ZbJ">
-                                <connections>
-                                    <action selector="print:" target="-1" id="q8L-CE-Kbi"/>
-                                </connections>
+                            <menuItem title="Screen Snapshot" keyEquivalent="s" id="n0U-Q8-lOQ">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                             </menuItem>
                         </items>
                     </menu>

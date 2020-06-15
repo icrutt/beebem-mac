@@ -56,7 +56,7 @@
 
 // Typedefs
 //------------------------------------------------------------------------------
-typedef const OSTypePtr TypeListPtr;
+//**CARBON** const OSTypePtr TypeListPtr;
 
 #if TARGET_OS_MAC
   typedef MenuHandle      MenuReference;
@@ -76,8 +76,8 @@ typedef const OSTypePtr TypeListPtr;
 // Prototypes
 //------------------------------------------------------------------------------
 //OSErr GetOneFileWithPreview (char *path, NavObjectFilterUPP myFilterProc);
-OSErr SaveFile(char *path, FSSpec *fs);
-OSErr SaveFileMov(char *path, FSSpec *fs);
+//**CARBON**OSErr SaveFile(char *path, FSSpec *fs);
+//**CARBON**OSErr SaveFileMov(char *path, FSSpec *fs);
 //PASCAL_RTN void HandleNavEvent(NavEventCallbackMessage theCallBackSelector, NavCBRecPtr theCallBackParms, void *theCallBackUD);
 
 //unsigned pascal char DiscFilterProc(AEDesc *theItem, void *info, void *callBackUD, NavFilterModes FilterMode);

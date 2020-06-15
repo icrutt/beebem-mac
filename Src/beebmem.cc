@@ -381,8 +381,8 @@ int Value = 0xff;
   if (EconetEnabled &&
 	  ((MachineType != 3 && (Address & ~3)==0xfe18) ||
 	   (MachineType == 3 && (Address & ~3)==0xfe38)) ) { 
-	  if (DebugEnabled)
-		  DebugDisplayTrace(DEBUG_ECONET, true, "Econet: INTOFF");
+//	  if (DebugEnabled)
+//		  DebugDisplayTrace(DEBUG_ECONET, true, "Econet: INTOFF");
 	  EconetNMIenabled = INTOFF; 
 	  return(Read_Econet_Station()); 
   }
@@ -402,12 +402,12 @@ int Value = 0xff;
 	  ((MachineType != 3 && (Address & ~3)==0xfe20) ||
 	   (MachineType == 3 && (Address & ~3)==0xfe3c)) ) { 
 
-	  if (DebugEnabled) DebugDisplayTrace(DEBUG_ECONET, true, "Econet: INTON");
+//	  if (DebugEnabled) DebugDisplayTrace(DEBUG_ECONET, true, "Econet: INTON");
 	  if (!EconetNMIenabled) {  // was off
 		  EconetNMIenabled = INTON;  // turn on
 		  if (ADLC.status1 & 128) {			// irq pending?
 			  BeebEmCommon::NMIStatus|=1<<nmi_econet; 
-			  if (DebugEnabled) DebugDisplayTrace(DEBUG_ECONET, true, "Econet: delayed NMI asserted");
+//			  if (DebugEnabled) DebugDisplayTrace(DEBUG_ECONET, true, "Econet: delayed NMI asserted");
 		  }
 	  }
   }
@@ -815,8 +815,8 @@ void BeebWriteMem(int Address, unsigned char Value) {
 	if (EconetEnabled &&
 		((MachineType != 3 && (Address & ~3)==0xfe18) ||
 		 (MachineType == 3 && (Address & ~3)==0xfe38)) ) { 
-		if (DebugEnabled)
-			DebugDisplayTrace(DEBUG_ECONET, true, "Econet: INTOFF(w)");
+//		if (DebugEnabled)
+//			DebugDisplayTrace(DEBUG_ECONET, true, "Econet: INTOFF(w)");
 		EconetNMIenabled = INTOFF; 
 	}
 	

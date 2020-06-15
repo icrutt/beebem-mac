@@ -22,7 +22,6 @@
 #ifndef BEEBWIN_HEADER
 #define BEEBWIN_HEADER
 
-#include <Carbon/Carbon.h>
 #include <string.h>
 /* #include <QuickTime/QuickTime.h> */
 /* #include <QuickTime/QTML.h> */
@@ -67,9 +66,9 @@ public:
 	unsigned char cols[256]; /* Beeb colour lookup */
 	char *m_screen;
 	char *m_screen_blur;
-	WindowRef mWindow; 
-	PixMap mBitMap;
-	CTabPtr mCT;
+//**CARBON**	WindowRef mWindow;
+//**CARBON**	PixMap mBitMap;
+//**CARBON**	CTabPtr mCT;
 	long m_RGB32[256];
 	int m_RGB16[256];
 	char m_clipboard[32768];
@@ -87,7 +86,7 @@ public:
 	void doPaste(void);
 	void CopyKey(int data);
 	int PasteKey(int addr);
-	int KeyDown(int vkey);
+//	int KeyDown(int vkey);
 	int KeyUp(int vkey);
 	int TranslateKey(int vkey, int keyUp, int &row, int &col);
 
@@ -136,7 +135,7 @@ public:
 	int StartOfFrame(void);
 	bool UpdateTiming(void);
 	void AdjustSpeed(bool up);
-	void DisplayTiming(void);
+//	void DisplayTiming(void);
 	unsigned long GetTickCount(void);
 	void ScaleJoystick(unsigned int x, unsigned int y);
 	void SetMousestickButton(int button);
@@ -156,13 +155,13 @@ public:
 	void ReadDisc(int drive);
 	void LoadDisc(int drive, char *path);
 	void LoadTapeFromPath(char *path);
-	OSStatus HandleCommand(UInt32 cmdID);
-	void SetMenuCommandIDCheck(UInt32 commandID, bool check);
+//**CARBON**	OSStatus HandleCommand(UInt32 cmdID);
+//**CARBON**	void SetMenuCommandIDCheck(UInt32 commandID, bool check);
 
 	bool		m_frozen;
 	double		m_RealTimeTarget;
 	int			m_ShiftBooted;
-	Ptr			m_RestoreState;
+//**CARBON**	Ptr			m_RestoreState;
 	bool		m_isFullScreen;
 	bool		m_maintainAspectRatio;
 	bool		m_PrintScreen;
@@ -180,7 +179,7 @@ public:
 	int			m_XWinPos;
 	int			m_YWinPos;
 	bool		m_FullScreen;
-	WindowPtr	m_FullScreenWindow;
+//**CARBON**	WindowPtr	m_FullScreenWindow;
 	bool		m_ShowSpeedAndFPS;
 	int			m_MenuIdSampleRate;
 	int			m_MenuIdVolume;
@@ -228,7 +227,7 @@ public:
 	void UpdateOptiMenu(void);
 	void CreateBeebWindow(void);
 	void CreateBitmap(void);
-	void InitMenu(void);
+//	void InitMenu(void);
 	void UpdatePalette(PaletteType NewPalete);
 	void UpdateMonitorMenu();
 	void UpdateMotionBlurMenu();
@@ -248,7 +247,7 @@ public:
 	void NewDiscImage(int Drive);
 	void EjectDiscImage(int Drive);
 	void ToggleWriteProtect(int Drive);
-	void LoadPreferences(void);
+//	void LoadPreferences(void);
 	void SavePreferences(void);
 	void SetWindowAttributes(bool wasFullScreen);
 	void TranslateAMX(void);
@@ -264,24 +263,24 @@ public:
 public:
 		
 	void CaptureVideo();
-	void StartRecordingVideo(char *path, FSSpec *fs);
+//**CARBON**	void StartRecordingVideo(char *path, FSSpec *fs);
 	void EndCaptureVideo();
 
 //	Track	m_pTrack;
 //	Media	m_pMedia;
 //	Movie	m_pMovie;
 	short	m_resRefNum;
-	Handle	m_compressedData;
-	Ptr		m_compressedDataPtr;
+//**CARBON**	Handle	m_compressedData;
+//**CARBON**	Ptr		m_compressedDataPtr;
 //	ImageDescriptionHandle m_imageDesc;
 //	SoundDescriptionHandle m_soundDesc;
 //	Track	m_sTrack;
 //	Media	m_sMedia;
-	Rect	m_trackFrame;
-	Handle	m_soundBuffer;
-	Ptr		m_soundBufferPtr;
+//**CARBON**	Rect	m_trackFrame;
+//**CARBON**	Handle	m_soundBuffer;
+//**CARBON**	Ptr		m_soundBufferPtr;
 	int		m_soundBufferLen;
-	ComponentInstance	m_ci;
+//**CARBON**	ComponentInstance	m_ci;
 	bool	m_firstFrame;
 	long	m_keyFrame;
 	long	m_keyFrameCount;

@@ -135,7 +135,7 @@ void LoadCSW(char *file)
 	if (TapeControlEnabled)
 	{
 		map_csw_file();
-		TapeControlOpenFile(UEFTapeName);
+//		TapeControlOpenFile(UEFTapeName);
 	}
 }
 

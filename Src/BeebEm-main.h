@@ -31,7 +31,7 @@
 
 extern unsigned char MachineType;
 extern BeebWin *mainWin;
-extern Boolean quitNow;
+//**CARBON** extern Boolean quitNow;
 extern const char *Version;
 extern const char *VersionDate;
 extern int trace_186;

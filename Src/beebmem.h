@@ -25,6 +25,11 @@
 #include "stdio.h"
 #include "6502core.h"
 
+class BeebMem {
+private:
+public:
+};
+
 extern int RomWritable[16]; /* Allow writing to ROMs on an individual basis */
 
 extern unsigned char WholeRam[65536];

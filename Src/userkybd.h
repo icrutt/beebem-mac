@@ -25,7 +25,7 @@
 // Public declarations.
 
 extern int UserKeymap[256][2];
-extern WindowRef mUKWindow; 
+//**CARBON**extern WindowRef mUKWindow; 
 
 void UserKeyboardOpenDialog();
 void UserKeyboardCloseDialog();

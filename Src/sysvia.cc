@@ -307,7 +307,7 @@ void SysVIAWrite(int Address, int Value) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "SysVia: Write address %X value %02X", (int)(Address & 0xf), Value & 0xff);
-		DebugDisplayTrace(DEBUG_SYSVIA, true, info);
+//		DebugDisplayTrace(DEBUG_SYSVIA, true, info);
 	}
 
   switch (Address) {
@@ -535,7 +535,7 @@ int SysVIARead(int Address) {
 	if (DebugEnabled) {
 		char info[200];
 		sprintf(info, "SysVia: Read address %X value %02X", (int)(Address & 0xf), tmp & 0xff);
-		DebugDisplayTrace(DEBUG_SYSVIA, true, info);
+//		DebugDisplayTrace(DEBUG_SYSVIA, true, info);
 	}
 
   return(tmp);

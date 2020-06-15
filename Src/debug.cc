@@ -8,7 +8,7 @@
 #include "z80mem.h"
 #include "z80.h"
 
-WindowRef mDebugWindow = NULL; 
+//**CARBON**WindowRef mDebugWindow = NULL;
 
 int DebugEnabled = false;        // Debug dialog visible
 
@@ -352,399 +352,399 @@ void DebugExecuteCommand();
 
 //*******************************************************************
 
-OSStatus DebugWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    HICommand command; 
-    OSStatus err = noErr;
-    err = GetEventParameter(event, kEventParamDirectObject,
-							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-//    require_noerr (err, CantGetParameter);
-	
-	err = noErr;
-
-//	fprintf(stderr, "commandID = 0x%08x\n", command.commandID);
-	
-	switch (command.commandID)
-    {
-        case 'dbbe':
-            fprintf(stderr, "Debug Break Execution\n");
-			DebugOn = TRUE;
-			InstCount = 1;
-			BreakpointHit = false;
-			DebugDisplayInfo("");
-			DebugDisplayInfo("- EXECUTION BREAK -");
-			DebugDisplayInfo("");
-            break;
-
-        case 'dbre':
-            fprintf(stderr, "Debug Restart Execution\n");
-			if (DebugOn == TRUE)
-			{
-				DebugOn = FALSE;
-				InstCount = 0;
-				BreakpointHit = false;
-				DebugDisplayInfo("");
-				DebugDisplayInfo("- EXECUTION RESTARTED -");
-				DebugDisplayInfo("");
-			}
-            break;
-
-        case 'dbec':
-            fprintf(stderr, "Debug Execute Command\n");
-			if (DebugOn)
-			{
-				DebugExecuteCommand();
-			}
-			break;
-
-        case 'dbbr':
-            fprintf(stderr, "Debug Breakpoints\n");
-			BPSOn = GetCheckBoxValue(command.commandID);
-			break;
-
-        case 'dbdo':
-            fprintf(stderr, "Debug OS\n");
-			DebugOS = GetCheckBoxValue(command.commandID);
-			break;
-
-        case 'dbdr':
-            fprintf(stderr, "Debug ROM\n");
-			DebugROM = GetCheckBoxValue(command.commandID);
-			break;
-			
-        case 'dbdh':
-            fprintf(stderr, "Debug Host\n");
-			DebugHost = GetCheckBoxValue(command.commandID);
-			break;
-
-        case 'dbdp':
-            fprintf(stderr, "Debug Parasite\n");
-			DebugParasite = GetCheckBoxValue(command.commandID);
-			break;
-			
-        default:
-            err = eventNotHandledErr;
-            break;
-    }
-
-CantGetParameter:
-		return err;
-}
-
-static OSStatus DebugWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    OSStatus err = noErr;
-    switch (GetEventKind(event))
-    {
-        case kEventWindowClosed: 
-			mDebugWindow = NULL;
-			DebugEnabled = FALSE;
-			debug_lines = 0;
-			DebugOn = 0;
-			LinesDisplayed = 0;
-			InstCount = 0;
-			DumpAddress = 0;
-			DisAddress = 0;
-			BPCount = 0;
-			BreakpointHit = false;
-			BPSOn = true;
-			DebugOS = false;
-			LastAddrInOS = false;
-			LastAddrInBIOS = false;
-			DebugROM = false;
-			LastAddrInROM = false;
-			DebugHost = true;
-			DebugParasite = false;
-			memset(Breakpoints, 0, MAX_BPS * sizeof(Breakpoint));
-			mainWin->SetMenuCommandIDCheck('dbgr', false);
-            break;
-        default:
-            err = eventNotHandledErr;
-            break;
-    }
-    
-    return err;
-}
-
-OSStatus DebugWindowCallback(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, DataBrowserItemDataRef itemData, Boolean changeValue)
-{
-OSStatus status = noErr;
-char temp[256];
-CFStringRef pTitle;
-
-//	fprintf(stderr, "Item = %08x, Property = %08x, change = %d\n", itemID, property, changeValue);
-
-	if (!changeValue)
-	{
-		switch(property)
-		{
-			case 'TEXT' :
-				strcpy(temp, debug_log[itemID - 1]);
-				pTitle =CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-//				status = SetDataBrowserItemDataText(itemData, pTitle);
-				CFRelease(pTitle);
-				break;
-
-			case 'BLST' :
-				if (Breakpoints[itemID - 1].end == -1)
-				{
-					sprintf(temp, "%04X", Breakpoints[itemID - 1].start);
-				} else {
-					sprintf(temp, "%04X-%04X", Breakpoints[itemID - 1].start, Breakpoints[itemID - 1].end);
-				}
-				pTitle =CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-//				status = SetDataBrowserItemDataText(itemData, pTitle);
-				CFRelease(pTitle);
-				break;
-
-			default:
-				status = errDataBrowserPropertyNotSupported;
-				break;
-		}
-	}
-	else
-		status = errDataBrowserPropertyNotSupported;
-
-	return status;
-}
-	
-void DebugOpenDialog()
-{
-
-	DebugEnabled = TRUE;
-
-	IBNibRef 		nibRef;
-	EventTypeSpec DebugCommands[] = {
-	{ kEventClassCommand, kEventCommandProcess }
-	};
-		
-	EventTypeSpec DebugEvents[] = {
-	{ kEventClassWindow, kEventWindowClosed }
-	};
-
-	if (mDebugWindow == NULL)
-	{
-		// Create a Nib reference passing the name of the nib file (without the .nib extension)
-		// CreateNibReference only searches into the application bundle.
-//		CreateNibReference(CFSTR("main"), &nibRef);
-//		CreateWindowFromNib(nibRef, CFSTR("Window2"), &mDebugWindow);
-//		DisposeNibReference(nibRef);
-//		ShowWindow(mDebugWindow);
+//OSStatus DebugWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    HICommand command;
+//    OSStatus err = noErr;
+//    err = GetEventParameter(event, kEventParamDirectObject,
+//							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
+////    require_noerr (err, CantGetParameter);
 //
-//		InstallWindowEventHandler(mDebugWindow,
-//							  NewEventHandlerUPP (DebugWindowCommandHandler),
-//							  GetEventTypeCount(DebugCommands), DebugCommands,
-//							  mDebugWindow, NULL);
+//	err = noErr;
 //
-//		InstallWindowEventHandler (mDebugWindow,
-//								   NewEventHandlerUPP (DebugWindowEventHandler),
-//								   GetEventTypeCount(DebugEvents), DebugEvents,
-//								   mDebugWindow, NULL);
-		
-		debug_lines = 0;
-		memset(debug_log, 0, sizeof(debug_log));
-
-		ControlID dbControlID = { 'HDIS', 0 };
-		ControlRef dbControl;
-		DataBrowserCallbacks dbCallbacks;
-		
-//		GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-		dbCallbacks.version = kDataBrowserLatestCallbacks;
-//		InitDataBrowserCallbacks(&dbCallbacks);
-		dbCallbacks.u.v1.itemDataCallback =
-			NewDataBrowserItemDataUPP( (DataBrowserItemDataProcPtr) DebugWindowCallback);
-//		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
-//		SetAutomaticControlDragTrackingEnabledForWindow(mDebugWindow, true);
+////	fprintf(stderr, "commandID = 0x%08x\n", command.commandID);
+//
+//	switch (command.commandID)
+//    {
+//        case 'dbbe':
+//            fprintf(stderr, "Debug Break Execution\n");
+//			DebugOn = TRUE;
+//			InstCount = 1;
+//			BreakpointHit = false;
+//			DebugDisplayInfo("");
+//			DebugDisplayInfo("- EXECUTION BREAK -");
+//			DebugDisplayInfo("");
+//            break;
+//
+//        case 'dbre':
+//            fprintf(stderr, "Debug Restart Execution\n");
+//			if (DebugOn == TRUE)
+//			{
+//				DebugOn = FALSE;
+//				InstCount = 0;
+//				BreakpointHit = false;
+//				DebugDisplayInfo("");
+//				DebugDisplayInfo("- EXECUTION RESTARTED -");
+//				DebugDisplayInfo("");
+//			}
+//            break;
+//
+//        case 'dbec':
+//            fprintf(stderr, "Debug Execute Command\n");
+//			if (DebugOn)
+//			{
+//				DebugExecuteCommand();
+//			}
+//			break;
+//
+//        case 'dbbr':
+//            fprintf(stderr, "Debug Breakpoints\n");
+//			BPSOn = GetCheckBoxValue(command.commandID);
+//			break;
+//
+//        case 'dbdo':
+//            fprintf(stderr, "Debug OS\n");
+//			DebugOS = GetCheckBoxValue(command.commandID);
+//			break;
+//
+//        case 'dbdr':
+//            fprintf(stderr, "Debug ROM\n");
+//			DebugROM = GetCheckBoxValue(command.commandID);
+//			break;
+//
+//        case 'dbdh':
+//            fprintf(stderr, "Debug Host\n");
+//			DebugHost = GetCheckBoxValue(command.commandID);
+//			break;
+//
+//        case 'dbdp':
+//            fprintf(stderr, "Debug Parasite\n");
+//			DebugParasite = GetCheckBoxValue(command.commandID);
+//			break;
+//
+//        default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//CantGetParameter:
+//		return err;
+//}
+//
+//static OSStatus DebugWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    OSStatus err = noErr;
+//    switch (GetEventKind(event))
+//    {
+//        case kEventWindowClosed:
+//			mDebugWindow = NULL;
+//			DebugEnabled = FALSE;
+//			debug_lines = 0;
+//			DebugOn = 0;
+//			LinesDisplayed = 0;
+//			InstCount = 0;
+//			DumpAddress = 0;
+//			DisAddress = 0;
+//			BPCount = 0;
+//			BreakpointHit = false;
+//			BPSOn = true;
+//			DebugOS = false;
+//			LastAddrInOS = false;
+//			LastAddrInBIOS = false;
+//			DebugROM = false;
+//			LastAddrInROM = false;
+//			DebugHost = true;
+//			DebugParasite = false;
+//			memset(Breakpoints, 0, MAX_BPS * sizeof(Breakpoint));
+//			//**CARBON**   mainWin->SetMenuCommandIDCheck('dbgr', false);
+//            break;
+//        default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//    return err;
+//}
+//
+//OSStatus DebugWindowCallback(ControlRef browser, DataBrowserItemID itemID, DataBrowserPropertyID property, DataBrowserItemDataRef itemData, Boolean changeValue)
+//{
+//OSStatus status = noErr;
+//char temp[256];
+//CFStringRef pTitle;
+//
+////	fprintf(stderr, "Item = %08x, Property = %08x, change = %d\n", itemID, property, changeValue);
+//
+//	if (!changeValue)
+//	{
+//		switch(property)
+//		{
+//			case 'TEXT' :
+//				strcpy(temp, debug_log[itemID - 1]);
+//				pTitle =CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
+////				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				CFRelease(pTitle);
+//				break;
+//
+//			case 'BLST' :
+//				if (Breakpoints[itemID - 1].end == -1)
+//				{
+//					sprintf(temp, "%04X", Breakpoints[itemID - 1].start);
+//				} else {
+//					sprintf(temp, "%04X-%04X", Breakpoints[itemID - 1].start, Breakpoints[itemID - 1].end);
+//				}
+//				pTitle =CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
+////				status = SetDataBrowserItemDataText(itemData, pTitle);
+//				CFRelease(pTitle);
+//				break;
+//
+//			default:
+//				status = errDataBrowserPropertyNotSupported;
+//				break;
+//		}
+//	}
+//	else
+//		status = errDataBrowserPropertyNotSupported;
+//
+//	return status;
+//}
 	
-		SetCheckBoxValue('dbbr', 1);
-		SetCheckBoxValue('dbdh', 1);
-
-		BPSOn = GetCheckBoxValue('dbbr');
-		DebugHost = GetCheckBoxValue('dbdh');
-		
-		Str255 Family;
-//		CopyCStringToPascal("Courier New", Family);
-		
-//		FMFontFamily id = FMGetFontFamilyFromName(Family);
-//		ControlFontStyleRec style = {kControlUseFontMask | kControlUseSizeMask | kControlUseFaceMask | kControlAddToMetaFontMask, id, 12, 1};
-//		SetControlFontStyle(dbControl, &style);
-
-		dbControlID.signature = 'BLST';
-//		GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-//		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
-//		SetControlFontStyle(dbControl, &style);
-		
-	}
-}
-
-void DebugCloseDialog()
-{
-	if (mDebugWindow)
-	{
-//		HideWindow(mDebugWindow);
-//		DisposeWindow(mDebugWindow);
-	}
-	mDebugWindow = NULL;
-	DebugEnabled = FALSE;
-	debug_lines = 0;
-	DebugOn = 0;
-	LinesDisplayed = 0;
-	InstCount = 0;
-	DumpAddress = 0;
-	DisAddress = 0;
-	BPCount = 0;
-	BreakpointHit = false;
-	BPSOn = true;
-	DebugOS = false;
-	LastAddrInOS = false;
-	LastAddrInBIOS = false;
-	DebugROM = false;
-	LastAddrInROM = false;
-	DebugHost = true;
-	DebugParasite = false;
-	memset(Breakpoints, 0, MAX_BPS * sizeof(Breakpoint));
-	mainWin->SetMenuCommandIDCheck('dbgr', false);
-}
-void DebugDisplayInfo(const char *info)
-{
-static int max = 0;
-	
+//void DebugOpenDialog()
+//{
+//
+//	DebugEnabled = TRUE;
+//
+//	IBNibRef 		nibRef;
+//	EventTypeSpec DebugCommands[] = {
+//	{ kEventClassCommand, kEventCommandProcess }
+//	};
+//
+//	EventTypeSpec DebugEvents[] = {
+//	{ kEventClassWindow, kEventWindowClosed }
+//	};
+//
+//	if (mDebugWindow == NULL)
+//	{
+//		// Create a Nib reference passing the name of the nib file (without the .nib extension)
+//		// CreateNibReference only searches into the application bundle.
+////		CreateNibReference(CFSTR("main"), &nibRef);
+////		CreateWindowFromNib(nibRef, CFSTR("Window2"), &mDebugWindow);
+////		DisposeNibReference(nibRef);
+////		ShowWindow(mDebugWindow);
+////
+////		InstallWindowEventHandler(mDebugWindow,
+////							  NewEventHandlerUPP (DebugWindowCommandHandler),
+////							  GetEventTypeCount(DebugCommands), DebugCommands,
+////							  mDebugWindow, NULL);
+////
+////		InstallWindowEventHandler (mDebugWindow,
+////								   NewEventHandlerUPP (DebugWindowEventHandler),
+////								   GetEventTypeCount(DebugEvents), DebugEvents,
+////								   mDebugWindow, NULL);
+//
+//		debug_lines = 0;
+//		memset(debug_log, 0, sizeof(debug_log));
+//
+//		ControlID dbControlID = { 'HDIS', 0 };
+//		ControlRef dbControl;
+//		DataBrowserCallbacks dbCallbacks;
+//
+////		GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//		dbCallbacks.version = kDataBrowserLatestCallbacks;
+////		InitDataBrowserCallbacks(&dbCallbacks);
+//		dbCallbacks.u.v1.itemDataCallback =
+//			NewDataBrowserItemDataUPP( (DataBrowserItemDataProcPtr) DebugWindowCallback);
+////		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
+////		SetAutomaticControlDragTrackingEnabledForWindow(mDebugWindow, true);
+//
+//		SetCheckBoxValue('dbbr', 1);
+//		SetCheckBoxValue('dbdh', 1);
+//
+//		BPSOn = GetCheckBoxValue('dbbr');
+//		DebugHost = GetCheckBoxValue('dbdh');
+//
+//		Str255 Family;
+////		CopyCStringToPascal("Courier New", Family);
+//
+////		FMFontFamily id = FMGetFontFamilyFromName(Family);
+////		ControlFontStyleRec style = {kControlUseFontMask | kControlUseSizeMask | kControlUseFaceMask | kControlAddToMetaFontMask, id, 12, 1};
+////		SetControlFontStyle(dbControl, &style);
+//
+//		dbControlID.signature = 'BLST';
+////		GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+////		SetDataBrowserCallbacks(dbControl, &dbCallbacks);
+////		SetControlFontStyle(dbControl, &style);
+//
+//	}
+//}
+//
+//void DebugCloseDialog()
+//{
+//	if (mDebugWindow)
+//	{
+////		HideWindow(mDebugWindow);
+////		DisposeWindow(mDebugWindow);
+//	}
+//	mDebugWindow = NULL;
+//	DebugEnabled = FALSE;
+//	debug_lines = 0;
+//	DebugOn = 0;
+//	LinesDisplayed = 0;
+//	InstCount = 0;
+//	DumpAddress = 0;
+//	DisAddress = 0;
+//	BPCount = 0;
+//	BreakpointHit = false;
+//	BPSOn = true;
+//	DebugOS = false;
+//	LastAddrInOS = false;
+//	LastAddrInBIOS = false;
+//	DebugROM = false;
+//	LastAddrInROM = false;
+//	DebugHost = true;
+//	DebugParasite = false;
+//	memset(Breakpoints, 0, MAX_BPS * sizeof(Breakpoint));
+//	//**CARBON**   mainWin->SetMenuCommandIDCheck('dbgr', false);
+//}
+//void DebugDisplayInfo(const char *info)
+//{
+//static int max = 0;
+//
+////	fprintf(stderr, "%s\n", info);
+//
+//	if (strlen(info) > max)
+//	{
+//		max = strlen(info);
+//		fprintf(stderr, "New max = %d, '%s'\n", max, info);
+//	}
+//
 //	fprintf(stderr, "%s\n", info);
+//
+//	const ControlID dbControlID = { 'HDIS', 0 };
+//	ControlRef dbControl;
+//
+////	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+//
+//	if (debug_lines == MAX_LINES)
+//	{
+//		memmove(debug_log[0], debug_log[1], (MAX_LINES - 1) * 101);
+//		strcpy(debug_log[debug_lines - 1], info);
+//
+////		RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
+////		AddDataBrowserItems(dbControl, kDataBrowserNoItem, debug_lines, NULL, kDataBrowserItemNoProperty);
+//	}
+//	else
+//	{
+//		strcpy(debug_log[debug_lines++], info);
+////		AddDataBrowserItems(dbControl, kDataBrowserNoItem, 1, (DataBrowserItemID *) &debug_lines, kDataBrowserItemNoProperty);
+//	}
+//
+////	SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &debug_lines, kDataBrowserItemsAssign);
+////	RevealDataBrowserItem(dbControl, debug_lines, kDataBrowserNoItem, kDataBrowserRevealOnly);
+//}
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//int GetCheckBoxValue(OSType box)
+//
+//{
+//ControlID dbControlID;
+//ControlRef dbControl;
+//int ret;
+//
+//	dbControlID.signature = box;
+//	dbControlID.id = 0;
+////	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+////	ret = GetControlValue(dbControl);
+//	return ret;
+//}
+//
+//void SetCheckBoxValue(OSType box, int State)
+//{
+//	ControlID dbControlID;
+//	ControlRef dbControl;
+//
+//	dbControlID.signature = box;
+//	dbControlID.id = 0;
+////	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
+////	SetControlValue(dbControl, State);
+//}
 
-	if (strlen(info) > max)
-	{
-		max = strlen(info);
-		fprintf(stderr, "New max = %d, '%s'\n", max, info);
-	}
-	
-	fprintf(stderr, "%s\n", info);
-
-	const ControlID dbControlID = { 'HDIS', 0 };
-	ControlRef dbControl;
-	
-//	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-
-	if (debug_lines == MAX_LINES)
-	{
-		memmove(debug_log[0], debug_log[1], (MAX_LINES - 1) * 101);
-		strcpy(debug_log[debug_lines - 1], info);
-
-//		RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
-//		AddDataBrowserItems(dbControl, kDataBrowserNoItem, debug_lines, NULL, kDataBrowserItemNoProperty);
-	}
-	else
-	{
-		strcpy(debug_log[debug_lines++], info);
-//		AddDataBrowserItems(dbControl, kDataBrowserNoItem, 1, (DataBrowserItemID *) &debug_lines, kDataBrowserItemNoProperty);
-	}
-	
-//	SetDataBrowserSelectedItems (dbControl, 1, (DataBrowserItemID *) &debug_lines, kDataBrowserItemsAssign);
-//	RevealDataBrowserItem(dbControl, debug_lines, kDataBrowserNoItem, kDataBrowserRevealOnly);
-}
-
-int GetCheckBoxValue(OSType box)
-
-{
-ControlID dbControlID;
-ControlRef dbControl;
-int ret;
-
-	dbControlID.signature = box;
-	dbControlID.id = 0;
-//	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-//	ret = GetControlValue(dbControl);
-	return ret;
-}
-
-void SetCheckBoxValue(OSType box, int State)
-{
-	ControlID dbControlID;
-	ControlRef dbControl;
-	
-	dbControlID.signature = box;
-	dbControlID.id = 0;
-//	GetControlByID (mDebugWindow, &dbControlID, &dbControl);
-//	SetControlValue(dbControl, State);
-}
-
-void DebugDisplayTrace(DebugType type, bool host, const char *info)
-{
-	if (DebugEnabled)
-	{
-		switch (type)
-		{
-			case DEBUG_VIDEO:
-				if (GetCheckBoxValue('dbvt') == true)
-					DebugDisplayInfo(info);
-				if (GetCheckBoxValue('dbvb') == true)
-				{
-					DebugOn = TRUE;
-					InstCount = 1;
-					BreakpointHit = false;
-					DebugDisplayInfo("- VIDEO BREAK -");
-				}
-					break;
-			case DEBUG_USERVIA:
-				if (GetCheckBoxValue('dbut') == true)
-					DebugDisplayInfo(info);
-				if (GetCheckBoxValue('dbub') == true)
-				{
-					DebugOn = TRUE;
-					InstCount = 1;
-					BreakpointHit = false;
-					DebugDisplayInfo("- USER VIA BREAK -");
-				}
-					break;
-			case DEBUG_SYSVIA:
-				if (GetCheckBoxValue('dbst') == true)
-					DebugDisplayInfo(info);
-				if (GetCheckBoxValue('dbsb') == true)
-				{
-					DebugOn = TRUE;
-					InstCount = 1;
-					BreakpointHit = false;
-					DebugDisplayInfo("- SYS VIA BREAK -");
-				}
-					break;
-			case DEBUG_TUBE:
-				if ((DebugHost && host) || (DebugParasite && !host))
-				{
-					if (GetCheckBoxValue('dbtt') == true)
-						DebugDisplayInfo(info);
-					if (GetCheckBoxValue('dbtb') == true)
-					{
-						DebugOn = TRUE;
-						InstCount = 1;
-						BreakpointHit = false;
-						DebugDisplayInfo("- TUBE BREAK -");
-					}
-				}
-				break;
-			case DEBUG_SERIAL:
-				if (GetCheckBoxValue('dblt') == true)
-					DebugDisplayInfo(info);
-				if (GetCheckBoxValue('dblb') == true)
-				{
-					DebugOn = TRUE;
-					InstCount = 1;
-					BreakpointHit = false;
-					DebugDisplayInfo("- SERIAL BREAK -");
-				}
-				break;
-			case DEBUG_ECONET:
-				if (GetCheckBoxValue('dbet') == true)
-					DebugDisplayInfo(info);
-				if (GetCheckBoxValue('dben') == true)
-				{
-					DebugOn = TRUE;
-					InstCount = 1;
-					BreakpointHit = false;
-					DebugDisplayInfo("- ECONET BREAK -");
-				}
-				break;
-		}
-	}
-}
+//void DebugDisplayTrace(DebugType type, bool host, const char *info)
+//{
+//	if (DebugEnabled)
+//	{
+//		switch (type)
+//		{
+//			case DEBUG_VIDEO:
+//				if (GetCheckBoxValue('dbvt') == true)
+//					DebugDisplayInfo(info);
+//				if (GetCheckBoxValue('dbvb') == true)
+//				{
+//					DebugOn = TRUE;
+//					InstCount = 1;
+//					BreakpointHit = false;
+//					DebugDisplayInfo("- VIDEO BREAK -");
+//				}
+//					break;
+//			case DEBUG_USERVIA:
+//				if (GetCheckBoxValue('dbut') == true)
+//					DebugDisplayInfo(info);
+//				if (GetCheckBoxValue('dbub') == true)
+//				{
+//					DebugOn = TRUE;
+//					InstCount = 1;
+//					BreakpointHit = false;
+//					DebugDisplayInfo("- USER VIA BREAK -");
+//				}
+//					break;
+//			case DEBUG_SYSVIA:
+//				if (GetCheckBoxValue('dbst') == true)
+//					DebugDisplayInfo(info);
+//				if (GetCheckBoxValue('dbsb') == true)
+//				{
+//					DebugOn = TRUE;
+//					InstCount = 1;
+//					BreakpointHit = false;
+//					DebugDisplayInfo("- SYS VIA BREAK -");
+//				}
+//					break;
+//			case DEBUG_TUBE:
+//				if ((DebugHost && host) || (DebugParasite && !host))
+//				{
+//					if (GetCheckBoxValue('dbtt') == true)
+//						DebugDisplayInfo(info);
+//					if (GetCheckBoxValue('dbtb') == true)
+//					{
+//						DebugOn = TRUE;
+//						InstCount = 1;
+//						BreakpointHit = false;
+//						DebugDisplayInfo("- TUBE BREAK -");
+//					}
+//				}
+//				break;
+//			case DEBUG_SERIAL:
+//				if (GetCheckBoxValue('dblt') == true)
+//					DebugDisplayInfo(info);
+//				if (GetCheckBoxValue('dblb') == true)
+//				{
+//					DebugOn = TRUE;
+//					InstCount = 1;
+//					BreakpointHit = false;
+//					DebugDisplayInfo("- SERIAL BREAK -");
+//				}
+//				break;
+//			case DEBUG_ECONET:
+//				if (GetCheckBoxValue('dbet') == true)
+//					DebugDisplayInfo(info);
+//				if (GetCheckBoxValue('dben') == true)
+//				{
+//					DebugOn = TRUE;
+//					InstCount = 1;
+//					BreakpointHit = false;
+//					DebugDisplayInfo("- ECONET BREAK -");
+//				}
+//				break;
+//		}
+//	}
+//}
 
 bool DebugDisassembler(int addr, int Accumulator, int XReg, int YReg, int PSR, bool host)
 {
@@ -785,7 +785,7 @@ bool DebugDisassembler(int addr, int Accumulator, int XReg, int YReg, int PSR, b
 		{
 			DebugOn = TRUE;
 			InstCount = 1;
-			DebugDisplayInfo("- BREAKPOINT HIT -");
+			//DebugDisplayInfo("- BREAKPOINT HIT -");
 		}
 	}
 	
@@ -798,7 +798,7 @@ bool DebugDisassembler(int addr, int Accumulator, int XReg, int YReg, int PSR, b
 		{
 			if (!LastAddrInBIOS)
 			{
-				DebugDisplayInfo("- ENTERING BIOS -");
+				//DebugDisplayInfo("- ENTERING BIOS -");
 				LastAddrInBIOS = true;
 			}
 			return(TRUE);
@@ -811,7 +811,7 @@ bool DebugDisassembler(int addr, int Accumulator, int XReg, int YReg, int PSR, b
 		{
 			if (!LastAddrInOS)
 			{
-				DebugDisplayInfo("- ENTERING OS -");
+				//DebugDisplayInfo("- ENTERING OS -");
 				LastAddrInOS = true;
 			}
 			return(TRUE);
@@ -822,7 +822,7 @@ bool DebugDisassembler(int addr, int Accumulator, int XReg, int YReg, int PSR, b
 		{
 			if (!LastAddrInROM)
 			{
-				DebugDisplayInfo("- ENTERING ROM -");
+				//DebugDisplayInfo("- ENTERING ROM -");
 				LastAddrInROM = true;
 			}
 			return(TRUE);
@@ -842,7 +842,7 @@ bool DebugDisassembler(int addr, int Accumulator, int XReg, int YReg, int PSR, b
 		Disp_RegSet1(str);
 		sprintf(str + strlen(str), " %s", buff);
 				
-		DebugDisplayInfo(str);
+		//DebugDisplayInfo(str);
 		Disp_RegSet2(str);
 
 	}
@@ -866,7 +866,7 @@ bool DebugDisassembler(int addr, int Accumulator, int XReg, int YReg, int PSR, b
 	
 	}
 	
-	DebugDisplayInfo(str);
+	//DebugDisplayInfo(str);
 	
 	// If host debug is enable then only count host instructions
 	// and display all parasite inst (otherwise we loose them).
@@ -888,15 +888,15 @@ void DebugExecuteCommand()
 	bool ok = false;
 	bool host = true;
 	
-    ControlID kCmd = { 'dcmd', 0 };
-    ControlRef Cmd;
-    CFStringRef cmd_text;
+//**CARBON**    ControlID kCmd = { 'dcmd', 0 };
+// **CARBON**   ControlRef Cmd;
+//**CARBON**    CFStringRef cmd_text;
 //    GetControlByID(mDebugWindow, &kCmd, &Cmd);
 //    GetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text, NULL);
 
-	CFStringGetCString (cmd_text, command, MAX_COMMAND_LEN + 1, kCFStringEncodingASCII);
+//**CARBON**	CFStringGetCString (cmd_text, command, MAX_COMMAND_LEN + 1, kCFStringEncodingASCII);
 	
-	CFRelease (cmd_text);
+//**CARBON**	CFRelease (cmd_text);
 	
 	if (strlen(command) == 0)
 		return;
@@ -931,9 +931,9 @@ void DebugExecuteCommand()
 			DumpAddress += count;
 			if (DumpAddress > 0xffff)
 				DumpAddress = 0;
-			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "m" : "mp");
+//**CARBON**			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "m" : "mp");
 //			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
-			CFRelease (cmd_text);
+//**CARBON**			CFRelease (cmd_text);
 			break;
 			
 		case 'e': // edit memory, params: [p] [addr] [byte]
@@ -948,9 +948,9 @@ void DebugExecuteCommand()
 			data = 0;
 			sscanf(&command[i], "%x %x", &addr, &data);
 			DebugWriteMem(addr, data, host);
-			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "e" : "ep");
+//**CARBON**			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "e" : "ep");
 //			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
-			CFRelease (cmd_text);
+//**CARBON**			CFRelease (cmd_text);
 			break;
 			
 		
@@ -971,9 +971,9 @@ void DebugExecuteCommand()
 				DisAddress += DebugDisassembleCommand(DisAddress, count, host);
 			if (DisAddress > 0xffff)
 				DisAddress = 0;
-			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "d" : "dp");
+//**CARBON**			cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR("%s"), host ? "d" : "dp");
 //			SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
-			CFRelease (cmd_text);
+//**CARBON**			CFRelease (cmd_text);
 			break;
 			
 		case 'b': // Breakpoint set/reset, params: start [end]
@@ -1008,8 +1008,8 @@ void DebugExecuteCommand()
 								BPCount--;
 								i = BPCount;
 
-								const ControlID dbControlID = { 'BLST', 0 };
-								ControlRef dbControl;
+//**CARBON**								const ControlID dbControlID = { 'BLST', 0 };
+//**CARBON**								ControlRef dbControl;
 								
 //								GetControlByID (mDebugWindow, &dbControlID, &dbControl);
 //								RemoveDataBrowserItems(dbControl, kDataBrowserNoItem, 0, NULL, kDataBrowserItemNoProperty);
@@ -1032,8 +1032,8 @@ void DebugExecuteCommand()
 							BPCount++;
 						}
 
-						const ControlID dbControlID = { 'BLST', 0 };
-						ControlRef dbControl;
+//**CARBON**						const ControlID dbControlID = { 'BLST', 0 };
+//**CARBON**						ControlRef dbControl;
 						
 //						GetControlByID (mDebugWindow, &dbControlID, &dbControl);
 //						AddDataBrowserItems(dbControl, kDataBrowserNoItem, 1, (DataBrowserItemID *) &BPCount, kDataBrowserItemNoProperty);
@@ -1041,9 +1041,9 @@ void DebugExecuteCommand()
 //						RevealDataBrowserItem(dbControl, BPCount, kDataBrowserNoItem, kDataBrowserRevealOnly);
 					}
 					
-					cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR(""));
+//**CARBON**					cmd_text = CFStringCreateWithFormat(NULL, NULL, CFSTR(""));
 //					SetControlData(Cmd, 0, kControlEditTextCFStringTag, sizeof(CFStringRef), &cmd_text);
-					CFRelease (cmd_text);
+//**CARBON**					CFRelease (cmd_text);
 				}
 			}
 			break;
@@ -1073,9 +1073,9 @@ void DebugExecuteCommand()
 	
 	if (!ok)
 	{
-		DebugDisplayInfo("");
+		//DebugDisplayInfo("");
 		sprintf(info, "Bad or unrecognised: %s", command);
-		DebugDisplayInfo(info);
+		//DebugDisplayInfo(info);
 	}
 }
 
@@ -1255,7 +1255,7 @@ int DebugDisassembleCommand(int addr, int count, bool host)
 		{
 			addr += DebugDisassembleInstruction(addr, host, opstr);
 		}
-		DebugDisplayInfo(opstr);
+		//DebugDisplayInfo(opstr);
 		count--;
 	}
 	
@@ -1306,7 +1306,7 @@ void DebugMemoryDump(int addr, int count, bool host)
 			}
 		}
 		
-		DebugDisplayInfo(info);
+		//DebugDisplayInfo(info);
 	}
 	
 }

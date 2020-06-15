@@ -70,10 +70,10 @@ int ts_delay;
 SOCKET	mEthernetHandle = 0;
 SOCKET	mListenHandle = 0;
 sockaddr_in mServer;
-MPTaskID mEthernetPortReadTaskID = NULL;
-MPTaskID mEthernetPortStatusTaskID = NULL;
-MPTaskID mListenTaskID = NULL;
-WindowRef mEthernetPortWindow = NULL; 
+//**CARBON**MPTaskID mEthernetPortReadTaskID = NULL;
+//**CARBON**MPTaskID mEthernetPortStatusTaskID = NULL;
+//**CARBON**MPTaskID mListenTaskID = NULL;
+//**CARBON**WindowRef mEthernetPortWindow = NULL;
 char mIP[64] = {"127.0.0.1"};
 char mPort[64] = {"23"};
 bool mMode = true;
@@ -81,8 +81,8 @@ bool mStartAgain = false;
 
 void DeactControl(OSType box)
 {
-	const ControlID dbControlID = { box, 0 };
-	ControlRef dbControl;
+//**CARBON**	const ControlID dbControlID = { box, 0 };
+//**CARBON**	ControlRef dbControl;
 	
 	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
     //DeactivateControl(dbControl);
@@ -90,8 +90,8 @@ void DeactControl(OSType box)
 
 void ActControl(OSType box)
 {
-	const ControlID dbControlID = { box, 0 };
-	ControlRef dbControl;
+//**CARBON**	const ControlID dbControlID = { box, 0 };
+//**CARBON**	ControlRef dbControl;
 	
 	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
     //ActivateControl(dbControl);
@@ -101,8 +101,8 @@ void SetEPText(OSType box, char *text)
 {
 	CFStringRef pTitle;
 	
-	const ControlID dbControlID = { box, 0 };
-	ControlRef dbControl;
+//**CARBON**	const ControlID dbControlID = { box, 0 };
+//**CARBON**	ControlRef dbControl;
 	
 	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
 	
@@ -116,8 +116,8 @@ void SetEPText(OSType box, char *text)
 void GetEPText(OSType box, char *text)
 {
 
-    ControlID kCmd = { box, 0 };
-    ControlRef Cmd;
+// **CARBON**   ControlID kCmd = { box, 0 };
+// **CARBON**   ControlRef Cmd;
     CFStringRef cmd_text;
 
     *text = 0;
@@ -132,12 +132,12 @@ void GetEPText(OSType box, char *text)
 int GetEPValue(OSType box)
 
 {
-	ControlID dbControlID;
-	ControlRef dbControl;
+//**CARBON**	ControlID dbControlID;
+//**CARBON**	ControlRef dbControl;
 	int ret;
 	
-	dbControlID.signature = box;
-	dbControlID.id = 0;
+//**CARBON**	dbControlID.signature = box;
+//**CARBON**	dbControlID.id = 0;
 	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
 	//ret = GetControlValue(dbControl);
 	return ret;
@@ -145,179 +145,179 @@ int GetEPValue(OSType box)
 
 void SetEPValue(OSType box, int State)
 {
-	ControlID dbControlID;
-	ControlRef dbControl;
+//**CARBON**	ControlID dbControlID;
+//**CARBON**	ControlRef dbControl;
 	
-	dbControlID.signature = box;
-	dbControlID.id = 0;
+//**CARBON**	dbControlID.signature = box;
+//**CARBON**	dbControlID.id = 0;
 	//GetControlByID (mEthernetPortWindow, &dbControlID, &dbControl);
 	//SetControlValue(dbControl, State);
 }
 
 //*******************************************************************
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//OSStatus EthernetPortWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    HICommand command;
+//    OSStatus err = noErr;
+//	int val;
+//
+//    err = GetEventParameter(event, kEventParamDirectObject,
+//							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
+//    //require_noerr (err, CantGetParameter);
+//
+//	err = noErr;
+//
+//	switch (command.commandID)
+//	{
+//		case 'ok  ':
+//
+//			GetEPText('cepi', mIP);
+//			GetEPText('cepp', mPort);
+//
+//			mMode = GetEPValue('cepc');
+//
+//            fprintf(stderr, "Selected Ethernet Port %d, '%s', %d\n", mMode, mIP, atoi(mPort));
+//
+//			if (mEthernetHandle > 0)
+//			{
+//				EthernetPortClose();
+//			}
+//
+//			EthernetPortOpen();
+//
+////			fprintf(stderr, "mEthernetHandle = %d\n", mEthernetHandle);
+//
+//			if (mEthernetHandle > 0)
+//			{
+//				ts_inhead = ts_intail = ts_inlen = 0;
+//				ts_outhead = ts_outtail = ts_outlen = 0;
+//				ts_delay = 0;
+//
+//				MPCreateTask(MyEthernetPortReadThread, nil, 0, nil, nil, nil, 0, &mEthernetPortReadTaskID);
+//				MPCreateTask(MyEthernetPortStatusThread, nil, 0, nil, nil, nil, 0, &mEthernetPortStatusTaskID);
+//			}
+//
+//			EthernetPortCloseDialog();
+//			break;
+//
+//		case 'cncl':
+//			EthernetPortCloseDialog();
+//			EthernetPortEnabled = false;
+//			//**CARBON**   mainWin->SetMenuCommandIDCheck('rs42', false);
+//			//**CARBON**   mainWin->SetMenuCommandIDCheck('sdep', false);
+//			break;
+//
+//		case 'ceps':
+//
+//			val = GetEPValue('ceps');
+////            fprintf(stderr, "Server - val = %d\n", val);
+//			SetEPValue('cepc', 0);
+//			DeactControl('cepi');
+//
+//			break;
+//
+//		case 'cepc':
+//
+//			val = GetEPValue('cepc');
+////            fprintf(stderr, "Client - val = %d\n", val);
+//			SetEPValue('ceps', 0);
+//			ActControl('cepi');
+//
+//			break;
+//
+//		case 'cepi':
+//			break;
+//
+//		case 'cepp':
+//			break;
+//
+//		default:
+//			err = eventNotHandledErr;
+//			break;
+//	}
+//
+//CantGetParameter:
+//	return err;
+//}
 
-OSStatus EthernetPortWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    HICommand command; 
-    OSStatus err = noErr;
-	int val;
-	
-    err = GetEventParameter(event, kEventParamDirectObject,
-							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    //require_noerr (err, CantGetParameter);
-	
-	err = noErr;
-	
-	switch (command.commandID)
-	{
-		case 'ok  ':
-			
-			GetEPText('cepi', mIP);
-			GetEPText('cepp', mPort);
+//static OSStatus EthernetPortWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    OSStatus err = noErr;
+//
+//	switch (GetEventKind(event))
+//	{
+//
+//        case kEventWindowClosed:
+//			mEthernetPortWindow = NULL;
+//            break;
+//
+//		default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//	return err;
+//}
+//
+//void EthernetPortOpenDialog()
+//{
+//	IBNibRef 		nibRef;
+//	EventTypeSpec EthernetPortcommands[] = {
+//		{ kEventClassCommand, kEventCommandProcess }
+//	};
+//
+//	EventTypeSpec EthernetPortevents[] = {
+//		{ kEventClassWindow, kEventWindowClosed },
+//		{ kEventClassKeyboard, kEventRawKeyDown}
+//	};
+//
+//	if (mEthernetPortWindow == NULL)
+//	{
+//		// Create a Nib reference passing the name of the nib file (without the .nib extension)
+//		// CreateNibReference only searches into the application bundle.
+//		//CreateNibReference(CFSTR("main"), &nibRef);
+//		//CreateWindowFromNib(nibRef, CFSTR("Window5"), &mEthernetPortWindow);
+//		//DisposeNibReference(nibRef);
+//		//ShowWindow(mEthernetPortWindow);
+//
+//		//InstallWindowEventHandler(mEthernetPortWindow,
+//		//						  NewEventHandlerUPP (EthernetPortWindowCommandHandler),
+//		//						  GetEventTypeCount(EthernetPortcommands), EthernetPortcommands,
+//		//						  mEthernetPortWindow, NULL);
+//
+//		//InstallWindowEventHandler (mEthernetPortWindow,
+//		//						   NewEventHandlerUPP (EthernetPortWindowEventHandler),
+//		//						   GetEventTypeCount(EthernetPortevents), EthernetPortevents,
+//		//						   mEthernetPortWindow, NULL);
+//
+//		SetEPValue('ceps', !mMode);
+//		SetEPValue('cepc', mMode);
+//		SetEPText('cepi', mIP);
+//		SetEPText('cepp', mPort);
+//
+//		if (mMode)
+//		{
+//			ActControl('cepi');
+//		}
+//		else
+//		{
+//			DeactControl('cepi');
+//		}
+//
+//	}
+//
+//}
 
-			mMode = GetEPValue('cepc');
-			
-            fprintf(stderr, "Selected Ethernet Port %d, '%s', %d\n", mMode, mIP, atoi(mPort));
-			
-			if (mEthernetHandle > 0)
-			{
-				EthernetPortClose();
-			}
-			
-			EthernetPortOpen();
-			
-//			fprintf(stderr, "mEthernetHandle = %d\n", mEthernetHandle);
-			
-			if (mEthernetHandle > 0)
-			{
-				ts_inhead = ts_intail = ts_inlen = 0;
-				ts_outhead = ts_outtail = ts_outlen = 0;
-				ts_delay = 0;
-
-				MPCreateTask(MyEthernetPortReadThread, nil, 0, nil, nil, nil, 0, &mEthernetPortReadTaskID);
-				MPCreateTask(MyEthernetPortStatusThread, nil, 0, nil, nil, nil, 0, &mEthernetPortStatusTaskID);
-			}
-			
-			EthernetPortCloseDialog();
-			break;
-			
-		case 'cncl':
-			EthernetPortCloseDialog();
-			EthernetPortEnabled = false;
-			mainWin->SetMenuCommandIDCheck('rs42', false);
-			mainWin->SetMenuCommandIDCheck('sdep', false);
-			break;
-
-		case 'ceps':
-
-			val = GetEPValue('ceps');
-//            fprintf(stderr, "Server - val = %d\n", val);
-			SetEPValue('cepc', 0);
-			DeactControl('cepi');
-			
-			break;
-
-		case 'cepc':
-
-			val = GetEPValue('cepc');
-//            fprintf(stderr, "Client - val = %d\n", val);
-			SetEPValue('ceps', 0);
-			ActControl('cepi');
-
-			break;
-
-		case 'cepi':
-			break;
-
-		case 'cepp':
-			break;
-
-		default:
-			err = eventNotHandledErr;
-			break;
-	}
-	
-CantGetParameter:
-	return err;
-}
-
-static OSStatus EthernetPortWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    OSStatus err = noErr;
-	
-	switch (GetEventKind(event)) 
-	{
-			
-        case kEventWindowClosed: 
-			mEthernetPortWindow = NULL;
-            break;
-			
-		default:
-            err = eventNotHandledErr;
-            break;
-    }
-    
-	return err;
-}
-
-void EthernetPortOpenDialog()
-{
-	IBNibRef 		nibRef;
-	EventTypeSpec EthernetPortcommands[] = {
-		{ kEventClassCommand, kEventCommandProcess }
-	};
-	
-	EventTypeSpec EthernetPortevents[] = {
-		{ kEventClassWindow, kEventWindowClosed },
-		{ kEventClassKeyboard, kEventRawKeyDown}
-	};
-	
-	if (mEthernetPortWindow == NULL)
-	{
-		// Create a Nib reference passing the name of the nib file (without the .nib extension)
-		// CreateNibReference only searches into the application bundle.
-		//CreateNibReference(CFSTR("main"), &nibRef);
-		//CreateWindowFromNib(nibRef, CFSTR("Window5"), &mEthernetPortWindow);
-		//DisposeNibReference(nibRef);
-		//ShowWindow(mEthernetPortWindow);
-		
-		//InstallWindowEventHandler(mEthernetPortWindow,
-		//						  NewEventHandlerUPP (EthernetPortWindowCommandHandler),
-		//						  GetEventTypeCount(EthernetPortcommands), EthernetPortcommands,
-		//						  mEthernetPortWindow, NULL);
-		
-		//InstallWindowEventHandler (mEthernetPortWindow,
-		//						   NewEventHandlerUPP (EthernetPortWindowEventHandler),
-		//						   GetEventTypeCount(EthernetPortevents), EthernetPortevents,
-		//						   mEthernetPortWindow, NULL);
-		
-		SetEPValue('ceps', !mMode);
-		SetEPValue('cepc', mMode);
-		SetEPText('cepi', mIP);
-		SetEPText('cepp', mPort);
-
-		if (mMode)
-		{
-			ActControl('cepi');
-		}
-		else
-		{
-			DeactControl('cepi');
-		}
-		
-	}
-	
-}
-
-void EthernetPortCloseDialog()
-{
-	if (mEthernetPortWindow)
-	{
-		//HideWindow(mEthernetPortWindow);
-		//DisposeWindow(mEthernetPortWindow);
-	}
-	mEthernetPortWindow = NULL;
-}
+//void EthernetPortCloseDialog()
+//{
+//	if (mEthernetPortWindow)
+//	{
+//		//HideWindow(mEthernetPortWindow);
+//		//DisposeWindow(mEthernetPortWindow);
+//	}
+//	mEthernetPortWindow = NULL;
+//}
 
 void LowerDCD(void)
 
@@ -427,7 +427,7 @@ int space;
 
 						mStartAgain = true;
 						BeebEmLog::writeLog("Remote session disconnected - waiting for a new connection\n");
-						mEthernetPortReadTaskID = NULL;
+//**CARBON**						mEthernetPortReadTaskID = NULL;
 						return noErr;
 						
 					}
@@ -500,12 +500,12 @@ top: ;
 	ts_outhead = ts_outtail = ts_outlen = 0;
 	ts_delay = 0;
 	
-	MPCreateTask(MyEthernetPortReadThread, nil, 0, nil, nil, nil, 0, &mEthernetPortReadTaskID);
-	MPCreateTask(MyEthernetPortStatusThread, nil, 0, nil, nil, nil, 0, &mEthernetPortStatusTaskID);
+//**CARBON**	MPCreateTask(MyEthernetPortReadThread, nil, 0, nil, nil, nil, 0, &mEthernetPortReadTaskID);
+//**CARBON**	MPCreateTask(MyEthernetPortStatusThread, nil, 0, nil, nil, nil, 0, &mEthernetPortStatusTaskID);
 
 	BeebEmLog::writeLog("Incoming Connection\n");
 
-	mListenTaskID = NULL;
+//**CARBON**	mListenTaskID = NULL;
 	return noErr;
 }
 
@@ -515,13 +515,13 @@ void EthernetPortOpen(void)
 	
 	if (mEthernetHandle > 0)
 	{
-		EthernetPortClose();
+//		EthernetPortClose();
 	}
 	
 	if (mMode == FALSE)		// Server
 	{
 		BeebEmLog::writeLog("Waiting for a connection\n");
-		MPCreateTask(MyListenThread, nil, 0, nil, nil, nil, 0, &mListenTaskID);
+		//**CARBON**MPCreateTask(MyListenThread, nil, 0, nil, nil, nil, 0, &mListenTaskID);
 	}
 	else					// Client
 	{
@@ -534,7 +534,7 @@ void EthernetPortOpen(void)
 		if (i < 0)
 		{
 			BeebEmLog::writeLog("Error Opening Connection\n");
-			EthernetPortClose();
+//			EthernetPortClose();
 		}
 		else
 		{
@@ -561,7 +561,7 @@ int i;
 	{
 		BeebEmLog::writeLog("Resetting Comms\n");
 		mStartAgain = false;
-		EthernetPortClose();
+//		EthernetPortClose();
 		EthernetPortOpen();
 		return false;
 	}
@@ -679,45 +679,45 @@ void EthernetPortStore(unsigned char data)
 		BeebEmLog::writeLog("EthernetPortStore output buffer full\n");
 	}
 }
-
-void EthernetPortClose(void)
-{
-
-	if (mEthernetHandle > 0)
-	{
-		LowerDCD();
-		close(mEthernetHandle);
-	}
-
-	if (mListenHandle > 0)
-	{
-		close(mListenHandle);
-	}
-	
-	mEthernetHandle = 0;
-	mListenHandle = 0;
-
-	if (mEthernetPortReadTaskID != NULL)
-	{
-		MPTerminateTask(mEthernetPortReadTaskID, 0);
-	}
-
-	if (mEthernetPortStatusTaskID != NULL)
-	{
-		MPTerminateTask(mEthernetPortStatusTaskID, 0);
-	}
-	
-	if (mListenTaskID != NULL)
-	{
-		MPTerminateTask(mListenTaskID, 0);
-	}
-
-	mListenHandle = NULL;
-	mEthernetPortStatusTaskID = NULL;
-	mEthernetPortReadTaskID = NULL;
-	
-	BeebEmLog::writeLog("EthernetPortClose\n");
-}
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//void EthernetPortClose(void)
+//{
+//
+//	if (mEthernetHandle > 0)
+//	{
+//		LowerDCD();
+//		close(mEthernetHandle);
+//	}
+//
+//	if (mListenHandle > 0)
+//	{
+//		close(mListenHandle);
+//	}
+//
+//	mEthernetHandle = 0;
+//	mListenHandle = 0;
+//
+//	if (mEthernetPortReadTaskID != NULL)
+//	{
+//		MPTerminateTask(mEthernetPortReadTaskID, 0);
+//	}
+//
+//	if (mEthernetPortStatusTaskID != NULL)
+//	{
+//		MPTerminateTask(mEthernetPortStatusTaskID, 0);
+//	}
+//
+//	if (mListenTaskID != NULL)
+//	{
+//		MPTerminateTask(mListenTaskID, 0);
+//	}
+//
+//	mListenHandle = NULL;
+//	mEthernetPortStatusTaskID = NULL;
+//	mEthernetPortReadTaskID = NULL;
+//
+//	BeebEmLog::writeLog("EthernetPortClose\n");
+//}
 
 void TouchScreenOpen(void)
 {
@@ -898,240 +898,240 @@ static int last_x = -1, last_y = -1, last_m = -1;
 
 // Stuff for proper serial port
 
-WindowRef mSerialPortWindow = NULL; 
-ControlRef mPopup = NULL;
+//**CARBON**WindowRef mSerialPortWindow = NULL;
+//C**CARBON**ontrolRef mPopup = NULL;
 char mBSDName[20][100];
 char mPortName[20][100];
 struct termios gOriginalTTYAttrs;
 int mSerialHandle = -1;
-MPTaskID mSerialReadTaskID = NULL;
-MPTaskID mSerialStatusTaskID = NULL;
+//**CARBON**MPTaskID mSerialReadTaskID = NULL;
+//**CARBON**MPTaskID mSerialStatusTaskID = NULL;
 unsigned char RXBuff[4096];
 int RXHead = 0;
 int RXTail = 0;
 int RXLen = 0;
 
 //*******************************************************************
-
-OSStatus SerialPortWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    HICommand command; 
-    OSStatus err = noErr;
-	int a;
-	
-    err = GetEventParameter(event, kEventParamDirectObject,
-							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
-    //require_noerr (err, CantGetParameter);
-	
-	err = noErr;
-
-	switch (command.commandID)
-	{
-		case 'ok  ':
-
-			//a = GetControl32BitValue(mPopup);
-
-            fprintf(stderr, "Selected Serial Port %d, '%s', '%s'\n", a, mBSDName[a - 1], mPortName[a - 1]);
-
-			if (mSerialHandle != -1)
-			{
-				CloseSerialPort(mSerialHandle);
-			}
-				
-			mSerialHandle = OpenSerialPort(mBSDName[a - 1]);
-
-			fprintf(stderr, "mSerialHandle = %d\n", mSerialHandle);
-			
-			if (mSerialHandle != -1)
-			{
-				RXTail = 0;
-				RXHead = 0;
-				RXLen = 0;
-			
-				MPCreateTask(MySerialReadThread, nil, 0, nil, nil, nil, 0, &mSerialReadTaskID);
-				MPCreateTask(MySerialStatusThread, nil, 0, nil, nil, nil, 0, &mSerialStatusTaskID);
-			}
-				
-			SerialPortCloseDialog();
-			break;
-				
-		case 'cncl':
-			SerialPortCloseDialog();
-			SerialPortEnabled = false;
-			mainWin->SetMenuCommandIDCheck('rs42', false);
-			mainWin->SetMenuCommandIDCheck('sdsp', false);
-			break;
-
-		default:
-			err = eventNotHandledErr;
-			break;
-	}
-
-CantGetParameter:
-		return err;
-}
-
-static OSStatus SerialPortWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
-{
-    OSStatus err = noErr;
-
-	switch (GetEventKind(event)) 
-	{
-
-        case kEventWindowClosed: 
-			mSerialPortWindow = NULL;
-            break;
-        
-		default:
-            err = eventNotHandledErr;
-            break;
-    }
-    
-	return err;
-}
-
-void SerialPortOpenDialog()
-{
-	IBNibRef 		nibRef;
-	EventTypeSpec SerialPortcommands[] = {
-	{ kEventClassCommand, kEventCommandProcess }
-	};
-		
-	EventTypeSpec SerialPortevents[] = {
-	{ kEventClassWindow, kEventWindowClosed },
-	{ kEventClassKeyboard, kEventRawKeyDown}
-	};
-
-	if (mSerialPortWindow == NULL)
-	{
-		// Create a Nib reference passing the name of the nib file (without the .nib extension)
-		// CreateNibReference only searches into the application bundle.
-//		CreateNibReference(CFSTR("main"), &nibRef);
-//		CreateWindowFromNib(nibRef, CFSTR("Window4"), &mSerialPortWindow);
-//		DisposeNibReference(nibRef);
-//		ShowWindow(mSerialPortWindow);
+//**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//OSStatus SerialPortWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    HICommand command;
+//    OSStatus err = noErr;
+//	int a;
 //
-//		InstallWindowEventHandler(mSerialPortWindow,
-//							  NewEventHandlerUPP (SerialPortWindowCommandHandler),
-//							  GetEventTypeCount(SerialPortcommands), SerialPortcommands,
-//							  mSerialPortWindow, NULL);
+//    err = GetEventParameter(event, kEventParamDirectObject,
+//							typeHICommand, NULL, sizeof(HICommand), NULL, &command);
+//    //require_noerr (err, CantGetParameter);
 //
-//		InstallWindowEventHandler (mSerialPortWindow,
-//								   NewEventHandlerUPP (SerialPortWindowEventHandler),
-//								   GetEventTypeCount(SerialPortevents), SerialPortevents,
-//								   mSerialPortWindow, NULL);
+//	err = noErr;
 //
-
-		Rect r;
-		io_iterator_t	serialPortIterator;
-		int i = 0;
-		kern_return_t			kernResult; 
-		CFMutableDictionaryRef	classesToMatch;
-		
-		r.top = 20;
-		r.left = 20;
-		r.right = r.left + 184;
-		r.bottom = r.top + 20;
-		
-//		CreatePopupButtonControl (mSerialPortWindow, &r, NULL,
-//								  -12345,	// DON'T GET MENU FROM RESOURCE mMenuID,!!!
-//								  FALSE,	// variableWidth,
-//								  0,		// titleWidth,
-//								  0,		// titleJustification,
-//								  0,		// titleStyle,
-//								  &mPopup);
-
-		MenuRef menuRef;
-//		CreateNewMenu(1, 0, &menuRef);
-		
-		classesToMatch = IOServiceMatching(kIOSerialBSDServiceValue);
-		if (classesToMatch == NULL)
-		{
-			fprintf(stderr, "IOServiceMatching returned a NULL dictionary.\n");
-		}
-		else {
-
-			CFDictionarySetValue(classesToMatch,
-								 CFSTR(kIOSerialBSDTypeKey),
-								 CFSTR(kIOSerialBSDAllTypes));
-			
-			kernResult = IOServiceGetMatchingServices(kIOMasterPortDefault, classesToMatch, &serialPortIterator);    
-			if (KERN_SUCCESS != kernResult)
-			{
-				fprintf(stderr, "IOServiceGetMatchingServices returned %d\n", kernResult);
-			}
-			else
-			{
-				io_object_t		modemService;
-					
-				while (modemService = IOIteratorNext(serialPortIterator))
-				{
-					CFTypeRef	bsdPathAsCFString;
-						
-/*
- kIOTTYDeviceKey = <Raw Unique Device Name>; - usbserial
- kIOTTYBaseNameKey = <Raw Unique Device Name>; - usbserial
- kIOTTYSuffixKey = <Raw Unique Device Name>; - blank
- kIOCalloutDeviceKey = <Callout Device Name>; - /dev/cu.usbserial
- kIODialinDeviceKey = <Dialin Device Name>; - /dev/tty.usbserial
- */
-					
-					bsdPathAsCFString = IORegistryEntryCreateCFProperty(modemService,
-																		CFSTR(kIOTTYDeviceKey),
-																		kCFAllocatorDefault,
-																		0);
-
-					if (bsdPathAsCFString)
-					{
-
-//						AppendMenuItemTextWithCFString (menuRef, (CFStringRef) bsdPathAsCFString, 0, 0, 0);
-
-						CFStringGetCString((CFStringRef) bsdPathAsCFString, mPortName[i], 100, kCFStringEncodingUTF8);
-
-						CFRelease(bsdPathAsCFString);
-						
-					}
-
-					bsdPathAsCFString = IORegistryEntryCreateCFProperty(modemService,
-																		CFSTR(kIOCalloutDeviceKey),
-																		kCFAllocatorDefault,
-																		0);
-					
-					if (bsdPathAsCFString)
-					{
-						CFStringGetCString((CFStringRef) bsdPathAsCFString, mBSDName[i], 100, kCFStringEncodingUTF8);
-						CFRelease(bsdPathAsCFString);
-						i++;
-					}
-					
-					(void) IOObjectRelease(modemService);
-				}
-
-			}
-		
-			IOObjectRelease(serialPortIterator);	// Release the iterator.
-		
-		}
-		
-//		SetControlData(mPopup, 0, kControlPopupButtonMenuRefTag, sizeof(menuRef), &menuRef);
+//	switch (command.commandID)
+//	{
+//		case 'ok  ':
 //
-//		SetControl32BitMaximum (mPopup, i);				// Set number of menu items
+//			//a = GetControl32BitValue(mPopup);
 //
-//		SetControl32BitValue (mPopup, 1);				// Set default menu item
-
-	}
-
-}
-
-void SerialPortCloseDialog()
-{
-	if (mSerialPortWindow)
-	{
-//		HideWindow(mSerialPortWindow);
-//		DisposeWindow(mSerialPortWindow);
-	}
-	mSerialPortWindow = NULL;
-}
+//            fprintf(stderr, "Selected Serial Port %d, '%s', '%s'\n", a, mBSDName[a - 1], mPortName[a - 1]);
+//
+//			if (mSerialHandle != -1)
+//			{
+//				CloseSerialPort(mSerialHandle);
+//			}
+//
+//			mSerialHandle = OpenSerialPort(mBSDName[a - 1]);
+//
+//			fprintf(stderr, "mSerialHandle = %d\n", mSerialHandle);
+//
+//			if (mSerialHandle != -1)
+//			{
+//				RXTail = 0;
+//				RXHead = 0;
+//				RXLen = 0;
+//
+////**CARBON**				MPCreateTask(MySerialReadThread, nil, 0, nil, nil, nil, 0, &mSerialReadTaskID);
+////**CARBON**				MPCreateTask(MySerialStatusThread, nil, 0, nil, nil, nil, 0, &mSerialStatusTaskID);
+//			}
+//
+//			SerialPortCloseDialog();
+//			break;
+//
+//		case 'cncl':
+//			SerialPortCloseDialog();
+//			SerialPortEnabled = false;
+//			//**CARBON**   mainWin->SetMenuCommandIDCheck('rs42', false);
+//			//**CARBON**   mainWin->SetMenuCommandIDCheck('sdsp', false);
+//			break;
+//
+//		default:
+////**CARBON**			err = eventNotHandledErr;
+//			break;
+//	}
+//
+//CantGetParameter:
+//		return err;
+//}
+//
+//static OSStatus SerialPortWindowEventHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData)
+//{
+//    OSStatus err = noErr;
+//
+//	switch (GetEventKind(event))
+//	{
+//
+//        case kEventWindowClosed:
+//			mSerialPortWindow = NULL;
+//            break;
+//
+//		default:
+//            err = eventNotHandledErr;
+//            break;
+//    }
+//
+//	return err;
+//}
+//
+//void SerialPortOpenDialog()
+//{
+//	IBNibRef 		nibRef;
+//	EventTypeSpec SerialPortcommands[] = {
+//	{ kEventClassCommand, kEventCommandProcess }
+//	};
+//
+//	EventTypeSpec SerialPortevents[] = {
+//	{ kEventClassWindow, kEventWindowClosed },
+//	{ kEventClassKeyboard, kEventRawKeyDown}
+//	};
+//
+//	if (mSerialPortWindow == NULL)
+//	{
+//		// Create a Nib reference passing the name of the nib file (without the .nib extension)
+//		// CreateNibReference only searches into the application bundle.
+////		CreateNibReference(CFSTR("main"), &nibRef);
+////		CreateWindowFromNib(nibRef, CFSTR("Window4"), &mSerialPortWindow);
+////		DisposeNibReference(nibRef);
+////		ShowWindow(mSerialPortWindow);
+////
+////		InstallWindowEventHandler(mSerialPortWindow,
+////							  NewEventHandlerUPP (SerialPortWindowCommandHandler),
+////							  GetEventTypeCount(SerialPortcommands), SerialPortcommands,
+////							  mSerialPortWindow, NULL);
+////
+////		InstallWindowEventHandler (mSerialPortWindow,
+////								   NewEventHandlerUPP (SerialPortWindowEventHandler),
+////								   GetEventTypeCount(SerialPortevents), SerialPortevents,
+////								   mSerialPortWindow, NULL);
+////
+//
+//		Rect r;
+//		io_iterator_t	serialPortIterator;
+//		int i = 0;
+//		kern_return_t			kernResult;
+//		CFMutableDictionaryRef	classesToMatch;
+//
+//		r.top = 20;
+//		r.left = 20;
+//		r.right = r.left + 184;
+//		r.bottom = r.top + 20;
+//
+////		CreatePopupButtonControl (mSerialPortWindow, &r, NULL,
+////								  -12345,	// DON'T GET MENU FROM RESOURCE mMenuID,!!!
+////								  FALSE,	// variableWidth,
+////								  0,		// titleWidth,
+////								  0,		// titleJustification,
+////								  0,		// titleStyle,
+////								  &mPopup);
+//
+//		MenuRef menuRef;
+////		CreateNewMenu(1, 0, &menuRef);
+//
+//		classesToMatch = IOServiceMatching(kIOSerialBSDServiceValue);
+//		if (classesToMatch == NULL)
+//		{
+//			fprintf(stderr, "IOServiceMatching returned a NULL dictionary.\n");
+//		}
+//		else {
+//
+//			CFDictionarySetValue(classesToMatch,
+//								 CFSTR(kIOSerialBSDTypeKey),
+//								 CFSTR(kIOSerialBSDAllTypes));
+//
+//			kernResult = IOServiceGetMatchingServices(kIOMasterPortDefault, classesToMatch, &serialPortIterator);
+//			if (KERN_SUCCESS != kernResult)
+//			{
+//				fprintf(stderr, "IOServiceGetMatchingServices returned %d\n", kernResult);
+//			}
+//			else
+//			{
+//				io_object_t		modemService;
+//
+//				while (modemService = IOIteratorNext(serialPortIterator))
+//				{
+//					CFTypeRef	bsdPathAsCFString;
+//
+///*
+// kIOTTYDeviceKey = <Raw Unique Device Name>; - usbserial
+// kIOTTYBaseNameKey = <Raw Unique Device Name>; - usbserial
+// kIOTTYSuffixKey = <Raw Unique Device Name>; - blank
+// kIOCalloutDeviceKey = <Callout Device Name>; - /dev/cu.usbserial
+// kIODialinDeviceKey = <Dialin Device Name>; - /dev/tty.usbserial
+// */
+//
+//					bsdPathAsCFString = IORegistryEntryCreateCFProperty(modemService,
+//																		CFSTR(kIOTTYDeviceKey),
+//																		kCFAllocatorDefault,
+//																		0);
+//
+//					if (bsdPathAsCFString)
+//					{
+//
+////						AppendMenuItemTextWithCFString (menuRef, (CFStringRef) bsdPathAsCFString, 0, 0, 0);
+//
+//						CFStringGetCString((CFStringRef) bsdPathAsCFString, mPortName[i], 100, kCFStringEncodingUTF8);
+//
+//						CFRelease(bsdPathAsCFString);
+//
+//					}
+//
+//					bsdPathAsCFString = IORegistryEntryCreateCFProperty(modemService,
+//																		CFSTR(kIOCalloutDeviceKey),
+//																		kCFAllocatorDefault,
+//																		0);
+//
+//					if (bsdPathAsCFString)
+//					{
+//						CFStringGetCString((CFStringRef) bsdPathAsCFString, mBSDName[i], 100, kCFStringEncodingUTF8);
+//						CFRelease(bsdPathAsCFString);
+//						i++;
+//					}
+//
+//					(void) IOObjectRelease(modemService);
+//				}
+//
+//			}
+//
+//			IOObjectRelease(serialPortIterator);	// Release the iterator.
+//
+//		}
+//
+////		SetControlData(mPopup, 0, kControlPopupButtonMenuRefTag, sizeof(menuRef), &menuRef);
+////
+////		SetControl32BitMaximum (mPopup, i);				// Set number of menu items
+////
+////		SetControl32BitValue (mPopup, 1);				// Set default menu item
+//
+//	}
+//
+//}
+//
+//void SerialPortCloseDialog()
+//{
+//	if (mSerialPortWindow)
+//	{
+////		HideWindow(mSerialPortWindow);
+////		DisposeWindow(mSerialPortWindow);
+//	}
+//	mSerialPortWindow = NULL;
+//}
 
 // Given the path to a serial device, open the device and configure it.
 // Return the file descriptor associated with the device.
@@ -1317,8 +1317,8 @@ void CloseSerialPort(int fileDescriptor)
 			   strerror(errno), errno);
     }
 	
-	MPTerminateTask(mSerialReadTaskID, 0);
-	MPTerminateTask(mSerialStatusTaskID, 0);
+	//**CARBON**MPTerminateTask(mSerialReadTaskID, 0);
+	//**CARBON**MPTerminateTask(mSerialStatusTaskID, 0);
     
 	close(fileDescriptor);
 
