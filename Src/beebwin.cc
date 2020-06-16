@@ -2045,27 +2045,27 @@ void BeebWin::LoadPreferences()
 	LEDs.ShowDisc = LED_SHOW_DISC;
 	LEDs.ShowKB = LED_SHOW_KB;
 
-//	m_MenuIdTiming = GetDictNum(dict, "Timing"), IDM_REALTIME);
-//	TranslateTiming(m_MenuIdTiming);
-//
-//	EconetEnabled = GetDictNum(dict, "EconetEnabled"), 0);
-//	SpeechDefault = GetDictNum(dict, "SpeechEnabled"), 0);
-//	SoundEnabled = GetDictNum(dict, "SoundEnabled"), 1);
-//	SoundChipEnabled = GetDictNum(dict, "SoundChipEnabled"), 1);
-//	m_MenuIdSampleRate = GetDictNum(dict, "SampleRate"), IDM_22050KHZ);
-//	TranslateSampleRate();
-//
-//	m_MenuIdVolume = GetDictNum(dict, CFSTR("Volume"), IDM_MEDIUMVOLUME);
-//	TranslateVolume();
-//
-//	PartSamples = GetDictNum(dict, CFSTR("PartSamples"), 1);
-//	m_MenuIdSticks = GetDictNum(dict, CFSTR("Sticks"), 0);
-//	m_FreezeWhenInactive = GetDictNum(dict, CFSTR("FreezeWhenInactive"), 1);
-//	m_HideCursor = GetDictNum(dict, CFSTR("HideCursor"), 0);
-//	m_MenuIdKeyMapping = GetDictNum(dict, CFSTR("KeyMapping"), 0);
-//	m_KeyMapAS = GetDictNum(dict, CFSTR("KeyMapAS"), 0);
-//	m_KeyMapFunc = GetDictNum(dict, CFSTR("KeyMapFunc"), 0);
-//	TranslateKeyMapping();
+	m_MenuIdTiming = findIntKey(xmlDoc, "Timing", IDM_REALTIME);
+	TranslateTiming(m_MenuIdTiming);
+
+	EconetEnabled = findIntKey(xmlDoc, "EconetEnabled", 0);
+	SpeechDefault = findIntKey(xmlDoc, "SpeechEnabled", 0);
+	SoundEnabled = findIntKey(xmlDoc, "SoundEnabled", 1);
+	SoundChipEnabled = findIntKey(xmlDoc, "SoundChipEnabled", 1);
+	m_MenuIdSampleRate = findIntKey(xmlDoc, "SampleRate", IDM_22050KHZ);
+	TranslateSampleRate();
+
+	m_MenuIdVolume = findIntKey(xmlDoc, "Volume", IDM_MEDIUMVOLUME);
+	TranslateVolume();
+
+	PartSamples = findIntKey(xmlDoc, "PartSamples", 1);
+	m_MenuIdSticks = findIntKey(xmlDoc, "Sticks", 0);
+	m_FreezeWhenInactive = findIntKey(xmlDoc, "FreezeWhenInactive", 1);
+	m_HideCursor = findIntKey(xmlDoc, "HideCursor", 0);
+	m_MenuIdKeyMapping = findIntKey(xmlDoc, "KeyMapping", 0);
+	m_KeyMapAS = findIntKey(xmlDoc, "KeyMapAS", 0);
+	m_KeyMapFunc = findIntKey(xmlDoc, "KeyMapFunc", 0);
+	TranslateKeyMapping();
 //
 //	for (i = 0; i < 256; ++i)
 //	{
