@@ -11,6 +11,7 @@
 #include <thread>
 #include "TestClass.hpp"
 #include "BeebEm-main.h"
+#include "BeebEmCommon.h"
 
 TestClass::TestClass()
 {
@@ -41,5 +42,6 @@ void TestClass::mainLoop()
 
 void TestClass::registerGlue(GlueInterface* gl){
   glue = gl;
+    BeebEmCommon::beebGlue = gl;
 }
 

@@ -10,7 +10,6 @@
 		1711EA4B2497C1E000422F99 /* libtinyxml2.8.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1711EA4A2497C1E000422F99 /* libtinyxml2.8.0.0.dylib */; };
 		178BCCAC2490E1DC0099EB8A /* TestGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA72490E1DC0099EB8A /* TestGlue.cpp */; };
 		178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA82490E1DC0099EB8A /* TestClass.cpp */; };
-		178BCCAE2490E1DC0099EB8A /* TestClassWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCAA2490E1DC0099EB8A /* TestClassWrapper.cpp */; };
 		178BCCB02490E1FD0099EB8A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCAF2490E1FD0099EB8A /* main.m */; };
 		178BCCB52490E58E0099EB8A /* MyModelObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCB42490E58E0099EB8A /* MyModelObject.mm */; };
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
@@ -67,12 +66,10 @@
 		1730E788249172A500396BA8 /* BeebEmCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeebEmCommon.h; sourceTree = "<group>"; };
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
-		178BCCA52490E1DC0099EB8A /* TestClassWrapper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestClassWrapper.hpp; sourceTree = "<group>"; };
 		178BCCA62490E1DC0099EB8A /* GlueInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlueInterface.h; sourceTree = "<group>"; };
 		178BCCA72490E1DC0099EB8A /* TestGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestGlue.cpp; sourceTree = "<group>"; };
 		178BCCA82490E1DC0099EB8A /* TestClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestClass.cpp; sourceTree = "<group>"; };
 		178BCCA92490E1DC0099EB8A /* TestGlue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestGlue.hpp; sourceTree = "<group>"; };
-		178BCCAA2490E1DC0099EB8A /* TestClassWrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestClassWrapper.cpp; sourceTree = "<group>"; };
 		178BCCAB2490E1DC0099EB8A /* TestClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestClass.hpp; sourceTree = "<group>"; };
 		178BCCAF2490E1FD0099EB8A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		178BCCB12490E2880099EB8A /* MyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
@@ -117,7 +114,6 @@
 		199193910BF601F20025F5A0 /* Arm.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Arm.cc; path = Src/Arm.cc; sourceTree = "<group>"; };
 		199E79EF088121AE006705E8 /* GetFile.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = GetFile.cc; path = Src/GetFile.cc; sourceTree = "<group>"; };
 		199E7BB008816C80006705E8 /* plist.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = plist.cc; path = Src/plist.cc; sourceTree = "<group>"; };
-		19AC0F76139C06D4003679A1 /* BeebEm4_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BeebEm4_Prefix.pch; path = Src/BeebEm4_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		19CAF4AE0C1046FE0031E354 /* DFS image.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "DFS image.icns"; path = "Resources/DFS image.icns"; sourceTree = "<group>"; };
 		19CAF4B00C10470A0031E354 /* Z Random BBC file.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "Z Random BBC file.icns"; path = "Resources/Z Random BBC file.icns"; sourceTree = "<group>"; };
 		19CE53490D22551100B90A78 /* beebwin.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = beebwin.cc; path = Src/beebwin.cc; sourceTree = "<group>"; };
@@ -248,7 +244,6 @@
 				17E47C1A2489012F0073DF2D /* audev.h */,
 				19E9FA0E086B5C85008741A6 /* BeebEm-main.cc */,
 				17E47C1C24890C130073DF2D /* BeebEm-main.h */,
-				19AC0F76139C06D4003679A1 /* BeebEm4_Prefix.pch */,
 				17F7FBAA249275F400B369B7 /* BeebEmCommon.cpp */,
 				1730E788249172A500396BA8 /* BeebEmCommon.h */,
 				17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */,
@@ -291,8 +286,6 @@
 				19368F9A098397E300B05B51 /* teletext.cc */,
 				178BCCA82490E1DC0099EB8A /* TestClass.cpp */,
 				178BCCAB2490E1DC0099EB8A /* TestClass.hpp */,
-				178BCCAA2490E1DC0099EB8A /* TestClassWrapper.cpp */,
-				178BCCA52490E1DC0099EB8A /* TestClassWrapper.hpp */,
 				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
 				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
 				19E9FA03086B5C85008741A6 /* tube.cc */,
@@ -471,7 +464,6 @@
 				178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */,
 				19E9FA22086B5C85008741A6 /* uservia.cc in Sources */,
 				19E9FA23086B5C85008741A6 /* via.cc in Sources */,
-				178BCCAE2490E1DC0099EB8A /* TestClassWrapper.cpp in Sources */,
 				19E9FA24086B5C85008741A6 /* video.cc in Sources */,
 				199E79F0088121AE006705E8 /* GetFile.cc in Sources */,
 				199E7BB108816C80006705E8 /* plist.cc in Sources */,
@@ -530,8 +522,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Src/BeebEm4_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Info.plist;
@@ -565,8 +556,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM_ID}";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Src/BeebEm4_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Info.plist;

@@ -9,6 +9,8 @@
 #ifndef BeebEmCommon_h
 #define BeebEmCommon_h
 
+#include "GlueInterface.h"
+
 /* Used to keep a count of total number of cycles executed */
 typedef int CycleCountT;
 #define CycleCountTMax INT_MAX
@@ -34,6 +36,7 @@ public:
     static int SwitchOnCycles; // Reset delay
     static int OpCodes;
     static int BHardware;
+    static GlueInterface* beebGlue;
 };
 
 #endif /* BeebEmCommon_h */

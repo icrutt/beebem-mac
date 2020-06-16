@@ -13,7 +13,6 @@
 
 -(void) getCount {
     NSLog(@"%s","In getCount");
-    count = tc.getValue();
 }
 
 -(void) toLog {
@@ -22,13 +21,15 @@
 
 -(id) init {
     self = [super init];
+    glue = new TestGlue();
+    tc.registerGlue(glue);
     [self performSelectorInBackground:@selector(backgroundTask) withObject:self];
     NSLog(@"%s","Launched background task");
     return self;
 }
 
 -(void) backgroundTask {
-    tc.startMainLoop();
+    tc.mainLoop();
 }
 
 @end

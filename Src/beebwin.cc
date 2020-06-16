@@ -1819,26 +1819,30 @@ char			Title[100];
 }
 
 /****************************************************************************/
-//void BeebWin::SavePreferences()
-//{
+void BeebWin::SavePreferences()
+{
+    // This isn't a priority at present!
+    // Doesn't work - requires changing to use tinyXML
+    
+    
 //CFURLRef fileURL;
-//char path[256];
+char path[256];
 //CFStringRef pIni;
 //CFMutableDictionaryRef dict;
-//char temp[256];
-//int i;
+char temp[256];
+int i;
 //CFStringRef pTitle;
-//
-//	// Create a dictionary that will hold the data.
+
+	// Create a dictionary that will hold the data.
 //	dict = CFDictionaryCreateMutable( kCFAllocatorDefault,
-//            0,
-//            &kCFTypeDictionaryKeyCallBacks,
-//            &kCFTypeDictionaryValueCallBacks );
-//
-//// Put the various items into the dictionary.
-//// Because the values are retained as they are placed into the
-////  dictionary, we can release any allocated objects here.
-//
+  //          0,
+    //        &kCFTypeDictionaryKeyCallBacks,
+      //      &kCFTypeDictionaryValueCallBacks );
+
+// Put the various items into the dictionary.
+// Because the values are retained as they are placed into the
+//  dictionary, we can release any allocated objects here.
+
 //	AddDictNum(dict, CFSTR("MachineType"), MachineType);
 //	AddDictNum(dict, CFSTR("ShowFPS"), m_ShowSpeedAndFPS);
 //	AddDictNum(dict, CFSTR("TubeEnabled"), TubeEnabled);
@@ -1897,46 +1901,46 @@ char			Title[100];
 //	AddDictNum(dict, CFSTR("WriteProtectOnLoad"), m_WriteProtectOnLoad);
 //	AddDictNum(dict, CFSTR("NativeFDC"), NativeFDC);
 //	AddDictNum(dict, CFSTR("FDCType"), FDCType);
-//
-//	for (i = 0; i < 256; ++i)
-//	{
-//		sprintf(temp, "Row%d", i);
+
+	for (i = 0; i < 256; ++i)
+	{
+		sprintf(temp, "Row%d", i);
 //		pTitle = CFStringCreateWithCString (kCFAllocatorDefault,temp, kCFStringEncodingASCII);
 //		AddDictNum(dict, pTitle, UserKeymap[i][0]);
 //		CFRelease(pTitle);
-//
-//		sprintf(temp, "Col%d", i);
+
+		sprintf(temp, "Col%d", i);
 //		pTitle = CFStringCreateWithCString (kCFAllocatorDefault,temp, kCFStringEncodingASCII);
 //		AddDictNum(dict, pTitle, UserKeymap[i][1]);
 //		CFRelease(pTitle);
-//	}
-//
-//	for (i = 0; i < 8; ++i)
-//	{
-//		sprintf(temp, "BitKey%d", i);
+	}
+
+	for (i = 0; i < 8; ++i)
+	{
+		sprintf(temp, "BitKey%d", i);
 //		pTitle = CFStringCreateWithCString (kCFAllocatorDefault,temp, kCFStringEncodingASCII);
 //		AddDictNum(dict, pTitle, BitKeys[i]);
 //		CFRelease(pTitle);
-//	}
-//
-//	// Create a URL that specifies the file we will create to
-//	// hold the XML data.
-//
-//	sprintf(path, "%sbeebem.ini", RomPath);
+	}
+
+	// Create a URL that specifies the file we will create to
+	// hold the XML data.
+
+	sprintf(path, "%sbeebem.ini", RomPath);
 //	pIni = CFStringCreateWithCString (kCFAllocatorDefault, path, kCFStringEncodingASCII);
 //
 //	fileURL = CFURLCreateWithFileSystemPath( kCFAllocatorDefault,
 //               pIni,       // file path name
 //               kCFURLPOSIXPathStyle,    // interpret as POSIX path
 //               false );                 // is it a directory?
-//
-//   // Write the property list to the file.
+
+   // Write the property list to the file.
 //	WriteMyPropertyListToFile( dict, fileURL );
 //	CFRelease(dict);
 //	CFRelease(fileURL);
 //
 //	CFRelease(pIni);
-//}
+}
 
 /****************************************************************************/
 
@@ -1974,14 +1978,15 @@ int findIntKey(tinyxml2::XMLDocument &xmlDoc,const char* key,int def) {
     }
 }
 
-const char* findStrKey(tinyxml2::XMLDocument &xmlDoc,const char* key) {
+void findStrKey(tinyxml2::XMLDocument &xmlDoc,const char* key, char* retVal) {
     const tinyxml2::XMLNode* node = scanForKey(xmlDoc, key);
-    if (!node) return NULL;
+    if (!node) return;
     if(strcmp(node->Value(),"string")==0) {
-        return node->FirstChild()->Value();
+        strcpy(retVal, node->FirstChild()->Value());
+        return;
     } else {
         std::cout << "Not a string: " << node->Value() << std::endl;
-        return NULL;
+        return;
     }
 }
 
@@ -2066,71 +2071,65 @@ void BeebWin::LoadPreferences()
 	m_KeyMapAS = findIntKey(xmlDoc, "KeyMapAS", 0);
 	m_KeyMapFunc = findIntKey(xmlDoc, "KeyMapFunc", 0);
 	TranslateKeyMapping();
-//
-//	for (i = 0; i < 256; ++i)
-//	{
-//		sprintf(temp, "Row%d", i);
-//		pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-//		UserKeymap[i][0] = GetDictNum(dict, pTitle, transTable1[i][0]);
-//		CFRelease(pTitle);
-//
-//		sprintf(temp, "Col%d", i);
-//		pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-//		UserKeymap[i][1] = GetDictNum(dict, pTitle, transTable1[i][1]);
-//		CFRelease(pTitle);
-//	}
-//
-//	for (i = 0; i < 8; ++i)
-//	{
-//		sprintf(temp, "BitKey%d", i);
-//		pTitle = CFStringCreateWithCString (kCFAllocatorDefault, temp, kCFStringEncodingASCII);
-//		BitKeys[i] = GetDictNum(dict, pTitle, BitKeys[i]);
-//		CFRelease(pTitle);
-//	}
-//
-//	SoundExponentialVolume = GetDictNum(dict, CFSTR("ExponentialVolume"), 1);
-//	TeleTextAdapterEnabled = GetDictNum(dict, CFSTR("TeleTextAdapterEnabled"), 0);
-//	TeleTextData = GetDictNum(dict, CFSTR("TeleTextData"), 0);
-//	TeleTextServer = GetDictNum(dict, CFSTR("TeleTextServer"), 0);
-//	HardDriveEnabled = GetDictNum(dict, CFSTR("HardDriveEnabled"), 0);
-//	TubeEnabled = GetDictNum(dict, CFSTR("TubeEnabled"), 0);
-//	Tube186Enabled = GetDictNum(dict, CFSTR("Tube186Enabled"), 0);
-//	TorchTube = GetDictNum(dict, CFSTR("TorchTube"), 0);
-//	ArmTube = GetDictNum(dict, CFSTR("ArmTube"), 0);
-//	AcornZ80 = GetDictNum(dict, CFSTR("AcornZ80"), 0);
-//	BeebEmCommon::OpCodes = GetDictNum(dict, CFSTR("OpCodes"), 2);
-//	BeebEmCommon::BHardware = GetDictNum(dict, CFSTR("BasicHardware"), 0);
-//	THalfMode = GetDictNum(dict, CFSTR("TeletextHalfMode"), 0);
-//	SBSize = GetDictNum(dict, CFSTR("SoundBlockSize"), 0);
-//	m_Invert = GetDictNum(dict, CFSTR("InvertBackground"), 0);
-//
-//	UnlockTape = GetDictNum(dict, CFSTR("UnlockTape"), 0);
-//	TapeClockSpeed = GetDictNum(dict, CFSTR("TapeClockSpeed"), 5600);
-//	TapeSoundEnabled = GetDictNum(dict, CFSTR("TapeSoundEnabled"), 1);
-//	RelaySoundEnabled = GetDictNum(dict, CFSTR("RelaySoundEnabled"), 1);
-//	DiscDriveSoundEnabled = GetDictNum(dict, CFSTR("DiscDriveSoundEnabled"), 1);
-//
-//	PrinterEnabled = GetDictNum(dict, CFSTR("PrinterEnabled"), 0);
-//	m_MenuIdPrinterPort = GetDictNum(dict, CFSTR("PrinterPort"), IDM_PRINTER_FILE);
-//	GetDictString(dict, CFSTR("PrinterFile"), m_PrinterFileName, (char *) "");
-//	TranslatePrinterPort();
-//
-//	AMXMouseEnabled = GetDictNum(dict, CFSTR("AMXMouseEnabled"), 0);
-//	AMXLRForMiddle = GetDictNum(dict, CFSTR("AMXMouseLRForMiddle"), 1);
-//	m_MenuIdAMXSize = GetDictNum(dict, CFSTR("AMXMouseSize"), 2);
-//	m_MenuIdAMXAdjust = GetDictNum(dict, CFSTR("AMXMouseAdjust"), 2);
-//	TranslateAMX();
-//
-//	m_skip = GetDictNum(dict, CFSTR("FrameSkip"), 0);
-//	m_captureresolution = GetDictNum(dict, CFSTR("CaptureResolution"), 2);
-//	TranslateCapture();
-//
-//	SerialPortEnabled = GetDictNum(dict, CFSTR("SerialPortEnabled"), 0);
-//	EthernetPortEnabled = GetDictNum(dict, CFSTR("EthernetPortEnabled"), 0);
-//	TouchScreenEnabled = GetDictNum(dict, CFSTR("TouchScreenEnabled"), 0);
-//	RTC_Enabled = GetDictNum(dict, CFSTR("RTCEnabled"), 0);
-//
-//	SavePreferences();
+
+	for (i = 0; i < 256; ++i)
+	{
+		sprintf(temp, "Row%d", i);
+		UserKeymap[i][0] = findIntKey(xmlDoc, temp, transTable1[i][0]);
+
+		sprintf(temp, "Col%d", i);
+		UserKeymap[i][1] = findIntKey(xmlDoc, temp, transTable1[i][1]);
+	}
+
+	for (i = 0; i < 8; ++i)
+	{
+		sprintf(temp, "BitKey%d", i);
+		BitKeys[i] = findIntKey(xmlDoc, temp, BitKeys[i]);
+	}
+
+	SoundExponentialVolume = findIntKey(xmlDoc, "ExponentialVolume", 1);
+	TeleTextAdapterEnabled = findIntKey(xmlDoc, "TeleTextAdapterEnabled", 0);
+	TeleTextData = findIntKey(xmlDoc, "TeleTextData", 0);
+	TeleTextServer = findIntKey(xmlDoc, "TeleTextServer", 0);
+	HardDriveEnabled = findIntKey(xmlDoc, "HardDriveEnabled", 0);
+	TubeEnabled = findIntKey(xmlDoc, "TubeEnabled", 0);
+	Tube186Enabled = findIntKey(xmlDoc, "Tube186Enabled", 0);
+	TorchTube = findIntKey(xmlDoc, "TorchTube", 0);
+	ArmTube = findIntKey(xmlDoc, "ArmTube", 0);
+	AcornZ80 = findIntKey(xmlDoc, "AcornZ80", 0);
+	BeebEmCommon::OpCodes = findIntKey(xmlDoc, "OpCodes", 2);
+	BeebEmCommon::BHardware = findIntKey(xmlDoc, "BasicHardware", 0);
+	THalfMode = findIntKey(xmlDoc, "TeletextHalfMode", 0);
+	SBSize = findIntKey(xmlDoc, "SoundBlockSize", 0);
+	m_Invert = findIntKey(xmlDoc, "InvertBackground", 0);
+
+	UnlockTape = findIntKey(xmlDoc, "UnlockTape", 0);
+	TapeClockSpeed = findIntKey(xmlDoc, "TapeClockSpeed", 5600);
+	TapeSoundEnabled = findIntKey(xmlDoc, "TapeSoundEnabled", 1);
+	RelaySoundEnabled = findIntKey(xmlDoc, "RelaySoundEnabled", 1);
+	DiscDriveSoundEnabled = findIntKey(xmlDoc, "DiscDriveSoundEnabled", 1);
+
+	PrinterEnabled = findIntKey(xmlDoc, "PrinterEnabled", 0);
+	m_MenuIdPrinterPort = findIntKey(xmlDoc, "PrinterPort", IDM_PRINTER_FILE);
+	findStrKey(xmlDoc, "PrinterFile", m_PrinterFileName);
+	TranslatePrinterPort();
+
+	AMXMouseEnabled = findIntKey(xmlDoc, "AMXMouseEnabled", 0);
+	AMXLRForMiddle = findIntKey(xmlDoc, "AMXMouseLRForMiddle", 1);
+	m_MenuIdAMXSize = findIntKey(xmlDoc, "AMXMouseSize", 2);
+	m_MenuIdAMXAdjust = findIntKey(xmlDoc, "AMXMouseAdjust", 2);
+	TranslateAMX();
+
+	m_skip = findIntKey(xmlDoc, "FrameSkip", 0);
+	m_captureresolution = findIntKey(xmlDoc, "CaptureResolution", 2);
+	TranslateCapture();
+
+	SerialPortEnabled = findIntKey(xmlDoc, "SerialPortEnabled", 0);
+	EthernetPortEnabled = findIntKey(xmlDoc, "EthernetPortEnabled", 0);
+	TouchScreenEnabled = findIntKey(xmlDoc, "TouchScreenEnabled", 0);
+	RTC_Enabled = findIntKey(xmlDoc, "RTCEnabled", 0);
+
+	SavePreferences();
 }
 
 

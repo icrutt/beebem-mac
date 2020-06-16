@@ -27,4 +27,5 @@ int BeebEmCommon::DisplayCycles {0};   // When a timer interrupt is due this is 
 int BeebEmCommon::CyclesToInt {NO_TIMER_INT_DUE};
 int BeebEmCommon::SwitchOnCycles {2000000}; // Reset delay
 int BeebEmCommon::OpCodes {2}; // 1 = documented only, 2 = commonly used undocumenteds, 3 = full set
-int BeebEmCommon::BHardware=0; // 0 = all hardware, 1 = basic hardware only
+int BeebEmCommon::BHardware {0}; // 0 = all hardware, 1 = basic hardware only
+GlueInterface* BeebEmCommon::beebGlue {0};

@@ -12,15 +12,16 @@
 //MyModelObject.h
 #import <Foundation/Foundation.h>
 #import "MyDelegate.h"
-#import "TestClassWrapper.hpp"
+#import "TestClass.hpp"
+#import "TestGlue.hpp"
 
 @interface MyModelObject : NSObject
 
 {
     @private
     int count;
-    TestClassWrapper tc;
-    
+    TestClass tc;
+    GlueInterface* glue;
 }
 @property (nonatomic,weak) id <MyDelegate> delegate;
 
