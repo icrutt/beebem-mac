@@ -60,6 +60,7 @@
 #include "printing.h"
 #include "discedit.h"
 #include "tinyxml2.h"
+#include "MacTypes.h"
 
 // #include "keytable_2"
 
@@ -642,16 +643,16 @@ void BeebWin::updateLines(int starty, int nlines)
 
 //**CARBON**	if (quitNow) return;		// Don't repaint if shutting down program
 
-	if (m_FreezeWhenInactive)
-		//if (IsWindowCollapsed(mWindow)) return;	// Don't repaint if minimised
+//	if (m_FreezeWhenInactive)
+//        if (IsWindowCollapsed(mWindow)) return;	// Don't repaint if minimised
 	
 	bufferblit(starty, nlines); 
 	return;
 
-	++m_ScreenRefreshCount;
-
+//	++m_ScreenRefreshCount;
+//
 //	fprintf(stderr, "Refresh screen = %d\n", m_ScreenRefreshCount);
-	
+//
 //**CARBON**    Rect destR;
 //**CARBON**    Rect srcR;
 
@@ -662,16 +663,16 @@ void BeebWin::updateLines(int starty, int nlines)
 //**CARBON**	srcR.left = 0;
 //**CARBON**	srcR.right = 640;
 
-	if (TeletextEnabled)
-	{
+//	if (TeletextEnabled)
+//	{
 //**CARBON**		srcR.top = 0;
 //**CARBON**		srcR.bottom = 512;
-	}
-	else
-	{
+//	}
+//	else
+//	{
 //**CARBON**		srcR.top = starty;
 //**CARBON**		srcR.bottom = starty + nlines;
-	}
+//	}
 	
 	//CopyBits ( (BitMap *) &mBitMap, GetPortBitMapForCopyBits(mWin), &srcR, &destR, srcCopy, nil);
 
@@ -929,47 +930,49 @@ int w, h;
 void BeebWin::bufferblit(int starty, int nlines) 
 {
 //**CARBON**CGrafPtr mWin;
-//**CARBON**register int i, j;
+int i, j;
 char *p;
 int width, height;
 	
 
-//	fprintf(stderr, "starty = %d, nlines = %d\n", starty, nlines);
+ //   fprintf(stderr, "starty = %d, nlines = %d\n", starty, nlines);
 	
 	++m_ScreenRefreshCount;
 
-    //**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
-//	if (m_Motion_Blur > 0)
-//	{
-//		switch (m_Motion_Blur)
-//		{
-//			case 1 :			// 2 Frames
-//				j = 32;
-//				break;
-//			case 2 :			// 4 Frames
-//				j = 16;
-//				break;
-//			case 3 :			// 8 Frames
-//				j = 8;
-//				break;
-//		}
-//
-//		for (i = 0; i < 800 * 512; ++i)
-//		{
-//			if (m_screen[i] != 0)
-//			{
-//				m_screen_blur[i] = m_screen[i];
-//			}
-//			else if (m_screen_blur[i] != 0)
-//			{
-//				m_screen_blur[i] += j;
-//				if (m_screen_blur[i] > 63)
-//					m_screen_blur[i] = 0;
-//			}
-//		}
+	if (m_Motion_Blur > 0)
+	{
+		switch (m_Motion_Blur)
+		{
+			case 1 :			// 2 Frames
+				j = 32;
+				break;
+			case 2 :			// 4 Frames
+				j = 16;
+				break;
+			case 3 :			// 8 Frames
+				j = 8;
+				break;
+		}
+
+		for (i = 0; i < 800 * 512; ++i)
+		{
+			if (m_screen[i] != 0)
+			{
+				m_screen_blur[i] = m_screen[i];
+			}
+			else if (m_screen_blur[i] != 0)
+			{
+				m_screen_blur[i] += j;
+				if (m_screen_blur[i] > 63)
+					m_screen_blur[i] = 0;
+			}
+		}
 		memcpy(m_screen, m_screen_blur, 800 * 512);
 	}
 	
+    BeebEmCommon::beebGlue->sendVideoFrame(m_screen);
+    m_screen = (char *) malloc(800 * 512);
+    
 //	fprintf(stderr, "Refresh screen = %d\n", m_ScreenRefreshCount);
 	
 //    **CARBON**Rect destR;
@@ -990,9 +993,8 @@ int width, height;
 //	width = destR.right;
 //	height = destR.bottom;
 
-	int xAdj = 0;
-	int yAdj = 0;
-//	**CARBON****CARBON****CARBON****CARBON****CARBON****CARBON****CARBON**
+//	int xAdj = 0;
+//	int yAdj = 0;
 //	if (m_isFullScreen && m_maintainAspectRatio)
 //	{
 //		float m_XRatioCrop = 0.0f;
@@ -1035,19 +1037,19 @@ int width, height;
 //		srcR.bottom = starty + nlines;
 //	}
 	
-long *pPtr32;
-long *pRPtr32;
-short *pPtr16;
-short *pRPtr16;
+//long *pPtr32;
+//long *pRPtr32;
+//short *pPtr16;
+//short *pRPtr16;
 
 //PixMapHandle	pmh;
 //Ptr             buffer;
-int				bpr;
-float			scalex;
-float			scaley;
-int				ppr;
+//int				bpr;
+//float			scalex;
+//float			scaley;
+//int				ppr;
 //Rect			rect;
-int				bpp;
+//int				bpp;
 
 	//LockPortBits(mWin);
 
@@ -1304,7 +1306,7 @@ int				bpp;
 
 	//QDFlushPortBuffer(mWin, reg);
 
-//}
+}
 
 void BeebWin::DumpScreen(int offset)
 {

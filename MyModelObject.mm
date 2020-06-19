@@ -13,6 +13,8 @@
 
 -(void) getCount {
     NSLog(@"%s","In getCount");
+    count = tc.getValue();
+    [self.delegate sendNewValue:self theVal:count];
 }
 
 -(void) toLog {
@@ -30,6 +32,15 @@
 
 -(void) backgroundTask {
     tc.mainLoop();
+}
+
+-(int) getNextVal {
+    return tc.getValue();
+}
+
+-(char* ) getNextFrame {
+    char* nextFrame =  tc.getNextFrame();
+    return nextFrame;
 }
 
 @end

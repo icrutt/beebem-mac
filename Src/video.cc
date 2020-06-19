@@ -918,7 +918,7 @@ void RedoMPTR(void) {
 /*-------------------------------------------------------------------------------------------------------------*/
 void VideoDoScanLine(void) {
   int l;
-  /* cerr << "CharLine=" << VideoState.CharLine << " InCharLineUp=" << VideoState.InCharLineUp << "\n"; */
+   // std::cout << "CharLine=" << VideoState.CharLine << " InCharLineUp=" << VideoState.InCharLineUp << std::endl;
   if (VideoState.IsTeletext) {
     static int DoCA1Int=0;
     if (DoCA1Int) {
@@ -1074,14 +1074,17 @@ void VideoDoScanLine(void) {
       }
       VideoStartOfFrame();
       AdjustVideo();
-    } else {
+    }
+ else 
+{
       IncTrigger((CRTC_HorizontalTotal+1)*((VideoULA_ControlReg & 16)?1:2),VideoTriggerCount);
     }
   }; /* Teletext if */
 }; /* VideoDoScanLine */
 
 /*-------------------------------------------------------------------------------------------------------------*/
-void AdjustVideo() {
+void AdjustVideo() 
+{
 	ActualScreenWidth=CRTC_HorizontalDisplayed*HSyncModifier;
 	if (ActualScreenWidth>800) ActualScreenWidth=800;
 	if (ActualScreenWidth<640) ActualScreenWidth=640;
@@ -1102,6 +1105,7 @@ void VideoInit(void) {
   FastTable_Valid=0;
   BuildMode7Font();
 
+
 #ifndef WIN32
   environptr=getenv("BeebVideoRefreshFreq");
   if (environptr!=NULL) Video_RefreshFrequency=atoi(environptr);
@@ -1121,9 +1125,11 @@ void VideoInit(void) {
 
 
 /*-------------------------------------------------------------------------------------------------------------*/
-void CRTCWrite(int Address, int Value) {
+void CRTCWrite(int Address, int Value) 
+{
   Value&=0xff;
-  if (Address & 1) {
+  if (Address & 1) 
+{
 //	if (CRTCControlReg<14) { fputc(CRTCControlReg,crtclog); fputc(Value,crtclog); }
 //	if (CRTCControlReg<14) {
 //		fprintf(crtclog,"%d (%02X) Written to register %d from %04X\n",Value,Value,CRTCControlReg,BeebEmCommon::ProgramCounter);
@@ -1137,7 +1143,8 @@ void CRTCWrite(int Address, int Value) {
 //		DebugDisplayTrace(DEBUG_VIDEO, true, info);
 	}
 
-	switch (CRTCControlReg) {
+	switch (CRTCControlReg) 
+{
       case 0:
         CRTC_HorizontalTotal=Value;
 		InitialOffset=0-(((CRTC_HorizontalTotal+1)/2)-((HSyncModifier==8)?40:20));
@@ -1147,7 +1154,9 @@ void CRTCWrite(int Address, int Value) {
       case 1:
         CRTC_HorizontalDisplayed=Value;
 		if (CRTC_HorizontalDisplayed > 127)
+                {
 			CRTC_HorizontalDisplayed = 127;
+                }
         FastTable_Valid=0;
 		AdjustVideo();
 		break;
@@ -1222,15 +1231,20 @@ void CRTCWrite(int Address, int Value) {
         break;
     }; /* CRTCWrite switch */
     /* cerr << "CRTCWrite RegNum=" << int(CRTCControlReg) << " Value=" << Value << "\n"; */
-  } else {
+  }
+ else 
+{
     CRTCControlReg=Value & 0x1f;
   };
 }; /* CRTCWrite */
 
 /*-------------------------------------------------------------------------------------------------------------*/
-int CRTCRead(int Address) {
-  if (Address & 1) {
-    switch (CRTCControlReg) {
+int CRTCRead(int Address) 
+{
+  if (Address & 1) 
+{
+    switch (CRTCControlReg) 
+{
       case 14:
         return(CRTC_CursorPosHigh);
       case 15:
@@ -1242,21 +1256,27 @@ int CRTCRead(int Address) {
       default:
         break;
     }; /* CRTC Read switch */
-  } else {
+  }
+ else 
+{
     return(0); /* Rockwell part has bits 5,6,7 used - bit 6 is set when LPEN is received, bit 5 when in vertical retrace */
   }
 return(0);	// Keeep MSVC happy $NRM
 }; /* CRTCRead */
 
 /*-------------------------------------------------------------------------------------------------------------*/
-void VideoULAWrite(int Address, int Value) {
+void VideoULAWrite(int Address, int Value) 
+{
   int oldValue;
-  if (Address & 1) {
+  if (Address & 1) 
+{
     VideoULA_Palette[(Value & 0xf0)>>4]=(Value & 0xf) ^ 7;
     FastTable_Valid=0;
     /* cerr << "Palette reg " << ((Value & 0xf0)>>4) << " now has value " << ((Value & 0xf) ^ 7) << "\n"; */
 	//fprintf(crtclog,"Pallette written to at line %d\n",VideoState.PixmapLine);
-  } else {
+  } 
+else 
+{
 	oldValue=VideoULA_ControlReg;
     VideoULA_ControlReg=Value;
     FastTable_Valid=0; /* Could be more selective and only do it if no.of.cols bit changes */
@@ -1272,12 +1292,14 @@ void VideoULAWrite(int Address, int Value) {
 }; /* VidULAWrite */
 
 /*-------------------------------------------------------------------------------------------------------------*/
-int VideoULARead(int Address) {
+int VideoULARead(int Address) 
+{
   return(Address); /* Read not defined from Video ULA */
 }; /* VidULARead */
 
 /*-------------------------------------------------------------------------------------------------------------*/
-static void VideoAddCursor(void) {
+static void VideoAddCursor(void)
+{
 	static int CurSizes[] = { 2,1,0,0,4,2,0,4 };
 	int ScrAddr,CurAddr,RelAddr;
 	int CurX;
@@ -1290,9 +1312,13 @@ static void VideoAddCursor(void) {
 
 	/* Use clock bit and cursor bits to work out size */
 	if (VideoULA_ControlReg & 0x80)
+    {
 		CurSize = CurSizes[(VideoULA_ControlReg & 0x70)>>4] * 8;
+    }
 	else
+    {
 		CurSize = 2 * 8; /* Mode 7 */
+    }
 
 	if (VideoState.IsTeletext)
 	{
@@ -1314,26 +1340,34 @@ static void VideoAddCursor(void) {
 		
 	RelAddr=CurAddr-ScrAddr;
 	if (RelAddr < 0 || CRTC_HorizontalDisplayed == 0)
+    {
 		return;
+    }
 
 	/* Work out char positions */
 	CurX = RelAddr % CRTC_HorizontalDisplayed;
 
 	/* Convert to pixel positions */
-	if (VideoState.IsTeletext) {
+    if (VideoState.IsTeletext)
+       {
 		CurX = CurX * 12;
 		CurY = (RelAddr / CRTC_HorizontalDisplayed) * 20 + 9;
 	}
-	else {
+	else 
+       {
 		CurX = CurX * HSyncModifier;
 	}
 
 	/* Limit cursor size */ // This should be 11, not 9 - Richard Gellman
 	if (CurEnd > 11)
+    {
 		CurEnd = 11;
+    }
 
 	if (CurX + CurSize >= 640)
+    {
 		CurSize = 640 - CurX;
+    }
 
 	// Cursor delay
 	CurX+=((CRTC_InterlaceAndDelay&192)>>6)*HSyncModifier;

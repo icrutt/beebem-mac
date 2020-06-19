@@ -45,3 +45,11 @@ void TestClass::registerGlue(GlueInterface* gl){
     BeebEmCommon::beebGlue = gl;
 }
 
+int TestClass::getValue() {
+    return glue->getValue();
+}
+
+char* TestClass::getNextFrame() {
+    char* nextFrame = glue->getVideoFrame();
+    return nextFrame;
+}

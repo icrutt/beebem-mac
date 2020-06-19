@@ -14,6 +14,8 @@ public:
   virtual void sendValue(int) = 0;
   virtual bool isValueWaiting() = 0;
   virtual int getValue() = 0;
+  virtual void sendVideoFrame(char*) = 0;
+  virtual char* getVideoFrame() = 0;
 };
 
 #endif /* GlueInterface_h */

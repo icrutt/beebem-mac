@@ -10,17 +10,25 @@
 #define TestGlue_hpp
 
 #include <stdio.h>
+#include <queue>
+#include <mutex>
 #include "GlueInterface.h"
 
 class TestGlue : public GlueInterface {
 private:
-  int val;
-  bool newVal;
+    std::mutex intMutex;
+    std::mutex frameMutex;
+    int val;
+    bool newVal;
+    std::queue<int> valQueue;
+    std::queue<char *> frameQueue;
 public:
-  TestGlue();
-  void sendValue(int);
-  bool isValueWaiting();
-  int getValue();
+    TestGlue();
+    void sendValue(int);
+    bool isValueWaiting();
+    int getValue();
+    void sendVideoFrame(char* frame);
+    char* getVideoFrame();
 };
 
 #endif /* TestGlue_hpp */

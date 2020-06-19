@@ -19,8 +19,11 @@
 
 @property (strong, nonatomic) MyView *myView;
 @property (strong, nonatomic) MyModelObject *myObj;
+@property (strong, nonatomic) IBOutlet NSTextField *label;
 
 - (id) init;
+
+@property (weak) IBOutlet MyView *ViewOutlet;
 
 @end
 

@@ -22,6 +22,8 @@ public:
     void testMethod(int val);
     void mainLoop();
     void registerGlue(GlueInterface*);
+    int getValue();
+    char* getNextFrame();
 };
 
 #endif /* TestClass_hpp */

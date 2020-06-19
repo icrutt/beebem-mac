@@ -1088,7 +1088,8 @@ void CPU6502::Exec6502Instruction(CArm* arm) {
   bool iFlagJustCleared;
   bool iFlagJustSet;
    loopc=(DebugEnabled ? 1 : 1024); // Makes debug window more responsive
- //std::cout << "loopc: " << loopc <<std::endl;
+ 
+    BeebEmCommon::beebGlue->sendValue(BeebEmCommon::ProgramCounter);
 
     for(loop=0;loop<loopc;loop++) {
 

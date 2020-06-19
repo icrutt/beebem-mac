@@ -29,6 +29,8 @@
 -(void) toLog;
 -(id) init;
 -(void) backgroundTask;
+-(int) getNextVal;
+-(char*) getNextFrame;
 
 @end
 
