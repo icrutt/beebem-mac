@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		170068BC249D199100E9246B /* BeebFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 170068BB249D199100E9246B /* BeebFrame.mm */; };
 		1711EA4B2497C1E000422F99 /* libtinyxml2.8.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1711EA4A2497C1E000422F99 /* libtinyxml2.8.0.0.dylib */; };
+		175ADC23249E1A0800A53F53 /* BeebEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 175ADC21249E1A0800A53F53 /* BeebEvent.cpp */; };
 		176F91CD249A6688008B5C6F /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 176F91CC249A6688008B5C6F /* MyView.m */; };
 		178BCCAC2490E1DC0099EB8A /* TestGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA72490E1DC0099EB8A /* TestGlue.cpp */; };
 		178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA82490E1DC0099EB8A /* TestClass.cpp */; };
@@ -70,6 +71,8 @@
 		1730E788249172A500396BA8 /* BeebEmCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeebEmCommon.h; sourceTree = "<group>"; };
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
+		175ADC21249E1A0800A53F53 /* BeebEvent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BeebEvent.cpp; sourceTree = "<group>"; };
+		175ADC22249E1A0800A53F53 /* BeebEvent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BeebEvent.hpp; sourceTree = "<group>"; };
 		176F91CC249A6688008B5C6F /* MyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
 		1774842F249B78320036D023 /* ViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewDelegate.h; sourceTree = "<group>"; };
 		178BCCA62490E1DC0099EB8A /* GlueInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlueInterface.h; sourceTree = "<group>"; };
@@ -201,6 +204,30 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		17D074AD249E750E00CF51E1 /* MacOS Interface */ = {
+			isa = PBXGroup;
+			children = (
+				175ADC21249E1A0800A53F53 /* BeebEvent.cpp */,
+				175ADC22249E1A0800A53F53 /* BeebEvent.hpp */,
+				170068BD249D1A0200E9246B /* BeebFrame.h */,
+				170068BB249D199100E9246B /* BeebFrame.mm */,
+				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
+				178BCCAF2490E1FD0099EB8A /* main.m */,
+				179F7C922487F56B00A4D164 /* MainWindow.xib */,
+				178BCCB22490E2900099EB8A /* MyDelegate.h */,
+				178BCCB32490E58E0099EB8A /* MyModelObject.h */,
+				178BCCB42490E58E0099EB8A /* MyModelObject.mm */,
+				178BCCB12490E2880099EB8A /* MyView.h */,
+				176F91CC249A6688008B5C6F /* MyView.m */,
+				17A681362490F00A00E98AC0 /* MyViewController.h */,
+				17A681352490F00A00E98AC0 /* MyViewController.mm */,
+				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
+				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
+				1774842F249B78320036D023 /* ViewDelegate.h */,
+			);
+			name = "MacOS Interface";
+			sourceTree = "<group>";
+		};
 		17E47C122488FE4D0073DF2D /* Dev Docs */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +252,7 @@
 				C14463B021409DF000E90AC2 /* Config */,
 				191656C00B39BBAE00C4FA44 /* IOKit.framework */,
 				19E9FA28086B5CA6008741A6 /* CoreAudio.framework */,
+				17D074AD249E750E00CF51E1 /* MacOS Interface */,
 				20286C2AFDCF999611CA2CEA /* Sources */,
 				20286C2CFDCF999611CA2CEA /* Resources */,
 				C1B784D42145D7020010BDCE /* UserData */,
@@ -269,21 +297,8 @@
 				173406582487E203005588CC /* discedit.h */,
 				197E62FF09605023008AA155 /* econet.cc */,
 				199E79EF088121AE006705E8 /* GetFile.cc */,
-				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
 				191CA3A309A11734006B6614 /* i86.cc */,
 				191CA3A409A11734006B6614 /* i386dasm.cc */,
-				178BCCAF2490E1FD0099EB8A /* main.m */,
-				179F7C922487F56B00A4D164 /* MainWindow.xib */,
-				178BCCB22490E2900099EB8A /* MyDelegate.h */,
-				1774842F249B78320036D023 /* ViewDelegate.h */,
-				178BCCB32490E58E0099EB8A /* MyModelObject.h */,
-				178BCCB42490E58E0099EB8A /* MyModelObject.mm */,
-				178BCCB12490E2880099EB8A /* MyView.h */,
-				176F91CC249A6688008B5C6F /* MyView.m */,
-				17A681362490F00A00E98AC0 /* MyViewController.h */,
-				17A681352490F00A00E98AC0 /* MyViewController.mm */,
-				170068BB249D199100E9246B /* BeebFrame.mm */,
-				170068BD249D1A0200E9246B /* BeebFrame.h */,
 				199E7BB008816C80006705E8 /* plist.cc */,
 				17FE2AB62491330800FF3D93 /* plist.h */,
 				195825A70D19A79F0026D58C /* printing.cc */,
@@ -296,8 +311,6 @@
 				19368F9A098397E300B05B51 /* teletext.cc */,
 				178BCCA82490E1DC0099EB8A /* TestClass.cpp */,
 				178BCCAB2490E1DC0099EB8A /* TestClass.hpp */,
-				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
-				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
 				19E9FA03086B5C85008741A6 /* tube.cc */,
 				19023C8808E3E96000BA702E /* uef.cc */,
 				1927935508818ED200C10483 /* uefstate.cc */,
@@ -461,6 +474,7 @@
 				19E9FA14086B5C85008741A6 /* tube.cc in Sources */,
 				19E9FA15086B5C85008741A6 /* disc1770.cc in Sources */,
 				17F7FBAB249275F400B369B7 /* BeebEmCommon.cpp in Sources */,
+				175ADC23249E1A0800A53F53 /* BeebEvent.cpp in Sources */,
 				170068BC249D199100E9246B /* BeebFrame.mm in Sources */,
 				17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */,
 				19E9FA17086B5C85008741A6 /* audev-macosx.cc in Sources */,

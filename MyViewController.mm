@@ -17,21 +17,16 @@ int frameCount = 0;
 
 @implementation MyViewController
 
-@synthesize myView;
-
 - (id) init {
     self = [super init];
     NSLog(@"%s","In constructor");
     self.myObj = [[MyModelObject alloc] init];
-    self.myObj.delegate = self;
     [self performSelectorInBackground:@selector(mainLoop) withObject:self];
     return self;
 }
 
 - (void) mainLoop {
     while (1) {
-        int val = [_myObj getNextVal];
-        if (val >= 1) [self sendNewValue:_myObj theVal:val];
         char* nextFrame = [_myObj getNextFrame];
         if (nextFrame && frameCount>12377962) {
             BeebFrame* theNextFrame = [[BeebFrame alloc] initWithPointer:nextFrame];
@@ -43,9 +38,9 @@ int frameCount = 0;
     }
 }
 
-- (void) sendNewValue:(MyModelObject*) sender theVal:(int)theVal {
-   // NSLog(@"%s","In delegate");
- [_label performSelectorOnMainThread:@selector(setStringValue:) withObject:[NSString stringWithFormat:@"%i",theVal]     waitUntilDone:YES];
+- (void) sendNewEvent:(MyView *) sender theEvent:(NSEvent *)theEvent {
+    NSLog(@"Sending event...");
+    [_myObj sendNewEvent:theEvent];
 }
-
+  
 @end

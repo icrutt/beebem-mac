@@ -12,7 +12,7 @@
 @class MyView;
 
 @protocol MyViewDelegate <NSObject>
--(void) sendNewFrame:(MyView*) sender theFrame:(char *)theFrame;
+
 @end
 
 

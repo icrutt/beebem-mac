@@ -11,12 +11,6 @@
 
 @implementation MyModelObject
 
--(void) getCount {
-    NSLog(@"%s","In getCount");
-    count = tc.getValue();
-    [self.delegate sendNewValue:self theVal:count];
-}
-
 -(void) toLog {
     NSLog(@"%i",count);
 }
@@ -34,13 +28,23 @@
     tc.mainLoop();
 }
 
--(int) getNextVal {
-    return tc.getValue();
-}
-
 -(char* ) getNextFrame {
     char* nextFrame =  tc.getNextFrame();
     return nextFrame;
+}
+
+-(void) sendNewEvent:(NSEvent *)theEvent {
+    NSLog(@"Sending new event");
+    switch (theEvent.type) {
+        case 10:
+            glue->sendEvent(BeebEventKeyDown([theEvent keyCode]));
+            break;
+        case 11:
+            glue->sendEvent(BeebEventKeyUp([theEvent keyCode]));
+            break;
+        default:
+            NSLog(@"Unknown type of event %i",[theEvent keyCode]);
+    }
 }
 
 @end

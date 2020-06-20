@@ -11,6 +11,7 @@
 
 //MyModelObject.h
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 #import "MyDelegate.h"
 #import "TestClass.hpp"
 #import "TestGlue.hpp"
@@ -25,12 +26,11 @@
 }
 @property (nonatomic,weak) id <MyDelegate> delegate;
 
--(void) getCount;
 -(void) toLog;
 -(id) init;
 -(void) backgroundTask;
--(int) getNextVal;
 -(char*) getNextFrame;
+-(void) sendNewEvent:(NSEvent*)theEvent;
 
 @end
 

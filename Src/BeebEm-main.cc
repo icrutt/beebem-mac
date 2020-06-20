@@ -156,8 +156,12 @@ void AtExitHandler(void) {
 //    return err;
 //}
 //
-//static OSStatus EventHandler (EventHandlerCallRef handler, EventRef event, void *data)
-//{
+
+
+
+static int BeebEventHandler ()
+{
+
 //char charCode;
 //int keycode;
 //static int ctrl = 0x0000;
@@ -313,7 +317,7 @@ void AtExitHandler(void) {
 //
 //  return eventNotHandledErr;
 //
-//}
+}
 
 extern SInt32 gNumberOfRunningThreads;
     // This variable must be maintained by your thread scheduling
@@ -520,6 +524,8 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
                     
                     for (int i = 0; i < c; ++i)
                         BeebCPU->Exec6502Instruction(arm);
+                    
+                    mainWin->pollKeyboardEvents();
                     
                 }
             }

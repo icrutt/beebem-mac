@@ -32,21 +32,11 @@ void TestClass::mainLoop()
     
     BeebEmMain();
     
-//    while(1){
-//        sleep_for(seconds(delay));
-//        testVal += 1;
-//        glue->sendValue(testVal);
-//        std::cout << "Testval " << testVal <<std::endl;
-//    }
 }
 
 void TestClass::registerGlue(GlueInterface* gl){
   glue = gl;
     BeebEmCommon::beebGlue = gl;
-}
-
-int TestClass::getValue() {
-    return glue->getValue();
 }
 
 char* TestClass::getNextFrame() {

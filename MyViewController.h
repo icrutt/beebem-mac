@@ -10,20 +10,18 @@
 #define MyViewController_h
 //MyViewController.h
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 #import "MyView.h"  // your custom view
 #import "MyModelObject.h" // your custom model
 #import "MyDelegate.h"
 
-@interface MyViewController: NSViewController <MyDelegate>
+@interface MyViewController: NSViewController
 
-@property (strong, nonatomic) MyView *myView;
 @property (strong, nonatomic) MyModelObject *myObj;
-@property (strong, nonatomic) IBOutlet NSTextField *label;
+@property (weak) IBOutlet MyView *ViewOutlet;
 
 - (id) init;
-
-@property (weak) IBOutlet MyView *ViewOutlet;
 
 @end
 

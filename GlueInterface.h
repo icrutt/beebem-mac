@@ -9,13 +9,14 @@
 #ifndef GlueInterface_h
 #define GlueInterface_h
 
+#include "BeebEvent.hpp"
+
 class GlueInterface {
 public:
-  virtual void sendValue(int) = 0;
-  virtual bool isValueWaiting() = 0;
-  virtual int getValue() = 0;
   virtual void sendVideoFrame(char*) = 0;
   virtual char* getVideoFrame() = 0;
+  virtual void sendEvent(BeebEvent) = 0;
+  virtual BeebEvent getEvent() = 0;
 };
 
 #endif /* GlueInterface_h */

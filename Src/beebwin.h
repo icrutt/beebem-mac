@@ -89,7 +89,8 @@ public:
 //	int KeyDown(int vkey);
 	int KeyUp(int vkey);
 	int TranslateKey(int vkey, int keyUp, int &row, int &col);
-
+    void pollKeyboardEvents();
+    
 	bool Initialise(char *home);
 
 	BeebWin(CPU6502* cpu);

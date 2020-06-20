@@ -13,22 +13,24 @@
 #include <queue>
 #include <mutex>
 #include "GlueInterface.h"
+#include "BeebEvent.hpp"
 
 class TestGlue : public GlueInterface {
 private:
     std::mutex intMutex;
     std::mutex frameMutex;
+    std::mutex eventMutex;
     int val;
     bool newVal;
     std::queue<int> valQueue;
     std::queue<char *> frameQueue;
+    std::queue<BeebEvent> eventQueue;
 public:
     TestGlue();
-    void sendValue(int);
-    bool isValueWaiting();
-    int getValue();
     void sendVideoFrame(char* frame);
     char* getVideoFrame();
+    void sendEvent(BeebEvent);
+    BeebEvent getEvent();
 };
 
 #endif /* TestGlue_hpp */

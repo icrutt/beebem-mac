@@ -46,21 +46,21 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
     return context;// 7
 }
 
+//=================================================================================================
+
 @implementation MyView
  
 - (id)initWithFrame:(NSRect)frameRect
 {
     self = [super initWithFrame:frameRect];
-    imCount=700;
     return self;
 }
  
 - (void)drawRect:(NSRect)rect
 {
-    if (imCount<700) imCount=700;
-    NSGraphicsContext* context = [NSGraphicsContext currentContext];
+
     CGContextRef myBitmapContext = MyCreateBitmapContext (800, 512);
-    char *bitmapData = CGBitmapContextGetData(myBitmapContext);
+    char *bitmapData = (char*)CGBitmapContextGetData(myBitmapContext);
     int count=0;
     for (int i=0;i<(512*800);i++) {
         for (int j=0; j<4; j++){
@@ -74,14 +74,29 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
                 fromRect:NSMakeRect(0.0, 0.0, 800.0, 512.0)
                operation:NSCompositeSourceOver
                 fraction:1.0];
-    imCount++;
-    if (imCount>749) imCount=700;
+
 }
  
 
 -(void) updateFrame:(BeebFrame* )newFrame
 {
     currentData = newFrame;
+}
+
+-(BOOL)acceptsFirstResponder
+{
+    NSLog(@"Accepting");
+    return YES;
+}
+
+-(void) keyDown:(NSEvent *)event
+{
+    NSLog(@"Got key down %@",[event characters]);
+}
+
+-(void) keyUp:(NSEvent *)event
+{
+    NSLog(@"Got key up");
 }
 
 @end

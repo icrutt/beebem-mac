@@ -45,6 +45,7 @@
 #include "Arm.h"
 #include "BeebEmLog.hpp"
 #include "via.h"
+#include "BeebEvent.hpp"
 
 // Needs to be passed to the CPU code another way (by registering with the CPU object)
 
@@ -1089,8 +1090,6 @@ void CPU6502::Exec6502Instruction(CArm* arm) {
   bool iFlagJustSet;
    loopc=(DebugEnabled ? 1 : 1024); // Makes debug window more responsive
  
-    BeebEmCommon::beebGlue->sendValue(BeebEmCommon::ProgramCounter);
-
     for(loop=0;loop<loopc;loop++) {
 
 	if (DebugEnabled && !DebugDisassembler(BeebEmCommon::ProgramCounter,Accumulator,XReg,YReg,PSR,true))
@@ -2276,7 +2275,7 @@ void CPU6502::PollHardware(unsigned int nCycles)
 		if ( (EnableTube) && (TubeEnabled) )
 			WrapTubeCycles();
 	}
-	
+
 	VideoPoll(nCycles);
 	if (!BeebEmCommon::BHardware) {
 		AtoD_poll(nCycles);

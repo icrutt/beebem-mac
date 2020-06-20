@@ -11,7 +11,6 @@
         <customObject id="JHv-1W-Pcp" customClass="MyViewController">
             <connections>
                 <outlet property="ViewOutlet" destination="E4w-K6-aBX" id="qE7-PO-6zP"/>
-                <outlet property="label" destination="IRV-wd-xzH" id="mgi-sZ-h2u"/>
             </connections>
         </customObject>
         <customObject id="oCU-yr-AKf" customClass="NSFontManager"/>
@@ -27,17 +26,9 @@
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E4w-K6-aBX" customClass="MyView">
                         <rect key="frame" x="0.0" y="0.0" width="640" height="512"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IRV-wd-xzH">
-                                <rect key="frame" x="302" y="322" width="63" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="TestLabel" id="jCT-9l-icy">
-                                    <font key="font" usesAppearanceFont="YES"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
+                        <connections>
+                            <outlet property="ViewControllerOutlet" destination="JHv-1W-Pcp" id="HWB-ZL-e8h"/>
+                        </connections>
                     </customView>
                 </subviews>
             </view>

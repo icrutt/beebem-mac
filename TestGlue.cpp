@@ -12,30 +12,6 @@
 TestGlue::TestGlue(){
   newVal = false;
 }
-void TestGlue::sendValue(int inVal) {
-    intMutex.lock();
-    val = inVal;
-    valQueue.push(inVal);
-    //  std::cout << "Queue contains " << valQueue.size() << " elements" << std::endl;
-    newVal = true;
-    intMutex.unlock();
-}
-bool TestGlue::isValueWaiting() {
-    return newVal;
-}
-int TestGlue::getValue() {
-    intMutex.lock();
-    newVal = false;
-    if (valQueue.empty()) {
-        intMutex.unlock();
-        return -1;
-    } else {
-        int tmpVal = valQueue.front();
-        valQueue.pop();
-        intMutex.unlock();
-        return tmpVal;
-    }
-}
 
 void TestGlue::sendVideoFrame(char* frame) {
     frameMutex.lock();
@@ -54,5 +30,28 @@ char* TestGlue::getVideoFrame() {
         frameQueue.pop();
         frameMutex.unlock();
         return tmpPointer;
+    }
+}
+
+void TestGlue::sendEvent(BeebEvent event) {
+    eventMutex.lock();
+    std::cout << "Adding event to queue" << std::endl;
+    eventQueue.push(event);
+    eventMutex.unlock();
+}
+
+BeebEvent TestGlue::getEvent() {
+    eventMutex.lock();
+    if (eventQueue.empty()) {
+        //std::cout << "Queue is empty" << std::endl;
+        eventMutex.unlock();
+        return BeebEventNull();
+    } else {
+        BeebEvent tmp = eventQueue.front();
+        BeebEventType tmpEvT = tmp.eventType();
+        std::cout << "Got event " << tmpEvT << std::endl;
+        eventQueue.pop();
+        eventMutex.unlock();
+        return tmp;
     }
 }

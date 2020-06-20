@@ -12,7 +12,7 @@
 @class MyModelObject;
 
 @protocol MyDelegate <NSObject>
--(void) sendNewValue:(MyModelObject*) sender theVal:(int)theVal;
+
 @end
 
 #endif /* MyDelegate_h */
