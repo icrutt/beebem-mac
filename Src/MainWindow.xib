@@ -26,9 +26,6 @@
                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E4w-K6-aBX" customClass="MyView">
                         <rect key="frame" x="0.0" y="0.0" width="640" height="512"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <connections>
-                            <outlet property="ViewControllerOutlet" destination="JHv-1W-Pcp" id="HWB-ZL-e8h"/>
-                        </connections>
                     </customView>
                 </subviews>
             </view>

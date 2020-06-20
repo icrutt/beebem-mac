@@ -13,8 +13,6 @@
 
 //MyViewController.m
 
-int frameCount = 0;
-
 @implementation MyViewController
 
 - (id) init {
@@ -28,13 +26,11 @@ int frameCount = 0;
 - (void) mainLoop {
     while (1) {
         char* nextFrame = [_myObj getNextFrame];
-        if (nextFrame && frameCount>12377962) {
+        if (nextFrame) {
             BeebFrame* theNextFrame = [[BeebFrame alloc] initWithPointer:nextFrame];
             [_ViewOutlet performSelectorOnMainThread:@selector(updateFrame:) withObject:theNextFrame waitUntilDone:YES];
             [_ViewOutlet performSelectorOnMainThread:@selector(setNeedsDisplay:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
         }
-        // Do something with the data here...
-        myEscape:    frameCount++;
     }
 }
 
