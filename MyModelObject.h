@@ -12,7 +12,6 @@
 //MyModelObject.h
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
-#import "MyDelegate.h"
 #import "TestClass.hpp"
 #import "TestGlue.hpp"
 
@@ -24,7 +23,6 @@
     TestClass tc;
     GlueInterface* glue;
 }
-@property (nonatomic,weak) id <MyDelegate> delegate;
 
 -(void) toLog;
 -(id) init;

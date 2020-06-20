@@ -11,7 +11,6 @@
 
 //MyView.h
 #import <Cocoa/Cocoa.h>
-#import "ViewDelegate.h"
 #import "BeebFrame.h"
 
 @interface MyView : NSView {

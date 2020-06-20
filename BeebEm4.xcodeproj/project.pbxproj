@@ -74,7 +74,6 @@
 		175ADC21249E1A0800A53F53 /* BeebEvent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BeebEvent.cpp; sourceTree = "<group>"; };
 		175ADC22249E1A0800A53F53 /* BeebEvent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BeebEvent.hpp; sourceTree = "<group>"; };
 		176F91CC249A6688008B5C6F /* MyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
-		1774842F249B78320036D023 /* ViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewDelegate.h; sourceTree = "<group>"; };
 		178BCCA62490E1DC0099EB8A /* GlueInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlueInterface.h; sourceTree = "<group>"; };
 		178BCCA72490E1DC0099EB8A /* TestGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestGlue.cpp; sourceTree = "<group>"; };
 		178BCCA82490E1DC0099EB8A /* TestClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestClass.cpp; sourceTree = "<group>"; };
@@ -82,7 +81,6 @@
 		178BCCAB2490E1DC0099EB8A /* TestClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestClass.hpp; sourceTree = "<group>"; };
 		178BCCAF2490E1FD0099EB8A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		178BCCB12490E2880099EB8A /* MyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
-		178BCCB22490E2900099EB8A /* MyDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyDelegate.h; sourceTree = "<group>"; };
 		178BCCB32490E58E0099EB8A /* MyModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyModelObject.h; sourceTree = "<group>"; };
 		178BCCB42490E58E0099EB8A /* MyModelObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyModelObject.mm; sourceTree = "<group>"; };
 		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
@@ -214,7 +212,6 @@
 				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
 				178BCCAF2490E1FD0099EB8A /* main.m */,
 				179F7C922487F56B00A4D164 /* MainWindow.xib */,
-				178BCCB22490E2900099EB8A /* MyDelegate.h */,
 				178BCCB32490E58E0099EB8A /* MyModelObject.h */,
 				178BCCB42490E58E0099EB8A /* MyModelObject.mm */,
 				178BCCB12490E2880099EB8A /* MyView.h */,
@@ -223,7 +220,6 @@
 				17A681352490F00A00E98AC0 /* MyViewController.mm */,
 				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
 				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
-				1774842F249B78320036D023 /* ViewDelegate.h */,
 			);
 			name = "MacOS Interface";
 			sourceTree = "<group>";

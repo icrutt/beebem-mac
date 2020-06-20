@@ -14,7 +14,6 @@
 
 #import "MyView.h"  // your custom view
 #import "MyModelObject.h" // your custom model
-#import "MyDelegate.h"
 
 @interface MyViewController: NSViewController
 
