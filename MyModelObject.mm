@@ -17,6 +17,7 @@
 
 -(id) init {
     self = [super init];
+    shiftState = 0;
     glue = new TestGlue();
     tc.registerGlue(glue);
     [self performSelectorInBackground:@selector(backgroundTask) withObject:self];
@@ -34,17 +35,46 @@
 }
 
 -(void) sendNewEvent:(NSEvent *)theEvent {
-    NSLog(@"Sending new event");
     switch (theEvent.type) {
         case 10:
-            glue->sendEvent(BeebEventKeyDown([theEvent keyCode]));
+            glue->sendEvent(new BeebEvent(keyDown, [theEvent keyCode]));
             break;
         case 11:
-            glue->sendEvent(BeebEventKeyUp([theEvent keyCode]));
+            glue->sendEvent(new BeebEvent(keyUp, [theEvent keyCode]));
             break;
-        default:
+        case 12:
+            if ([theEvent keyCode]==60){
+            if (shiftState==0) {
+                 glue->sendEvent(new BeebEvent(keyDown, 200));
+                 NSLog(@"Shift down");
+                 shiftState=1;
+             } else {
+                 glue->sendEvent(new BeebEvent(keyUp, 200));
+                 NSLog(@"Shift up");
+                 shiftState=0;
+             }
+                
+            }
+         default:
             NSLog(@"Unknown type of event %i",[theEvent keyCode]);
     }
 }
+
+//-(void) flagsChanged:(NSEvent *)event
+//{
+//   // NSLog(@"Got modifier flags: %lu",(unsigned long)[event modifierFlags]);
+//    int newFlags = [event modifierFlags];
+//    if ((NSEventModifierFlagShift & oldFlags) ^ (NSEventModifierFlagShift & newFlags))
+//    {
+//        if (NSEventModifierFlagShift & newFlags) {
+//            NSLog(@"Got shift down");
+//        } else {
+//            NSLog(@"Got shift up");
+//        };
+//    }
+//    oldFlags = newFlags;
+//    //if (NSEventModifierFlagShift & [event modifierFlags]) NSLog(@"Got shift %i",NSEventModifierFlagShift);
+//}
+
 
 @end

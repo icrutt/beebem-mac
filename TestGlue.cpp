@@ -33,23 +33,19 @@ char* TestGlue::getVideoFrame() {
     }
 }
 
-void TestGlue::sendEvent(BeebEvent event) {
+void TestGlue::sendEvent(BeebEvent* event) {
     eventMutex.lock();
-    std::cout << "Adding event to queue" << std::endl;
     eventQueue.push(event);
     eventMutex.unlock();
 }
 
-BeebEvent TestGlue::getEvent() {
+BeebEvent* TestGlue::getEvent() {
     eventMutex.lock();
     if (eventQueue.empty()) {
-        //std::cout << "Queue is empty" << std::endl;
         eventMutex.unlock();
-        return BeebEventNull();
+        return nullptr;
     } else {
-        BeebEvent tmp = eventQueue.front();
-        BeebEventType tmpEvT = tmp.eventType();
-        std::cout << "Got event " << tmpEvT << std::endl;
+        BeebEvent* tmp = eventQueue.front();
         eventQueue.pop();
         eventMutex.unlock();
         return tmp;

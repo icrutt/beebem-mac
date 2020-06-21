@@ -14,11 +14,12 @@
 //MyViewController.m
 
 @implementation MyViewController
-
+ 
 - (id) init {
     self = [super init];
     NSLog(@"%s","In constructor");
     self.myObj = [[MyModelObject alloc] init];
+    self.ViewOutlet.delegate = self;
     [self performSelectorInBackground:@selector(mainLoop) withObject:self];
     return self;
 }
@@ -26,6 +27,7 @@
 - (void) mainLoop {
     while (1) {
         char* nextFrame = [_myObj getNextFrame];
+        if (self.ViewOutlet) self.ViewOutlet.delegate = self;
         if (nextFrame) {
             BeebFrame* theNextFrame = [[BeebFrame alloc] initWithPointer:nextFrame];
             [_ViewOutlet performSelectorOnMainThread:@selector(updateFrame:) withObject:theNextFrame waitUntilDone:YES];
@@ -35,8 +37,11 @@
 }
 
 - (void) sendNewEvent:(MyView *) sender theEvent:(NSEvent *)theEvent {
-    NSLog(@"Sending event...");
     [_myObj sendNewEvent:theEvent];
 }
-  
+ 
+-(void)newKeyboardEvent:(MyView *) sender theEvent:(NSEvent *)theEvent{
+    [_myObj sendNewEvent:theEvent];
+}
+
 @end

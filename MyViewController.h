@@ -14,11 +14,12 @@
 
 #import "MyView.h"  // your custom view
 #import "MyModelObject.h" // your custom model
+#import "MyViewDelegate.h"
 
-@interface MyViewController: NSViewController
+@interface MyViewController: NSViewController <MyViewDelegate>
 
 @property (strong, nonatomic) MyModelObject *myObj;
-@property (weak) IBOutlet MyView *ViewOutlet;
+@property (strong,nonatomic) IBOutlet MyView *ViewOutlet;
 
 - (id) init;
 

@@ -12,12 +12,15 @@
 //MyView.h
 #import <Cocoa/Cocoa.h>
 #import "BeebFrame.h"
+#import "MyViewDelegate.h"
 
 @interface MyView : NSView {
     BeebFrame* currentData;
+    int oldFlags;
 }
+@property (nonatomic, weak) id <MyViewDelegate> delegate;
 
--(void) updateFrame:(BeebFrame*) newFrame;
+- (void)updateFrame: (BeebFrame*) newFrame;
 
 @end
 #endif /* MyView_h */

@@ -89,6 +89,7 @@
 		17BEDF8B248D161500A1C002 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeebEmLog.cpp; path = Src/BeebEmLog.cpp; sourceTree = "<group>"; };
 		17BEDF8D248D194800A1C002 /* BeebEmLog.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = BeebEmLog.hpp; path = Src/BeebEmLog.hpp; sourceTree = "<group>"; };
+		17C6EFCA249FB32D000A2E04 /* MyViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyViewDelegate.h; sourceTree = "<group>"; };
 		17E47C132488FE9C0073DF2D /* ArchitectureNotes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArchitectureNotes.txt; sourceTree = "<group>"; };
 		17E47C15248901090073DF2D /* Arm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Arm.h; path = Src/Arm.h; sourceTree = "<group>"; };
 		17E47C16248901150073DF2D /* ArmDisassembler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArmDisassembler.h; path = Src/ArmDisassembler.h; sourceTree = "<group>"; };
@@ -220,6 +221,7 @@
 				17A681352490F00A00E98AC0 /* MyViewController.mm */,
 				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
 				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
+				17C6EFCA249FB32D000A2E04 /* MyViewDelegate.h */,
 			);
 			name = "MacOS Interface";
 			sourceTree = "<group>";

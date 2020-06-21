@@ -11,43 +11,21 @@
 
 #include <stdio.h>
 
+//=============================================
+
 enum BeebEventType {
-  keyDown,
+    keyDown,
     keyUp,
-    nullEvent
 };
+
+//=============================================
 
 class BeebEvent {
-public:
-    virtual BeebEventType eventType();
-    virtual char keyNumber();
-};
-
-class BeebEventKeyDown: public BeebEvent{
 private:
-    const BeebEventType myEventType = keyDown;
+    BeebEventType myEventType;
     char myKeyNumber;
 public:
-    BeebEventKeyDown(char keyNumber);
-    BeebEventType eventType();
-    char keyNumber();
-};
-
-class BeebEventKeyUp: public BeebEvent{
-private:
-    const BeebEventType myEventType = keyUp;
-    char myKeyNumber;
-public:
-    BeebEventKeyUp(char keyNumber);
-    BeebEventType eventType();
-    char keyNumber();
-};
-
-class BeebEventNull: public BeebEvent {
-    private:
-    const BeebEventType myEventType = nullEvent;
-public:
-    BeebEventNull();
+    BeebEvent(BeebEventType, char);
     BeebEventType eventType();
     char keyNumber();
 };

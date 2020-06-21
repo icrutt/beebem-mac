@@ -375,24 +375,21 @@ bool bit = false;
 }
 
 void BeebWin::pollKeyboardEvents() {
-    BeebEvent tmpEvent;
-    tmpEvent = BeebEmCommon::beebGlue->getEvent();
-    switch (tmpEvent.eventType()) {
+    BeebEvent* tmpEvent = BeebEmCommon::beebGlue->getEvent();
+    if (!tmpEvent) return;
+    int row, col;
+    switch (tmpEvent->eventType()) {
         case keyDown:
-            std::cout << "Event type: " << tmpEvent.eventType() << std::endl;
-            int row, col;
-            std::cout << "Got keydown event" << std::endl;
-            TranslateKey((int)tmpEvent.keyNumber(), 0, row, col);
+            TranslateKey((int)tmpEvent->keyNumber(), 0, row, col);
             BeebKeyDown(row, col);
+            delete tmpEvent;
             break;
         case keyUp:
-            std::cout << "Event type: " << tmpEvent.eventType() << std::endl;
-            break;
-        case nullEvent:
-            //std::cout << "Event type: " << tmpEvent.eventType() << std::endl;
+            TranslateKey((int)tmpEvent->keyNumber(), 1, row, col);
+            BeebKeyUp(row, col);
+            delete tmpEvent;
             break;
     }
-        
 }
 
 /****************************************************************************/
@@ -432,7 +429,7 @@ int BeebWin::TranslateKey(int vkey, int keyUp, int &row, int &col)
 
 		row = transTable[vkey][0];
 		col = transTable[vkey][1];
-        std::cout << "Row/Col: " << row << ", " << col <<std::endl;
+
 		if (m_KeyMapAS)
 		{
 			// Map A & S to CAPS & CTRL - good for some games

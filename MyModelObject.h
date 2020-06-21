@@ -22,6 +22,7 @@
     int count;
     TestClass tc;
     GlueInterface* glue;
+    int shiftState;
 }
 
 -(void) toLog;

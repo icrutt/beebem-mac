@@ -91,12 +91,18 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
 
 -(void) keyDown:(NSEvent *)event
 {
-    NSLog(@"Got key down %@",[event characters]);
+    [self.delegate newKeyboardEvent:self theEvent:event];
 }
 
 -(void) keyUp:(NSEvent *)event
 {
-    NSLog(@"Got key up");
+    [self.delegate newKeyboardEvent:self theEvent:event];
 }
+
+-(void) flagsChanged:(NSEvent *)event
+{
+     [self.delegate newKeyboardEvent:self theEvent:event];
+}
+
 
 @end
