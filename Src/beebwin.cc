@@ -1052,7 +1052,7 @@ Rect srcR;
 		srcR.bottom = starty + nlines;
 	}
 	
-    BeebEmCommon::beebGlue->sendVideoFrame(m_screen);
+    BeebEmCommon::beebGlue->sendVideoFrame(new BeebEmVideoFrame(m_screen,800,512));
     m_screen = (char *) malloc(800 * 512);
     
 //long *pPtr32;

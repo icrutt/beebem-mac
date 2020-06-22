@@ -14,6 +14,7 @@
 #import <Cocoa/Cocoa.h>
 #import "TestClass.hpp"
 #import "TestGlue.hpp"
+#import "BeebEmXFrame.h"
 
 @interface BeebEmXModel : NSObject
 
@@ -28,7 +29,7 @@
 -(void) toLog;
 -(id) init;
 -(void) backgroundTask;
--(char*) getNextFrame;
+-(BeebEmXFrame*) getNextFrame;
 -(void) sendNewEvent:(NSEvent*)theEvent;
 
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BeebEmXModel.h"
+#import "BeebEmXFrame.h"
 
 @implementation BeebEmXModel
 
@@ -29,9 +30,14 @@
     tc.mainLoop();
 }
 
--(char* ) getNextFrame {
-    char* nextFrame =  tc.getNextFrame();
-    return nextFrame;
+-(BeebEmXFrame* ) getNextFrame {
+    BeebEmVideoFrame* tmpFrame = tc.getNextFrame();
+    if (tmpFrame != NULL) {
+        BeebEmXFrame* nextFrame = [[BeebEmXFrame alloc] initWithBeebFrame:tmpFrame];
+        return nextFrame;
+    } else {
+        return NULL;
+    }
 }
 
 -(void) sendNewEvent:(NSEvent *)theEvent {

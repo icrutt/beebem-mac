@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BEXViewController.h"
 #import "BeebEmXModel.h"
-#import "BeebEmXFrame.h"
+#import "BeebEmVideoFrame.hpp"
 
 //BEXViewController.m
 
@@ -26,11 +26,10 @@
 
 - (void) mainLoop {
     while (1) {
-        char* nextFrame = [_myObj getNextFrame];
+        BeebEmXFrame* nextFrame = [_myObj getNextFrame];
         if (self.ViewOutlet) self.ViewOutlet.delegate = self;
-        if (nextFrame) {
-            BeebEmXFrame* theNextFrame = [[BeebEmXFrame alloc] initWithPointer:nextFrame];
-            [_ViewOutlet performSelectorOnMainThread:@selector(updateFrame:) withObject:theNextFrame waitUntilDone:YES];
+        if (nextFrame !=NULL) {
+            [_ViewOutlet performSelectorOnMainThread:@selector(updateFrame:) withObject:nextFrame waitUntilDone:YES];
             [_ViewOutlet performSelectorOnMainThread:@selector(setNeedsDisplay:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
         }
     }

@@ -9,11 +9,8 @@
 #ifndef BeebEmXFrame_h
 #define BeebEmXFrame_h
 
-@interface BeebEmXFrame : NSObject{
-    char * frameData;
-}
+@interface BeebEmXFrame : NSObject
 
-- (id)initWithPointer:(char* )theData;
 - (char*)getPointer;
 - (char)getVal:(int)i;
 

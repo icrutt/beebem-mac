@@ -23,7 +23,7 @@ public:
     void mainLoop();
     void registerGlue(GlueInterface*);
     int getValue();
-    char* getNextFrame();
+    BeebEmVideoFrame* getNextFrame();
 };
 
 #endif /* TestClass_hpp */

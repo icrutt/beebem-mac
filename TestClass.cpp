@@ -39,7 +39,7 @@ void TestClass::registerGlue(GlueInterface* gl){
     BeebEmCommon::beebGlue = gl;
 }
 
-char* TestClass::getNextFrame() {
-    char* nextFrame = glue->getVideoFrame();
+BeebEmVideoFrame* TestClass::getNextFrame() {
+    BeebEmVideoFrame* nextFrame = glue->getVideoFrame();
     return nextFrame;
 }

@@ -13,20 +13,20 @@ TestGlue::TestGlue(){
   newVal = false;
 }
 
-void TestGlue::sendVideoFrame(char* frame) {
+void TestGlue::sendVideoFrame(BeebEmVideoFrame* frame) {
     frameMutex.lock();
     //std::cout << "Pushed video frame" << std::endl;
     frameQueue.push(frame);
     frameMutex.unlock();
 }
 
-char* TestGlue::getVideoFrame() {
+BeebEmVideoFrame* TestGlue::getVideoFrame() {
     frameMutex.lock();
     if (frameQueue.empty()) {
         frameMutex.unlock();
         return nullptr;
     } else {
-        char* tmpPointer = frameQueue.front();
+        BeebEmVideoFrame* tmpPointer = frameQueue.front();
         frameQueue.pop();
         frameMutex.unlock();
         return tmpPointer;

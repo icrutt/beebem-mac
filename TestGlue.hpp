@@ -24,12 +24,12 @@ private:
     int val;
     bool newVal;
     std::queue<int> valQueue;
-    std::queue<char *> frameQueue;
+    std::queue<BeebEmVideoFrame *> frameQueue;
     std::queue<BeebEvent* > eventQueue;
 public:
     TestGlue();
-    void sendVideoFrame(char* frame);
-    char* getVideoFrame();
+    void sendVideoFrame(BeebEmVideoFrame* frame);
+    BeebEmVideoFrame* getVideoFrame();
     void sendEvent(BeebEvent*);
     BeebEvent* getEvent();
 };

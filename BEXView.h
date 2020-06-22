@@ -20,7 +20,7 @@
 }
 @property (nonatomic, weak) id <BEXViewDelegate> delegate;
 
-- (void)updateFrame: (BeebEmXFrame*) newFrame;
+- (void)updateFrame: (BeebEmXFrame* ) frame;
 
 @end
 #endif /* BEXView_h */

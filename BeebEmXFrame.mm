@@ -8,23 +8,29 @@
 
 #import <Foundation/Foundation.h>
 #import "BeebEmXFrame.h"
+#import "BeebEmVideoFrame.hpp"
+
+@interface BeebEmXFrame() {
+    BeebEmVideoFrame* frame;
+}
+@end
 
 @implementation BeebEmXFrame
 
-- (id)initWithPointer:(char* )theData {
+- (id)initWithBeebFrame:(BeebEmVideoFrame* )theFrame {
     self = [super init];
     if (self) {
-        frameData = theData;
+        frame = theFrame;
     }
     return self;
 }
 
 - (char*)getPointer {
-    return frameData;
+    return frame->getPointer();
 }
 
 - (char)getVal:(int)i {
-    return frameData[i];
+    return frame->getVal(i);
 }
 
 @end

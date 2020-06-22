@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import "BEXView.h"
+#import "BeebEmXFrame.h"
 
 CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
 {
@@ -58,7 +59,7 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
  
 - (void)drawRect:(NSRect)rect
 {
-
+    if (currentData==NULL) return;
     CGContextRef myBitmapContext = MyCreateBitmapContext (800, 512);
     char *bitmapData = (char*)CGBitmapContextGetData(myBitmapContext);
     int count=0;
