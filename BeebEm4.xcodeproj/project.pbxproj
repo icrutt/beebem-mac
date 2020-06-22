@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		170068BC249D199100E9246B /* BeebFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 170068BB249D199100E9246B /* BeebFrame.mm */; };
+		170068BC249D199100E9246B /* BeebEmXFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 170068BB249D199100E9246B /* BeebEmXFrame.mm */; };
 		1711EA4B2497C1E000422F99 /* libtinyxml2.8.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1711EA4A2497C1E000422F99 /* libtinyxml2.8.0.0.dylib */; };
 		175ADC23249E1A0800A53F53 /* BeebEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 175ADC21249E1A0800A53F53 /* BeebEvent.cpp */; };
-		176F91CD249A6688008B5C6F /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 176F91CC249A6688008B5C6F /* MyView.m */; };
+		176F91CD249A6688008B5C6F /* BEXView.m in Sources */ = {isa = PBXBuildFile; fileRef = 176F91CC249A6688008B5C6F /* BEXView.m */; };
 		178BCCAC2490E1DC0099EB8A /* TestGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA72490E1DC0099EB8A /* TestGlue.cpp */; };
 		178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA82490E1DC0099EB8A /* TestClass.cpp */; };
 		178BCCB02490E1FD0099EB8A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCAF2490E1FD0099EB8A /* main.m */; };
-		178BCCB52490E58E0099EB8A /* MyModelObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCB42490E58E0099EB8A /* MyModelObject.mm */; };
+		178BCCB52490E58E0099EB8A /* BeebEmXModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCB42490E58E0099EB8A /* BeebEmXModel.mm */; };
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
-		17A681372490F00A00E98AC0 /* MyViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 17A681352490F00A00E98AC0 /* MyViewController.mm */; };
+		17A681372490F00A00E98AC0 /* BEXViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 17A681352490F00A00E98AC0 /* BEXViewController.mm */; };
 		17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */; };
 		17F7FBAB249275F400B369B7 /* BeebEmCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17F7FBAA249275F400B369B7 /* BeebEmCommon.cpp */; };
 		19005B950963E34200872367 /* scsi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19005B940963E34200872367 /* scsi.cc */; };
@@ -65,31 +65,31 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		170068BB249D199100E9246B /* BeebFrame.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BeebFrame.mm; sourceTree = "<group>"; };
-		170068BD249D1A0200E9246B /* BeebFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeebFrame.h; sourceTree = "<group>"; };
+		170068BB249D199100E9246B /* BeebEmXFrame.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BeebEmXFrame.mm; sourceTree = "<group>"; };
+		170068BD249D1A0200E9246B /* BeebEmXFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeebEmXFrame.h; sourceTree = "<group>"; };
 		1711EA4A2497C1E000422F99 /* libtinyxml2.8.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtinyxml2.8.0.0.dylib; path = ../../../../../../../usr/local/Cellar/tinyxml2/8.0.0/lib/libtinyxml2.8.0.0.dylib; sourceTree = "<group>"; };
 		1730E788249172A500396BA8 /* BeebEmCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeebEmCommon.h; sourceTree = "<group>"; };
 		173406582487E203005588CC /* discedit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = discedit.h; path = Src/discedit.h; sourceTree = "<group>"; };
 		173406592487E315005588CC /* 6502core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 6502core.h; path = Src/6502core.h; sourceTree = "<group>"; };
 		175ADC21249E1A0800A53F53 /* BeebEvent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BeebEvent.cpp; sourceTree = "<group>"; };
 		175ADC22249E1A0800A53F53 /* BeebEvent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BeebEvent.hpp; sourceTree = "<group>"; };
-		176F91CC249A6688008B5C6F /* MyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
+		176F91CC249A6688008B5C6F /* BEXView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BEXView.m; sourceTree = "<group>"; };
 		178BCCA62490E1DC0099EB8A /* GlueInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlueInterface.h; sourceTree = "<group>"; };
 		178BCCA72490E1DC0099EB8A /* TestGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestGlue.cpp; sourceTree = "<group>"; };
 		178BCCA82490E1DC0099EB8A /* TestClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestClass.cpp; sourceTree = "<group>"; };
 		178BCCA92490E1DC0099EB8A /* TestGlue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestGlue.hpp; sourceTree = "<group>"; };
 		178BCCAB2490E1DC0099EB8A /* TestClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestClass.hpp; sourceTree = "<group>"; };
 		178BCCAF2490E1FD0099EB8A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		178BCCB12490E2880099EB8A /* MyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
-		178BCCB32490E58E0099EB8A /* MyModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyModelObject.h; sourceTree = "<group>"; };
-		178BCCB42490E58E0099EB8A /* MyModelObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyModelObject.mm; sourceTree = "<group>"; };
+		178BCCB12490E2880099EB8A /* BEXView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BEXView.h; sourceTree = "<group>"; };
+		178BCCB32490E58E0099EB8A /* BeebEmXModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeebEmXModel.h; sourceTree = "<group>"; };
+		178BCCB42490E58E0099EB8A /* BeebEmXModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BeebEmXModel.mm; sourceTree = "<group>"; };
 		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
-		17A681352490F00A00E98AC0 /* MyViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyViewController.mm; sourceTree = "<group>"; };
-		17A681362490F00A00E98AC0 /* MyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewController.h; sourceTree = "<group>"; };
+		17A681352490F00A00E98AC0 /* BEXViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BEXViewController.mm; sourceTree = "<group>"; };
+		17A681362490F00A00E98AC0 /* BEXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEXViewController.h; sourceTree = "<group>"; };
 		17BEDF8B248D161500A1C002 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeebEmLog.cpp; path = Src/BeebEmLog.cpp; sourceTree = "<group>"; };
 		17BEDF8D248D194800A1C002 /* BeebEmLog.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = BeebEmLog.hpp; path = Src/BeebEmLog.hpp; sourceTree = "<group>"; };
-		17C6EFCA249FB32D000A2E04 /* MyViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyViewDelegate.h; sourceTree = "<group>"; };
+		17C6EFCA249FB32D000A2E04 /* BEXViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BEXViewDelegate.h; sourceTree = "<group>"; };
 		17E47C132488FE9C0073DF2D /* ArchitectureNotes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ArchitectureNotes.txt; sourceTree = "<group>"; };
 		17E47C15248901090073DF2D /* Arm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Arm.h; path = Src/Arm.h; sourceTree = "<group>"; };
 		17E47C16248901150073DF2D /* ArmDisassembler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArmDisassembler.h; path = Src/ArmDisassembler.h; sourceTree = "<group>"; };
@@ -206,22 +206,17 @@
 		17D074AD249E750E00CF51E1 /* MacOS Interface */ = {
 			isa = PBXGroup;
 			children = (
-				175ADC21249E1A0800A53F53 /* BeebEvent.cpp */,
-				175ADC22249E1A0800A53F53 /* BeebEvent.hpp */,
-				170068BD249D1A0200E9246B /* BeebFrame.h */,
-				170068BB249D199100E9246B /* BeebFrame.mm */,
-				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
+				170068BD249D1A0200E9246B /* BeebEmXFrame.h */,
+				170068BB249D199100E9246B /* BeebEmXFrame.mm */,
 				178BCCAF2490E1FD0099EB8A /* main.m */,
 				179F7C922487F56B00A4D164 /* MainWindow.xib */,
-				178BCCB32490E58E0099EB8A /* MyModelObject.h */,
-				178BCCB42490E58E0099EB8A /* MyModelObject.mm */,
-				178BCCB12490E2880099EB8A /* MyView.h */,
-				176F91CC249A6688008B5C6F /* MyView.m */,
-				17A681362490F00A00E98AC0 /* MyViewController.h */,
-				17A681352490F00A00E98AC0 /* MyViewController.mm */,
-				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
-				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
-				17C6EFCA249FB32D000A2E04 /* MyViewDelegate.h */,
+				178BCCB32490E58E0099EB8A /* BeebEmXModel.h */,
+				178BCCB42490E58E0099EB8A /* BeebEmXModel.mm */,
+				178BCCB12490E2880099EB8A /* BEXView.h */,
+				176F91CC249A6688008B5C6F /* BEXView.m */,
+				17A681362490F00A00E98AC0 /* BEXViewController.h */,
+				17A681352490F00A00E98AC0 /* BEXViewController.mm */,
+				17C6EFCA249FB32D000A2E04 /* BEXViewDelegate.h */,
 			);
 			name = "MacOS Interface";
 			sourceTree = "<group>";
@@ -264,6 +259,11 @@
 		20286C2AFDCF999611CA2CEA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
+				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
+				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
+				175ADC21249E1A0800A53F53 /* BeebEvent.cpp */,
+				175ADC22249E1A0800A53F53 /* BeebEvent.hpp */,
 				19E9FA09086B5C85008741A6 /* 6502core.cc */,
 				173406592487E315005588CC /* 6502core.h */,
 				199193910BF601F20025F5A0 /* Arm.cc */,
@@ -473,7 +473,7 @@
 				19E9FA15086B5C85008741A6 /* disc1770.cc in Sources */,
 				17F7FBAB249275F400B369B7 /* BeebEmCommon.cpp in Sources */,
 				175ADC23249E1A0800A53F53 /* BeebEvent.cpp in Sources */,
-				170068BC249D199100E9246B /* BeebFrame.mm in Sources */,
+				170068BC249D199100E9246B /* BeebEmXFrame.mm in Sources */,
 				17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */,
 				19E9FA17086B5C85008741A6 /* audev-macosx.cc in Sources */,
 				19E9FA18086B5C85008741A6 /* atodconv.cc in Sources */,
@@ -496,11 +496,11 @@
 				190C57C808A55D5A007CD57E /* z80dis.cc in Sources */,
 				19023C8908E3E96000BA702E /* uef.cc in Sources */,
 				1939747F08E6E5A900486851 /* userkybd.cc in Sources */,
-				178BCCB52490E58E0099EB8A /* MyModelObject.mm in Sources */,
+				178BCCB52490E58E0099EB8A /* BeebEmXModel.mm in Sources */,
 				1933BC890952FA1900C45D5A /* serial.cc in Sources */,
 				19E90D7E095B395C0004AD96 /* speech.cc in Sources */,
 				197E630009605023008AA155 /* econet.cc in Sources */,
-				176F91CD249A6688008B5C6F /* MyView.m in Sources */,
+				176F91CD249A6688008B5C6F /* BEXView.m in Sources */,
 				19005B950963E34200872367 /* scsi.cc in Sources */,
 				19172C4009653728006A4ED9 /* sasi.cc in Sources */,
 				19368F9B098397E300B05B51 /* teletext.cc in Sources */,
@@ -512,7 +512,7 @@
 				1991931D0BF5D4D20025F5A0 /* ArmDisassembler.cc in Sources */,
 				199193920BF601F20025F5A0 /* Arm.cc in Sources */,
 				195825A80D19A79F0026D58C /* printing.cc in Sources */,
-				17A681372490F00A00E98AC0 /* MyViewController.mm in Sources */,
+				17A681372490F00A00E98AC0 /* BEXViewController.mm in Sources */,
 				19CE534A0D22551100B90A78 /* beebwin.cc in Sources */,
 				178BCCB02490E1FD0099EB8A /* main.m in Sources */,
 				FC8B56531EBB94F1001DF5A9 /* discedit.cc in Sources */,

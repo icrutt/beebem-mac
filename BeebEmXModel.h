@@ -1,21 +1,21 @@
 //
-//  MyModelObject.h
+//  BeebEmXModel.h
 //  TestGUI2
 //
 //  Created by Ian Rutt on 08/06/2020.
 //  Copyright © 2020 Ian Rutt. All rights reserved.
 //
 
-#ifndef MyModelObject_h
-#define MyModelObject_h
+#ifndef BeebEmXModel_h
+#define BeebEmXModel_h
 
-//MyModelObject.h
+//BeebEmXModel.h
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 #import "TestClass.hpp"
 #import "TestGlue.hpp"
 
-@interface MyModelObject : NSObject
+@interface BeebEmXModel : NSObject
 
 {
     @private
@@ -33,4 +33,4 @@
 
 @end
 
-#endif /* MyModelObject_h */
+#endif /* BeebEmXModel_h */

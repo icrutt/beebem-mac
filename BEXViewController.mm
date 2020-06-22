@@ -1,5 +1,5 @@
 //
-//  MyViewController.m
+//  BEXViewController.m
 //  TestGUI2
 //
 //  Created by Ian Rutt on 08/06/2020.
@@ -7,18 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MyViewController.h"
-#import "MyModelObject.h"
-#import "BeebFrame.h"
+#import "BEXViewController.h"
+#import "BeebEmXModel.h"
+#import "BeebEmXFrame.h"
 
-//MyViewController.m
+//BEXViewController.m
 
-@implementation MyViewController
+@implementation BEXViewController
  
 - (id) init {
     self = [super init];
     NSLog(@"%s","In constructor");
-    self.myObj = [[MyModelObject alloc] init];
+    self.myObj = [[BeebEmXModel alloc] init];
     self.ViewOutlet.delegate = self;
     [self performSelectorInBackground:@selector(mainLoop) withObject:self];
     return self;
@@ -29,18 +29,18 @@
         char* nextFrame = [_myObj getNextFrame];
         if (self.ViewOutlet) self.ViewOutlet.delegate = self;
         if (nextFrame) {
-            BeebFrame* theNextFrame = [[BeebFrame alloc] initWithPointer:nextFrame];
+            BeebEmXFrame* theNextFrame = [[BeebEmXFrame alloc] initWithPointer:nextFrame];
             [_ViewOutlet performSelectorOnMainThread:@selector(updateFrame:) withObject:theNextFrame waitUntilDone:YES];
             [_ViewOutlet performSelectorOnMainThread:@selector(setNeedsDisplay:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
         }
     }
 }
 
-- (void) sendNewEvent:(MyView *) sender theEvent:(NSEvent *)theEvent {
+- (void) sendNewEvent:(BEXView *) sender theEvent:(NSEvent *)theEvent {
     [_myObj sendNewEvent:theEvent];
 }
  
--(void)newKeyboardEvent:(MyView *) sender theEvent:(NSEvent *)theEvent{
+-(void)newKeyboardEvent:(BEXView *) sender theEvent:(NSEvent *)theEvent{
     [_myObj sendNewEvent:theEvent];
 }
 

@@ -1,5 +1,5 @@
 //
-//  BeebFrame.m
+//  BeebEmXFrame.m
 //  BeebEm4
 //
 //  Created by Ian Rutt on 19/06/2020.
@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BeebFrame.h"
+#import "BeebEmXFrame.h"
 
-@implementation BeebFrame
+@implementation BeebEmXFrame
 
 - (id)initWithPointer:(char* )theData {
     self = [super init];

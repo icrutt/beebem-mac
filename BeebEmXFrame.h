@@ -1,15 +1,15 @@
 //
-//  BeebFrame.h
+//  BeebEmXFrame.h
 //  BeebEm4
 //
 //  Created by Ian Rutt on 19/06/2020.
 //  Copyright © 2020 Jon Welch. All rights reserved.
 //
 
-#ifndef BeebFrame_h
-#define BeebFrame_h
+#ifndef BeebEmXFrame_h
+#define BeebEmXFrame_h
 
-@interface BeebFrame : NSObject{
+@interface BeebEmXFrame : NSObject{
     char * frameData;
 }
 
@@ -19,4 +19,4 @@
 
 @end
 
-#endif /* BeebFrame_h */
+#endif /* BeebEmXFrame_h */

@@ -1,5 +1,5 @@
 //
-//  MyModelObject.m
+//  BeebEmXModel.m
 //  TestGUI2
 //
 //  Created by Ian Rutt on 08/06/2020.
@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MyModelObject.h"
+#import "BeebEmXModel.h"
 
-@implementation MyModelObject
+@implementation BeebEmXModel
 
 -(void) toLog {
     NSLog(@"%i",count);

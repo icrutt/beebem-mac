@@ -1,5 +1,5 @@
 //
-//  MyView.m
+//  BEXView.m
 //  BeebEm4
 //
 //  Created by Ian Rutt on 17/06/2020.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
-#import "MyView.h"
+#import "BEXView.h"
 
 CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
 {
@@ -48,7 +48,7 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
 
 //=================================================================================================
 
-@implementation MyView
+@implementation BEXView
  
 - (id)initWithFrame:(NSRect)frameRect
 {
@@ -78,7 +78,7 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
 }
  
 
--(void) updateFrame:(BeebFrame* )newFrame
+-(void) updateFrame:(BeebEmXFrame* )newFrame
 {
     currentData = newFrame;
 }

@@ -987,14 +987,11 @@ int width, height;
 		}
 		memcpy(m_screen, m_screen_blur, 800 * 512);
 	}
-	
-    BeebEmCommon::beebGlue->sendVideoFrame(m_screen);
-    m_screen = (char *) malloc(800 * 512);
     
 //	fprintf(stderr, "Refresh screen = %d\n", m_ScreenRefreshCount);
 	
-//    **CARBON**Rect destR;
-// **CARBON**   Rect srcR;
+Rect destR;
+Rect srcR;
 
 //	if (m_isFullScreen)
 //	{
@@ -1044,17 +1041,20 @@ int width, height;
 
 //	fprintf(stderr, "ActualScreenWidth = %d\n", ActualScreenWidth);
 
-//	if (TeletextEnabled)
-//	{
-//		srcR.top = 0;
-//		srcR.bottom = 512;
-//	}
-//	else
-//	{
-//		srcR.top = starty;
-//		srcR.bottom = starty + nlines;
-//	}
+	if (TeletextEnabled)
+	{
+		srcR.top = 0;
+		srcR.bottom = 512;
+	}
+	else
+	{
+		srcR.top = starty;
+		srcR.bottom = starty + nlines;
+	}
 	
+    BeebEmCommon::beebGlue->sendVideoFrame(m_screen);
+    m_screen = (char *) malloc(800 * 512);
+    
 //long *pPtr32;
 //long *pRPtr32;
 //short *pPtr16;
@@ -1629,6 +1629,8 @@ bool BeebWin::Initialise(char *home)
 
 	MenuOn=true;
     BeebEmLog::writeLog("Debug BeebWinInit 10\n");
+    
+    LoadDisc(0, "/Users/ianrutt/Sync/Recreational/BBC Micro/BBC Software/Games/chuckie.ssd");
 //	InitMenu();
 
 	if (PrinterEnabled)

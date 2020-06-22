@@ -14,6 +14,7 @@
 #include <mutex>
 #include "GlueInterface.h"
 #include "BeebEvent.hpp"
+#include <MacTypes.h>
 
 class TestGlue : public GlueInterface {
 private:
