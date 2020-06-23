@@ -526,6 +526,7 @@ static void RunApplicationEventLoopWithCooperativeThreadSupport(void)
                         BeebCPU->Exec6502Instruction(arm);
                     
                     mainWin->pollKeyboardEvents();
+                    mainWin->pollMenuEvents();
                     
                 }
             }

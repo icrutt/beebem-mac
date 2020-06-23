@@ -73,10 +73,22 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="File" id="iJU-dM-cf4">
                         <items>
-                            <menuItem title="Run Disc" keyEquivalent="r" id="fAh-DA-Yxf"/>
+                            <menuItem title="Run Disc" keyEquivalent="r" identifier="rund" id="fAh-DA-Yxf">
+                                <connections>
+                                    <action selector="runDisc:" target="JHv-1W-Pcp" id="nOG-aJ-VUs"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="AVJ-qc-lem"/>
-                            <menuItem title="Load Disc 0" keyEquivalent="0" id="vng-Jt-3nC"/>
-                            <menuItem title="Load Disc 1" keyEquivalent="1" id="vOE-dX-TPu"/>
+                            <menuItem title="Load Disc 0" keyEquivalent="0" id="vng-Jt-3nC">
+                                <connections>
+                                    <action selector="openDisc0:" target="JHv-1W-Pcp" id="FXZ-hx-ISc"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Load Disc 1" keyEquivalent="1" id="vOE-dX-TPu">
+                                <connections>
+                                    <action selector="openDisc1:" target="JHv-1W-Pcp" id="5w7-dp-5Df"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="aj7-gV-hnI"/>
                             <menuItem title="Load Tape" keyEquivalent="t" id="fOh-uw-IWJ"/>
                             <menuItem isSeparatorItem="YES" id="EOL-Tp-OWj"/>
@@ -84,8 +96,16 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Disc Options" id="rf5-AK-np5">
                                     <items>
-                                        <menuItem title="New Disc 0" keyEquivalent="d" id="wCx-cd-xkY"/>
-                                        <menuItem title="New Disc 1" keyEquivalent="D" id="fo0-c1-G5F"/>
+                                        <menuItem title="New Disc 0" keyEquivalent="d" id="wCx-cd-xkY">
+                                            <connections>
+                                                <action selector="newDisc0:" target="JHv-1W-Pcp" id="ojj-ky-Mj7"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="New Disc 1" keyEquivalent="D" id="fo0-c1-G5F">
+                                            <connections>
+                                                <action selector="newDisc1:" target="JHv-1W-Pcp" id="tq6-oP-8vZ"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Eject Disc 0" keyEquivalent="e" id="nsn-ym-YLk"/>
                                         <menuItem title="Eject Disc 1" keyEquivalent="E" id="9xk-Jg-mhh"/>
                                         <menuItem title="Write Protect 0" keyEquivalent="w" id="qeu-TL-B3h"/>

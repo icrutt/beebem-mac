@@ -43,4 +43,63 @@
     [_myObj sendNewEvent:theEvent];
 }
 
+//====================================================
+//                                                  //
+// Menu Items  - File Menu                          //
+//                                                  //
+//====================================================
+
+const char* getFileToOpen() {
+    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
+    [openDlg setCanChooseFiles:YES];
+    [openDlg setAllowsMultipleSelection:NO];
+    if ( [openDlg runModalForDirectory:nil file:nil] == NSOKButton )
+        {
+            const char* tmpString = [[[openDlg URLs] objectAtIndex:0] fileSystemRepresentation];
+            char* retString = new char[1024];
+            strcpy(retString, tmpString);
+            return retString;
+        } else {
+            return nullptr;
+        }
+    }
+
+- (IBAction)runDisc:(id)sender
+{
+    const char* fPath = getFileToOpen();
+    if (fPath!=nullptr) [_myObj sendMenuEvent:rund theURL:fPath];
+}
+
+- (IBAction)openDisc0:(id)sender
+{
+    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
+    [openDlg setCanChooseFiles:YES];
+    [openDlg setAllowsMultipleSelection:NO];
+    if ( [openDlg runModalForDirectory:nil file:nil] == NSOKButton )
+    {
+        NSArray* URLs = openDlg.URLs;
+    }
+}
+
+- (IBAction)openDisc1:(id)sender
+{
+    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
+    [openDlg setCanChooseFiles:YES];
+    [openDlg setAllowsMultipleSelection:NO];
+    if ( [openDlg runModalForDirectory:nil file:nil] == NSOKButton )
+    {
+        NSArray* URLs = openDlg.URLs;
+    }
+}
+
+- (IBAction)newDisc0:(id)sender
+{
+    
+}
+
+- (IBAction)newDisc1:(id)sender {
+    
+}
+
+
 @end

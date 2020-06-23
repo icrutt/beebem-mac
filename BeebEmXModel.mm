@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BeebEmXModel.h"
 #import "BeebEmXFrame.h"
+#import "BeebEmMenuEvent.hpp"
 
 @implementation BeebEmXModel
 
@@ -65,6 +66,13 @@
             NSLog(@"Unknown type of event %i",[theEvent keyCode]);
     }
 }
+
+-(void) sendMenuEvent:(BeebEmMenuItem)item theURL:(const char *)theURL
+{
+     BeebEmMenuEvent* menuEvent = new BeebEmMenuEvent(item,theURL);
+    glue->sendMenuEvent(menuEvent);
+}
+
 
 //-(void) flagsChanged:(NSEvent *)event
 //{

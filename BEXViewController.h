@@ -22,6 +22,11 @@
 @property (strong,nonatomic) IBOutlet BEXView *ViewOutlet;
 
 - (id) init;
+- (IBAction)runDisc:(id)sender;
+- (IBAction)openDisc0:(id)sender;
+- (IBAction)openDisc1:(id)sender;
+- (IBAction)newDisc0:(id)sender;
+- (IBAction)newDisc1:(id)sender;
 
 @end
 

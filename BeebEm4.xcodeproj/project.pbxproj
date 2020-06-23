@@ -18,6 +18,7 @@
 		178BCCB52490E58E0099EB8A /* BeebEmXModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCB42490E58E0099EB8A /* BeebEmXModel.mm */; };
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
 		17A681372490F00A00E98AC0 /* BEXViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 17A681352490F00A00E98AC0 /* BEXViewController.mm */; };
+		17ABFBA124A27EAF00894422 /* BeebEmMenuEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17ABFB9F24A27EAF00894422 /* BeebEmMenuEvent.cpp */; };
 		17BEDF8E248D194800A1C002 /* BeebEmLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */; };
 		17F7FBAB249275F400B369B7 /* BeebEmCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17F7FBAA249275F400B369B7 /* BeebEmCommon.cpp */; };
 		19005B950963E34200872367 /* scsi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 19005B940963E34200872367 /* scsi.cc */; };
@@ -89,6 +90,8 @@
 		179F7C922487F56B00A4D164 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Src/MainWindow.xib; sourceTree = "<group>"; };
 		17A681352490F00A00E98AC0 /* BEXViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BEXViewController.mm; sourceTree = "<group>"; };
 		17A681362490F00A00E98AC0 /* BEXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEXViewController.h; sourceTree = "<group>"; };
+		17ABFB9F24A27EAF00894422 /* BeebEmMenuEvent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BeebEmMenuEvent.cpp; sourceTree = "<group>"; };
+		17ABFBA024A27EAF00894422 /* BeebEmMenuEvent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BeebEmMenuEvent.hpp; sourceTree = "<group>"; };
 		17BEDF8B248D161500A1C002 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeebEmLog.cpp; path = Src/BeebEmLog.cpp; sourceTree = "<group>"; };
 		17BEDF8D248D194800A1C002 /* BeebEmLog.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = BeebEmLog.hpp; path = Src/BeebEmLog.hpp; sourceTree = "<group>"; };
@@ -264,6 +267,8 @@
 			children = (
 				170FAE0024A0FE4E005F2505 /* BeebEmVideoFrame.cpp */,
 				170FAE0124A0FE4E005F2505 /* BeebEmVideoFrame.hpp */,
+				17ABFB9F24A27EAF00894422 /* BeebEmMenuEvent.cpp */,
+				17ABFBA024A27EAF00894422 /* BeebEmMenuEvent.hpp */,
 				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
 				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
 				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
@@ -500,6 +505,7 @@
 				190C57C608A55D5A007CD57E /* z80_support.cc in Sources */,
 				190C57C708A55D5A007CD57E /* z80.cc in Sources */,
 				190C57C808A55D5A007CD57E /* z80dis.cc in Sources */,
+				17ABFBA124A27EAF00894422 /* BeebEmMenuEvent.cpp in Sources */,
 				19023C8908E3E96000BA702E /* uef.cc in Sources */,
 				1939747F08E6E5A900486851 /* userkybd.cc in Sources */,
 				178BCCB52490E58E0099EB8A /* BeebEmXModel.mm in Sources */,

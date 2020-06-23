@@ -11,13 +11,16 @@
 
 #include "BeebEvent.hpp"
 #include "BeebEmVideoFrame.hpp"
+#include "BeebEmMenuEvent.hpp"
 
 class GlueInterface {
 public:
-  virtual void sendVideoFrame(BeebEmVideoFrame*) = 0;
-  virtual BeebEmVideoFrame* getVideoFrame() = 0;
-  virtual void sendEvent(BeebEvent*) = 0;
-  virtual BeebEvent* getEvent() = 0;
+    virtual void sendVideoFrame(BeebEmVideoFrame*) = 0;
+    virtual BeebEmVideoFrame* getVideoFrame() = 0;
+    virtual void sendEvent(BeebEvent*) = 0;
+    virtual BeebEvent* getEvent() = 0;
+    virtual void sendMenuEvent(BeebEmMenuEvent*) = 0;
+    virtual BeebEmMenuEvent* getMenuEvent() = 0;
 };
 
 #endif /* GlueInterface_h */

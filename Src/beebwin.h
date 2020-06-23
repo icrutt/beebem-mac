@@ -90,6 +90,7 @@ public:
 	int KeyUp(int vkey);
 	int TranslateKey(int vkey, int keyUp, int &row, int &col);
     void pollKeyboardEvents();
+    void pollMenuEvents();
     
 	bool Initialise(char *home);
 

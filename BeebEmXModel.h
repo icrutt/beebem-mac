@@ -31,6 +31,7 @@
 -(void) backgroundTask;
 -(BeebEmXFrame*) getNextFrame;
 -(void) sendNewEvent:(NSEvent*)theEvent;
+-(void) sendMenuEvent:(BeebEmMenuItem)item theURL:(const char *)theURL;
 
 @end
 

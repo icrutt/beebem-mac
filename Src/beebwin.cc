@@ -1630,7 +1630,7 @@ bool BeebWin::Initialise(char *home)
 	MenuOn=true;
     BeebEmLog::writeLog("Debug BeebWinInit 10\n");
     
-    LoadDisc(0, "/Users/ianrutt/Sync/Recreational/BBC Micro/BBC Software/Games/chuckie.ssd");
+   // LoadDisc(0, "/Users/ianrutt/Sync/Recreational/BBC Micro/BBC Software/Games/chuckie.ssd");
 //	InitMenu();
 
 	if (PrinterEnabled)
@@ -3239,6 +3239,22 @@ float r, g, b;
   }
 
 }
+
+void BeebWin::pollMenuEvents() {
+    BeebEmMenuEvent* tmpEvent = BeebEmCommon::beebGlue->getMenuEvent();
+    if (!tmpEvent) return;
+    switch (tmpEvent->item())
+    {
+        case rund:
+            std::cout << "Loading disc " << tmpEvent->URL() << std::endl;
+            LoadDisc(0, (char*)tmpEvent->URL());
+            m_ShiftBooted = true;
+            ResetBeebSystem(MachineType, TubeEnabled, 0);
+            BeebKeyDown(0, 0);
+            break;
+    }
+}
+
 
 //OSStatus TCWindowCommandHandler(EventHandlerCallRef nextHandler, EventRef event, void *userData);
 //

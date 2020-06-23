@@ -21,17 +21,21 @@ private:
     std::mutex intMutex;
     std::mutex frameMutex;
     std::mutex eventMutex;
+    std::mutex menuEventMutex;
     int val;
     bool newVal;
     std::queue<int> valQueue;
     std::queue<BeebEmVideoFrame *> frameQueue;
     std::queue<BeebEvent* > eventQueue;
+    std::queue<BeebEmMenuEvent* > menuEventQueue;
 public:
     TestGlue();
     void sendVideoFrame(BeebEmVideoFrame* frame);
     BeebEmVideoFrame* getVideoFrame();
     void sendEvent(BeebEvent*);
     BeebEvent* getEvent();
+    void sendMenuEvent(BeebEmMenuEvent*);
+    BeebEmMenuEvent* getMenuEvent();
 };
 
 #endif /* TestGlue_hpp */
