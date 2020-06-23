@@ -990,8 +990,8 @@ int width, height;
     
 //	fprintf(stderr, "Refresh screen = %d\n", m_ScreenRefreshCount);
 	
-Rect destR;
-Rect srcR;
+ScreenRect destR;
+ScreenRect srcR;
 
 //	if (m_isFullScreen)
 //	{
@@ -1036,8 +1036,8 @@ Rect srcR;
 //
 //	}
 //
-//	srcR.left = 0;
-//	srcR.right = ActualScreenWidth;
+	srcR.left = 0;
+	srcR.right = ActualScreenWidth;
 
 //	fprintf(stderr, "ActualScreenWidth = %d\n", ActualScreenWidth);
 
@@ -1052,7 +1052,7 @@ Rect srcR;
 		srcR.bottom = starty + nlines;
 	}
 	
-    BeebEmCommon::beebGlue->sendVideoFrame(new BeebEmVideoFrame(m_screen,800,512));
+    BeebEmCommon::beebGlue->sendVideoFrame(new BeebEmVideoFrame(m_screen,800,512, srcR));
     m_screen = (char *) malloc(800 * 512);
     
 //long *pPtr32;

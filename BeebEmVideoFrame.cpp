@@ -8,11 +8,12 @@
 
 #include "BeebEmVideoFrame.hpp"
 
-BeebEmVideoFrame::BeebEmVideoFrame(char* theData, int xSizePixels, int ySizePixels)
+BeebEmVideoFrame::BeebEmVideoFrame(char* theData, int xDataSize, int yDataSize, ScreenRect scrR)
 {
     frameData = theData;
-    this->xSizePixels = xSizePixels;
-    this->ySizePixels = ySizePixels;
+    screen = scrR;
+    this->xDataSize = xDataSize;
+    this->yDataSize = yDataSize;
 }
 
 char* BeebEmVideoFrame::getPointer() {
@@ -21,4 +22,16 @@ char* BeebEmVideoFrame::getPointer() {
 
 char BeebEmVideoFrame::getVal(int i) {
     return frameData[i];
+}
+
+int BeebEmVideoFrame::getWidth() {
+    return screen.right - screen.left;
+}
+
+int BeebEmVideoFrame::getHeight() {
+    return screen.bottom - screen.top;
+}
+
+int BeebEmVideoFrame::getVOffset() {
+    return screen.top;
 }

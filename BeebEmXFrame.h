@@ -13,6 +13,9 @@
 
 - (char*)getPointer;
 - (char)getVal:(int)i;
+- (int)getWidth;
+- (int)getHeight;
+- (int)getVOffset;
 
 @end
 

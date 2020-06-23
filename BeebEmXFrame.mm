@@ -33,4 +33,16 @@
     return frame->getVal(i);
 }
 
+- (int)getWidth {
+    return frame->getWidth();
+}
+
+- (int)getHeight {
+    return frame->getHeight();
+}
+
+- (int)getVOffset {
+    return frame->getVOffset();
+}
+
 @end

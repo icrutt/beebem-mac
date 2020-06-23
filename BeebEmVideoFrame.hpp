@@ -11,14 +11,25 @@
 
 #include <stdio.h>
 
+struct ScreenRect {
+    int top;
+    int bottom;
+    int left;
+    int right;
+};
+
 class BeebEmVideoFrame {
 private:
     char* frameData;
-    int xSizePixels, ySizePixels;
+    ScreenRect screen;
+    int xDataSize, yDataSize;
 public:
-    BeebEmVideoFrame(char* data, int xSizePixels, int ySizePixels);
+    BeebEmVideoFrame(char* data, int xDataSize, int yDataSize, ScreenRect scrR);
     char* getPointer();
     char getVal(int i);
+    int getWidth();
+    int getHeight();
+    int getVOffset();
 };
 
 #endif /* BeebVideoFrame_hpp */

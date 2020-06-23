@@ -60,14 +60,24 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
 - (void)drawRect:(NSRect)rect
 {
     if (currentData==NULL) return;
+    NSAffineTransform* xform = [NSAffineTransform transform];
+    [xform scaleXBy:1.0 yBy:(float)(512/[currentData getHeight])];
+    [xform translateXBy:0.0 yBy:-(float)(512 - [currentData getHeight] - [currentData getVOffset])];
+    [xform concat];
     CGContextRef myBitmapContext = MyCreateBitmapContext (800, 512);
     char *bitmapData = (char*)CGBitmapContextGetData(myBitmapContext);
     int count=0;
     for (int i=0;i<(512*800);i++) {
-        for (int j=0; j<4; j++){
-        bitmapData[count] = 32*[currentData getVal:i];
-            count++;
-        }
+        int val = [currentData getVal:i];
+        bitmapData[count] = (val & 1) * 254;  // Red
+        bitmapData[count+1] = ((val >> 1) & 1) * 254; // Green
+        bitmapData[count+2] = ((val >> 2) & 1) * 254; ; // Blue
+        bitmapData[count+3] = 0; // Transparency
+        count += 4;
+//        for (int j=0; j<4; j++){
+//        bitmapData[count] = 32*[currentData getVal:i];
+//            count++;
+//        }
     }
     CGImageRef myImage2 = CGBitmapContextCreateImage (myBitmapContext);
     NSImage* myImage3 = [[NSImage alloc] initWithCGImage:myImage2 size:NSMakeSize(800,512)];
@@ -75,7 +85,6 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
                 fromRect:NSMakeRect(0.0, 0.0, 800.0, 512.0)
                operation:NSCompositeSourceOver
                 fraction:1.0];
-
 }
  
 
