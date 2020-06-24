@@ -3252,6 +3252,49 @@ void BeebWin::pollMenuEvents() {
             ResetBeebSystem(MachineType, TubeEnabled, 0);
             BeebKeyDown(0, 0);
             break;
+        case opn0:
+            LoadDisc(0, (char*)tmpEvent->URL());
+            break;
+        case opn1:
+            LoadDisc(1, (char*)tmpEvent->URL());
+            break;
+        case new0:
+            NewDiscImage(0, (char*)tmpEvent->URL());
+            break;
+        case new1:
+            NewDiscImage(1, (char*)tmpEvent->URL());
+            break;
+        case rest:
+            ResetBeebSystem(MachineType, TubeEnabled, 0);
+            break;
+        case bbcb:
+            if (MachineType != 0)
+            {
+                ResetBeebSystem(0, EnableTube, 1);
+                UpdateModelType();
+            }
+            break;
+        case bbci:
+            if (MachineType != 1)
+            {
+                ResetBeebSystem(1, EnableTube, 1);
+                UpdateModelType();
+            }
+            break;
+        case bbcp:
+            if (MachineType != 2)
+            {
+                ResetBeebSystem(2, EnableTube, 1);
+                UpdateModelType();
+            }
+            break;
+        case bbcm:
+            if (MachineType != 3)
+            {
+                ResetBeebSystem(3, EnableTube, 1);
+                UpdateModelType();
+            }
+            break;
     }
 }
 
@@ -3288,65 +3331,6 @@ void BeebWin::pollMenuEvents() {
 //
 //            break;
 //
-//        case 'rund':
-//            fprintf(stderr, "Run Disc selected\n");
-//			ReadDisc(0);
-//			m_ShiftBooted = true;
-//			ResetBeebSystem(MachineType, TubeEnabled, 0);
-//			BeebKeyDown(0, 0);
-//            break;
-//        case 'opn0':
-//            fprintf(stderr, "Load Disc 0 selected\n");
-//			ReadDisc(0);
-//            break;
-//        case 'opn1':
-//            fprintf(stderr, "Load Disc 1 selected\n");
-//			ReadDisc(1);
-//            break;
-//        case 'new0':
-//            fprintf(stderr, "New Disc 0 selected\n");
-//			NewDiscImage(0);
-//            break;
-//        case 'new1':
-//            fprintf(stderr, "New Disc 1 selected\n");
-//			NewDiscImage(1);
-//            break;
-//        case 'rest':
-//            fprintf(stderr, "Reset selected\n");
-//			ResetBeebSystem(MachineType, TubeEnabled, 0);
-//            break;
-//        case 'bbcb':
-//            fprintf(stderr, "BBC B selected\n");
-//			if (MachineType != 0)
-//			{
-//				ResetBeebSystem(0, EnableTube, 1);
-//				UpdateModelType();
-//			}
-//            break;
-//        case 'bbci':
-//            fprintf(stderr, "BBC B Integra selected\n");
-//			if (MachineType != 1)
-//			{
-//				ResetBeebSystem(1, EnableTube, 1);
-//				UpdateModelType();
-//			}
-//            break;
-//        case 'bbcp':
-//            fprintf(stderr, "BBC B Plus selected\n");
-//			if (MachineType != 2)
-//			{
-//				ResetBeebSystem(2, EnableTube, 1);
-//				UpdateModelType();
-//			}
-//            break;
-//        case 'bbcm':
-//            fprintf(stderr, "BBC Master 128 selected\n");
-//			if (MachineType != 3)
-//			{
-//				ResetBeebSystem(3, EnableTube, 1);
-//				UpdateModelType();
-//			}
-//            break;
 //        case 'tube':
 //            fprintf(stderr, "Tube selected\n");
 //			TubeEnabled = 1 - TubeEnabled;
@@ -4563,13 +4547,13 @@ void BeebWin::pollMenuEvents() {
 //	return err;
 //}
 
-void BeebWin::NewDiscImage(int Drive)
+void BeebWin::NewDiscImage(int Drive, char* path)
 
 {
-char path[256];  
+//char path[256];
 //OSErr err = noErr;
 
-	*path = 0;
+//	*path = 0;
 //	err = SaveFile(path, nil);
 
 // For some reason, Return key sticks down if replace an existing file

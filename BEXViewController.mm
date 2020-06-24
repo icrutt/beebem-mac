@@ -64,6 +64,21 @@ const char* getFileToOpen() {
         }
     }
 
+const char* getFileToSave() {
+    NSSavePanel* saveDlg = [NSSavePanel savePanel];
+    [saveDlg setCanCreateDirectories:YES];
+    [saveDlg setCanSelectHiddenExtension:YES];
+    if ( [saveDlg runModalForDirectory:nil file:nil] == NSOKButton )
+    {
+        const char* tmpString = [[saveDlg URL] fileSystemRepresentation];
+        char* retString = new char[1024];
+        strcpy(retString, tmpString);
+        return retString;
+    } else {
+        return nullptr;
+    }
+}
+
 - (IBAction)runDisc:(id)sender
 {
     const char* fPath = getFileToOpen();
@@ -72,33 +87,56 @@ const char* getFileToOpen() {
 
 - (IBAction)openDisc0:(id)sender
 {
-    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
-    [openDlg setCanChooseFiles:YES];
-    [openDlg setAllowsMultipleSelection:NO];
-    if ( [openDlg runModalForDirectory:nil file:nil] == NSOKButton )
-    {
-        NSArray* URLs = openDlg.URLs;
-    }
+    const char* fPath = getFileToOpen();
+    if (fPath!=nullptr) [_myObj sendMenuEvent:opn0 theURL:fPath];
 }
 
 - (IBAction)openDisc1:(id)sender
 {
-    NSOpenPanel* openDlg = [NSOpenPanel openPanel];
-    [openDlg setCanChooseFiles:YES];
-    [openDlg setAllowsMultipleSelection:NO];
-    if ( [openDlg runModalForDirectory:nil file:nil] == NSOKButton )
-    {
-        NSArray* URLs = openDlg.URLs;
-    }
+    const char* fPath = getFileToOpen();
+    if (fPath!=nullptr) [_myObj sendMenuEvent:opn1 theURL:fPath];
 }
 
 - (IBAction)newDisc0:(id)sender
 {
-    
+    const char* fPath = getFileToSave();
+    if (fPath!=nullptr) [_myObj sendMenuEvent:new0 theURL:fPath];
 }
 
 - (IBAction)newDisc1:(id)sender {
-    
+    const char* fPath = getFileToSave();
+    if (fPath!=nullptr) [_myObj sendMenuEvent:new1 theURL:fPath];
+}
+
+- (IBAction)BeebReset:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:rest theURL:fPath];
+}
+
+//====================================================
+//                                                  //
+// Menu Items  - Hardware Menu                      //
+//                                                  //
+//====================================================
+
+- (IBAction)BBC_B:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:bbcb theURL:fPath];
+}
+
+- (IBAction)BBC_Integra:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:bbci theURL:fPath];
+}
+
+- (IBAction)BBC_Bplus:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:bbcp theURL:fPath];
+}
+
+- (IBAction)BBC_Master:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:bbcm theURL:fPath];
 }
 
 

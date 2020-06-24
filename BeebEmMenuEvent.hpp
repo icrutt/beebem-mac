@@ -12,11 +12,16 @@
 #include <stdio.h>
 
 enum BeebEmMenuItem {
-    rund,
-    opn0,
-    opn1,
-    new0,
-    new1
+    rund,  // Run disc
+    opn0,  // Open Disc 0
+    opn1,  // Open Disc 1
+    new0,  // New Disc 0
+    new1,  // New Disc 1
+    rest,  // Reset
+    bbcb,  // BBC B
+    bbci,  // BBC B integra
+    bbcp,  // BBC B+
+    bbcm   // BBC Master
 };
 
 class BeebEmMenuEvent {

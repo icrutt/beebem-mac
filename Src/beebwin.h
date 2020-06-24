@@ -246,7 +246,7 @@ public:
 	void ResetJoystick(void);
 	void RestoreState(void);
 	void SaveState(void);
-	void NewDiscImage(int Drive);
+	void NewDiscImage(int Drive, char* thePath);
 	void EjectDiscImage(int Drive);
 	void ToggleWriteProtect(int Drive);
 	void LoadPreferences(void);

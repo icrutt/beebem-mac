@@ -27,6 +27,11 @@
 - (IBAction)openDisc1:(id)sender;
 - (IBAction)newDisc0:(id)sender;
 - (IBAction)newDisc1:(id)sender;
+- (IBAction)BeebReset:(id)sender;
+- (IBAction)BBC_B:(id)sender;
+- (IBAction)BBC_Integra:(id)sender;
+- (IBAction)BBC_Bplus:(id)sender;
+- (IBAction)BBC_Master:(id)sender;
 
 @end
 

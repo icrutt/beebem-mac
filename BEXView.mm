@@ -74,10 +74,6 @@ CGContextRef MyCreateBitmapContext (int pixelsWide, int pixelsHigh)
         bitmapData[count+2] = ((val >> 2) & 1) * 254; ; // Blue
         bitmapData[count+3] = 0; // Transparency
         count += 4;
-//        for (int j=0; j<4; j++){
-//        bitmapData[count] = 32*[currentData getVal:i];
-//            count++;
-//        }
     }
     CGImageRef myImage2 = CGBitmapContextCreateImage (myBitmapContext);
     NSImage* myImage3 = [[NSImage alloc] initWithCGImage:myImage2 size:NSMakeSize(800,512)];
