@@ -24,6 +24,7 @@ public:
     void registerGlue(GlueInterface*);
     int getValue();
     BeebEmVideoFrame* getNextFrame();
+    BeebEmMenuEvent* getMenuStatus();
 };
 
 #endif /* TestClass_hpp */

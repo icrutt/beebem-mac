@@ -15,6 +15,7 @@
 #import "TestClass.hpp"
 #import "TestGlue.hpp"
 #import "BeebEmXFrame.h"
+#import "BeebEmXMenuStatus.h"
 
 @interface BeebEmXModel : NSObject
 
@@ -30,6 +31,7 @@
 -(id) init;
 -(void) backgroundTask;
 -(BeebEmXFrame*) getNextFrame;
+-(BeebEmXMenuStatus* ) getNextMenuStatus;
 -(void) sendNewEvent:(NSEvent*)theEvent;
 -(void) sendMenuEvent:(BeebEmMenuItem)item theURL:(const char *)theURL;
 

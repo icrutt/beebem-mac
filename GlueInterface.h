@@ -21,6 +21,8 @@ public:
     virtual BeebEvent* getEvent() = 0;
     virtual void sendMenuEvent(BeebEmMenuEvent*) = 0;
     virtual BeebEmMenuEvent* getMenuEvent() = 0;
+    virtual void sendMenuStatus(BeebEmMenuEvent*) = 0;
+    virtual BeebEmMenuEvent* getMenuStatus() = 0;
 };
 
 #endif /* GlueInterface_h */

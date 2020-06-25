@@ -22,12 +22,14 @@ private:
     std::mutex frameMutex;
     std::mutex eventMutex;
     std::mutex menuEventMutex;
+    std::mutex menuStatusMutex;
     int val;
     bool newVal;
     std::queue<int> valQueue;
     std::queue<BeebEmVideoFrame *> frameQueue;
     std::queue<BeebEvent* > eventQueue;
-    std::queue<BeebEmMenuEvent* > menuEventQueue;
+    std::queue<BeebEmMenuEvent* > menuEventQueue;  // Passes menu clicks from GUI to emulator
+    std::queue<BeebEmMenuEvent* > menuStatusQueue; // Passes menu item status from Emulator to GUI
 public:
     TestGlue();
     void sendVideoFrame(BeebEmVideoFrame* frame);
@@ -36,6 +38,8 @@ public:
     BeebEvent* getEvent();
     void sendMenuEvent(BeebEmMenuEvent*);
     BeebEmMenuEvent* getMenuEvent();
+    void sendMenuStatus(BeebEmMenuEvent*);
+    BeebEmMenuEvent* getMenuStatus();
 };
 
 #endif /* TestGlue_hpp */

@@ -71,3 +71,24 @@ BeebEmMenuEvent* TestGlue::getMenuEvent() {
     }
 
 }
+
+
+void TestGlue::sendMenuStatus(BeebEmMenuEvent* event) {
+    menuStatusMutex.lock();
+    menuStatusQueue.push(event);
+    menuStatusMutex.unlock();
+}
+
+BeebEmMenuEvent* TestGlue::getMenuStatus() {
+    menuStatusMutex.lock();
+    if (menuStatusQueue.empty()) {
+        menuStatusMutex.unlock();
+        return nullptr;
+    } else {
+        BeebEmMenuEvent* tmp = menuStatusQueue.front();
+        menuStatusQueue.pop();
+        menuStatusMutex.unlock();
+        return tmp;
+    }
+
+}

@@ -11,6 +11,11 @@
         <customObject id="JHv-1W-Pcp" customClass="BEXViewController">
             <connections>
                 <outlet property="ViewOutlet" destination="EiT-Mj-1SZ" id="Lq3-GW-Xhd"/>
+                <outlet property="bbcbItem" destination="q2F-Id-udP" id="mJq-Sm-jEU"/>
+                <outlet property="bbciItem" destination="Rbs-jq-UdB" id="wQK-BA-GiL"/>
+                <outlet property="bbcmItem" destination="1Hc-44-akD" id="uyF-fw-94B"/>
+                <outlet property="bbcpItem" destination="PhA-qO-PdE" id="VI8-aS-euI"/>
+                <outlet property="theMenu" destination="FC2-H9-8gP" id="buo-E3-gGv"/>
             </connections>
         </customObject>
         <customObject id="oCU-yr-AKf" customClass="NSFontManager"/>
@@ -509,25 +514,25 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="BBC Model" id="Gm1-jk-c5J">
                                     <items>
-                                        <menuItem title="BBC Model B" id="q2F-Id-udP">
+                                        <menuItem title="BBC Model B" tag="6000" id="q2F-Id-udP">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="BBC_B:" target="JHv-1W-Pcp" id="qbg-E3-cBL"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="BBC Model B + Integra-B" id="Rbs-jq-UdB">
+                                        <menuItem title="BBC Model B + Integra-B" tag="6001" id="Rbs-jq-UdB">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="BBC_Integra:" target="JHv-1W-Pcp" id="6ox-3c-TJQ"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="BBC Model B Plus" id="PhA-qO-PdE">
+                                        <menuItem title="BBC Model B Plus" tag="6002" id="PhA-qO-PdE">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="BBC_Bplus:" target="JHv-1W-Pcp" id="gIi-I1-DKc"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="BBC Master 128" id="1Hc-44-akD">
+                                        <menuItem title="BBC Master 128" tag="6003" id="1Hc-44-akD">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="BBC_Master:" target="JHv-1W-Pcp" id="0hf-Wz-sUN"/>

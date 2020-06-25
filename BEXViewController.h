@@ -15,9 +15,16 @@
 #import "BEXView.h"  // your custom view
 #import "BeebEmXModel.h" // your custom model
 #import "BEXViewDelegate.h"
+#import "BeebEmMenuItem.h"
 
 @interface BEXViewController: NSViewController <BEXViewDelegate>
-
+{
+    IBOutlet NSMenu* theMenu;
+    IBOutlet NSMenuItem* bbcbItem;
+    IBOutlet NSMenuItem* bbciItem;
+    IBOutlet NSMenuItem* bbcpItem;
+    IBOutlet NSMenuItem* bbcmItem;
+}
 @property (strong, nonatomic) BeebEmXModel *myObj;
 @property (strong,nonatomic) IBOutlet BEXView *ViewOutlet;
 

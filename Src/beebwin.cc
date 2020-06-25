@@ -1631,7 +1631,7 @@ bool BeebWin::Initialise(char *home)
     BeebEmLog::writeLog("Debug BeebWinInit 10\n");
     
    // LoadDisc(0, "/Users/ianrutt/Sync/Recreational/BBC Micro/BBC Software/Games/chuckie.ssd");
-//	InitMenu();
+	InitMenu();
 
 	if (PrinterEnabled)
 		PrinterEnable(m_PrinterDevice);
@@ -1755,7 +1755,7 @@ void BeebWin::ResetBeebSystem(unsigned char NewModelType,unsigned char TubeStatu
 		if (DiscLoaded[1]) Load1770DiscImage(CDiscName[1],1,CDiscType[1]);
 	}
 
-//	InitMenu();
+	InitMenu();
 }
 
 void BeebWin::SetImageName(char *DiscName,char Drive,char DType) {
@@ -2963,8 +2963,8 @@ void BeebWin::SetDiscWriteProtects(void)
 	}
 }
 
-//void BeebWin::InitMenu(void)
-//{
+void BeebWin::InitMenu(void)
+{
 //
 //	//**CARBON**   SetMenuCommandIDCheck('ofwm', (m_FreezeWhenInactive) ? true : false);
 //	//**CARBON**   SetMenuCommandIDCheck('msea', (m_MenuIdSticks == 1) ? true : false);
@@ -3042,14 +3042,14 @@ void BeebWin::SetDiscWriteProtects(void)
 //
 //	UpdateEconetMenu();
 //	UpdateMonitorMenu();
-//	UpdateModelType();
+    UpdateModelType();
 //	UpdateLEDMenu();
 //	UpdateMotionBlurMenu();
 //	UpdateAMXMenu();
 //	SetTapeSpeedMenu();
 //
 //	SetRomMenu();
-//}
+}
 
 void BeebWin::UpdateAMXMenu(void)
 {
@@ -3104,10 +3104,10 @@ void BeebWin::UpdateMonitorMenu(void)
 
 void BeebWin::UpdateModelType(void)
 {
-	//**CARBON**   SetMenuCommandIDCheck('bbcb', (MachineType == 0) ? true : false);
-	//**CARBON**   SetMenuCommandIDCheck('bbci', (MachineType == 1) ? true : false);
-	//**CARBON**   SetMenuCommandIDCheck('bbcp', (MachineType == 2) ? true : false);
-	//**CARBON**   SetMenuCommandIDCheck('bbcm', (MachineType == 3) ? true : false);
+	SetMenuCommandIDCheck(bbcb, (MachineType == 0) ? true : false);
+	SetMenuCommandIDCheck(bbci, (MachineType == 1) ? true : false);
+	SetMenuCommandIDCheck(bbcp, (MachineType == 2) ? true : false);
+	SetMenuCommandIDCheck(bbcm, (MachineType == 3) ? true : false);
 }
 
 void BeebWin::UpdateEconetMenu(void)
@@ -3123,22 +3123,11 @@ void BeebWin::UpdateEconetMenu(void)
 //	//**CARBON**   SetMenuCommandIDCheck('tpno', (TapeClockSpeed == 5600) ? true : false);
 //}
 
-//**CARBON**void BeebWin::SetMenuCommandIDCheck(UInt32 commandID, bool check)
-//**CARBON**{
-//**CARBON**	MenuRef			menu = nil;
-//**CARBON**	MenuItemIndex	i;
-//**CARBON**	OSStatus		err;
-//**CARBON**
-//**CARBON**	err = GetIndMenuItemWithCommandID(nil, commandID, 1, &menu, &i);
-//**CARBON**	if (!err)
-//**CARBON**	{
-//**CARBON**		CheckMenuItem(menu,i,check);
-//**CARBON**	}
-//**CARBON**	else
-//**CARBON**	{
-//**CARBON**      fprintf(stderr, "Cannot find menu id %08x\n", (unsigned int) commandID);
-//**CARBON**	}
-//**CARBON**}
+void BeebWin::SetMenuCommandIDCheck(BeebEmMenuItem commandID, bool check)
+{
+    BeebEmMenuEvent* newEvent = new BeebEmMenuEvent(commandID, check);
+    BeebEmCommon::beebGlue->sendMenuStatus(newEvent);
+}
 
 void BeebWin::UpdatePalette(PaletteType NewPal)
 {

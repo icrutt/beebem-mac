@@ -17,6 +17,11 @@ BeebEmMenuEvent::BeebEmMenuEvent(BeebEmMenuItem item) {
     theItem = item;
 }
 
+BeebEmMenuEvent::BeebEmMenuEvent(BeebEmMenuItem item, bool isSet) {
+    theItem = item;
+    itemSet = isSet;
+}
+
 BeebEmMenuItem BeebEmMenuEvent::item() {
     return theItem;
 }
@@ -25,3 +30,6 @@ const char* BeebEmMenuEvent::URL() {
     return theURL;
 }
 
+bool BeebEmMenuEvent::isSet() {
+    return itemSet;
+}

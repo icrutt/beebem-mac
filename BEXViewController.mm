@@ -10,6 +10,7 @@
 #import "BEXViewController.h"
 #import "BeebEmXModel.h"
 #import "BeebEmVideoFrame.hpp"
+#import "BeebEmMenuEvent.hpp"
 
 //BEXViewController.m
 
@@ -31,6 +32,27 @@
         if (nextFrame !=NULL) {
             [_ViewOutlet performSelectorOnMainThread:@selector(updateFrame:) withObject:nextFrame waitUntilDone:YES];
             [_ViewOutlet performSelectorOnMainThread:@selector(setNeedsDisplay:) withObject:[NSNumber numberWithBool:YES] waitUntilDone:YES];
+        }
+        BeebEmXMenuStatus* nextStatus = [_myObj getNextMenuStatus];
+        if (nextStatus != NULL) {
+            BeebEmMenuItem t = [nextStatus eventType];
+            long state = ([nextStatus isSet]==YES) ? NSOnState : NSOffState;
+            switch (t) {
+                case bbcb:
+                    [bbcbItem setState:state];
+                    break;
+                case bbci:
+                    [bbciItem setState:state];
+                    break;
+                case bbcp:
+                    [bbcpItem setState:state];
+                    break;
+                case bbcm:
+                    [bbcmItem setState:state];
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

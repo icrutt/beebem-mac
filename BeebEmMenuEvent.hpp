@@ -10,28 +10,19 @@
 #define BeebEmMenuEvent_hpp
 
 #include <stdio.h>
-
-enum BeebEmMenuItem {
-    rund,  // Run disc
-    opn0,  // Open Disc 0
-    opn1,  // Open Disc 1
-    new0,  // New Disc 0
-    new1,  // New Disc 1
-    rest,  // Reset
-    bbcb,  // BBC B
-    bbci,  // BBC B integra
-    bbcp,  // BBC B+
-    bbcm   // BBC Master
-};
+#include "BeebEmMenuItem.h"
 
 class BeebEmMenuEvent {
 private:
     BeebEmMenuItem theItem;
     const char* theURL;
+    bool itemSet;
 public:
     BeebEmMenuEvent(BeebEmMenuItem item, const char* URL);
     BeebEmMenuEvent(BeebEmMenuItem item);
+    BeebEmMenuEvent(BeebEmMenuItem item, bool isSet);
     BeebEmMenuItem item();
+    bool isSet();
     const char* URL();
 };
 

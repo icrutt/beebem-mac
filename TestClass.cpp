@@ -43,3 +43,8 @@ BeebEmVideoFrame* TestClass::getNextFrame() {
     BeebEmVideoFrame* nextFrame = glue->getVideoFrame();
     return nextFrame;
 }
+
+BeebEmMenuEvent* TestClass::getMenuStatus() {
+    BeebEmMenuEvent* nextEvent = glue->getMenuStatus();
+    return nextEvent;
+}

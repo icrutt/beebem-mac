@@ -10,6 +10,7 @@
 #import "BeebEmXModel.h"
 #import "BeebEmXFrame.h"
 #import "BeebEmMenuEvent.hpp"
+#import "BeebEmXMenuStatus.h"
 
 @implementation BeebEmXModel
 
@@ -40,6 +41,17 @@
         return NULL;
     }
 }
+
+-(BeebEmXMenuStatus* ) getNextMenuStatus {
+    BeebEmMenuEvent* tmpEvent = tc.getMenuStatus();
+    if (tmpEvent != NULL) {
+        BeebEmXMenuStatus* nextStatus = [[BeebEmXMenuStatus alloc] initWithMenuEvent:tmpEvent];
+        return nextStatus;
+    } else {
+        return NULL;
+    }
+}
+
 
 -(void) sendNewEvent:(NSEvent *)theEvent {
     switch (theEvent.type) {

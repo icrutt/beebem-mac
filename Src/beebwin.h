@@ -158,7 +158,7 @@ public:
 	void LoadDisc(int drive, char *path);
 	void LoadTapeFromPath(char *path);
 //**CARBON**	OSStatus HandleCommand(UInt32 cmdID);
-//**CARBON**	void SetMenuCommandIDCheck(UInt32 commandID, bool check);
+    void SetMenuCommandIDCheck(BeebEmMenuItem commandID, bool check);
 
 	bool		m_frozen;
 	double		m_RealTimeTarget;
@@ -229,7 +229,7 @@ public:
 	void UpdateOptiMenu(void);
 	void CreateBeebWindow(void);
 	void CreateBitmap(void);
-//	void InitMenu(void);
+	void InitMenu(void);
 	void UpdatePalette(PaletteType NewPalete);
 	void UpdateMonitorMenu();
 	void UpdateMotionBlurMenu();
