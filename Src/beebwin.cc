@@ -2375,37 +2375,36 @@ void BeebWin::TranslateVolume(void)
 /****************************************************************************/
 void BeebWin::TranslateFDC(void)
 {
-	
-//**CARBON**	SetMenuCommandIDCheck('mbcn', NativeFDC);
-//**CARBON**	SetMenuCommandIDCheck('mbca', false);
-//**CARBON**	SetMenuCommandIDCheck('mbco', false);
-//**CARBON**	SetMenuCommandIDCheck('mbcw', false);
-
-	if (NativeFDC == false)
-	{
-		switch(FDCType)
-		{
-			case 0 :
-//**CARBON**				SetMenuCommandIDCheck('mbca', true);
-				EFDCAddr = 0xfe84;
-				EDCAddr = 0xfe80;
-				InvertTR00 = FALSE;
-				break;
-			case 1 :
-//**CARBON**				SetMenuCommandIDCheck('mbco', true);
-				EFDCAddr = 0xfe80;
-				EDCAddr = 0xfe84;
-				InvertTR00 = FALSE;
-				break;
-			case 2 :
-//**CARBON**				SetMenuCommandIDCheck('mbcw', true);
-				EFDCAddr = 0xfe84;
-				EDCAddr = 0xfe80;
-				InvertTR00 = TRUE;
-				break;
-		}
-	}
-		
+    
+    SetMenuCommandIDCheck(mbcn, NativeFDC);
+    SetMenuCommandIDCheck(mbca, false);
+    SetMenuCommandIDCheck(mbco, false);
+    SetMenuCommandIDCheck(mbcw, false);
+    
+    if (NativeFDC == false)
+    {
+        switch(FDCType)
+        {
+            case 0 :
+                SetMenuCommandIDCheck(mbca, true);
+                EFDCAddr = 0xfe84;
+                EDCAddr = 0xfe80;
+                InvertTR00 = FALSE;
+                break;
+            case 1 :
+                SetMenuCommandIDCheck(mbco, true);
+                EFDCAddr = 0xfe80;
+                EDCAddr = 0xfe84;
+                InvertTR00 = FALSE;
+                break;
+            case 2 :
+                SetMenuCommandIDCheck(mbcw, true);
+                EFDCAddr = 0xfe84;
+                EDCAddr = 0xfe80;
+                InvertTR00 = TRUE;
+                break;
+        }
+    }
 }
 
 void BeebWin::SetDriveControl(unsigned char value)
@@ -3283,6 +3282,34 @@ void BeebWin::pollMenuEvents() {
                 ResetBeebSystem(3, EnableTube, 1);
                 UpdateModelType();
             }
+            break;
+        case mbcn:
+            fprintf(stderr, "Native 8271 Controller selected\n");
+            NativeFDC = true;
+            FDCType = 0;
+            TranslateFDC();
+            ResetBeebSystem(MachineType, TubeEnabled, 0);
+            break;
+        case mbca:
+            fprintf(stderr, "Acorn 1770 Controller selected\n");
+            NativeFDC = false;
+            FDCType = 0;
+            TranslateFDC();
+            ResetBeebSystem(MachineType, TubeEnabled, 0);
+            break;
+        case mbco:
+            fprintf(stderr, "OPUS 1770 Controller selected\n");
+            NativeFDC = false;
+            FDCType = 1;
+            TranslateFDC();
+            ResetBeebSystem(MachineType, TubeEnabled, 0);
+            break;
+        case mbcw:
+            fprintf(stderr, "Watford 1770 Controller selected\n");
+            NativeFDC = false;
+            FDCType = 2;
+            TranslateFDC();
+            ResetBeebSystem(MachineType, TubeEnabled, 0);
             break;
     }
 }
@@ -4496,37 +4523,6 @@ void BeebWin::pollMenuEvents() {
 //			m_PrintScreen = true;
 //			break;
 //
-//		case 'mbcn':
-//            fprintf(stderr, "Native 8271 Controller selected\n");
-//			NativeFDC = true;
-//			FDCType = 0;
-//			TranslateFDC();
-//			ResetBeebSystem(MachineType, TubeEnabled, 0);
-//			break;
-//
-//		case 'mbca':
-//            fprintf(stderr, "Acorn 1770 Controller selected\n");
-//			NativeFDC = false;
-//			FDCType = 0;
-//			TranslateFDC();
-//			ResetBeebSystem(MachineType, TubeEnabled, 0);
-//			break;
-//
-//		case 'mbco':
-//            fprintf(stderr, "OPUS 1770 Controller selected\n");
-//			NativeFDC = false;
-//			FDCType = 1;
-//			TranslateFDC();
-//			ResetBeebSystem(MachineType, TubeEnabled, 0);
-//			break;
-//
-//		case 'mbcw':
-//            fprintf(stderr, "Watford 1770 Controller selected\n");
-//			NativeFDC = false;
-//			FDCType = 2;
-//			TranslateFDC();
-//			ResetBeebSystem(MachineType, TubeEnabled, 0);
-//			break;
 //
 //			default:
 //            err = eventNotHandledErr;

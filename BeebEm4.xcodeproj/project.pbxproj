@@ -12,8 +12,8 @@
 		1711EA4B2497C1E000422F99 /* libtinyxml2.8.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1711EA4A2497C1E000422F99 /* libtinyxml2.8.0.0.dylib */; };
 		175ADC23249E1A0800A53F53 /* BeebEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 175ADC21249E1A0800A53F53 /* BeebEvent.cpp */; };
 		176F91CD249A6688008B5C6F /* BEXView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 176F91CC249A6688008B5C6F /* BEXView.mm */; };
-		178BCCAC2490E1DC0099EB8A /* TestGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA72490E1DC0099EB8A /* TestGlue.cpp */; };
-		178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA82490E1DC0099EB8A /* TestClass.cpp */; };
+		178BCCAC2490E1DC0099EB8A /* BeebEmGlue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA72490E1DC0099EB8A /* BeebEmGlue.cpp */; };
+		178BCCAD2490E1DC0099EB8A /* BBCEmulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCA82490E1DC0099EB8A /* BBCEmulator.cpp */; };
 		178BCCB02490E1FD0099EB8A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCAF2490E1FD0099EB8A /* main.m */; };
 		178BCCB52490E58E0099EB8A /* BeebEmXModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 178BCCB42490E58E0099EB8A /* BeebEmXModel.mm */; };
 		179F7C932487F56B00A4D164 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 179F7C922487F56B00A4D164 /* MainWindow.xib */; };
@@ -80,10 +80,10 @@
 		175ADC22249E1A0800A53F53 /* BeebEvent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BeebEvent.hpp; sourceTree = "<group>"; };
 		176F91CC249A6688008B5C6F /* BEXView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BEXView.mm; sourceTree = "<group>"; };
 		178BCCA62490E1DC0099EB8A /* GlueInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlueInterface.h; sourceTree = "<group>"; };
-		178BCCA72490E1DC0099EB8A /* TestGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestGlue.cpp; sourceTree = "<group>"; };
-		178BCCA82490E1DC0099EB8A /* TestClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestClass.cpp; sourceTree = "<group>"; };
-		178BCCA92490E1DC0099EB8A /* TestGlue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestGlue.hpp; sourceTree = "<group>"; };
-		178BCCAB2490E1DC0099EB8A /* TestClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestClass.hpp; sourceTree = "<group>"; };
+		178BCCA72490E1DC0099EB8A /* BeebEmGlue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BeebEmGlue.cpp; sourceTree = "<group>"; };
+		178BCCA82490E1DC0099EB8A /* BBCEmulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BBCEmulator.cpp; sourceTree = "<group>"; };
+		178BCCA92490E1DC0099EB8A /* BeebEmGlue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BeebEmGlue.hpp; sourceTree = "<group>"; };
+		178BCCAB2490E1DC0099EB8A /* BBCEmulator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BBCEmulator.hpp; sourceTree = "<group>"; };
 		178BCCAF2490E1FD0099EB8A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		178BCCB12490E2880099EB8A /* BEXView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BEXView.h; sourceTree = "<group>"; };
 		178BCCB32490E58E0099EB8A /* BeebEmXModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeebEmXModel.h; sourceTree = "<group>"; };
@@ -271,15 +271,6 @@
 		20286C2AFDCF999611CA2CEA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				170FAE0024A0FE4E005F2505 /* BeebEmVideoFrame.cpp */,
-				170FAE0124A0FE4E005F2505 /* BeebEmVideoFrame.hpp */,
-				17ABFB9F24A27EAF00894422 /* BeebEmMenuEvent.cpp */,
-				17ABFBA024A27EAF00894422 /* BeebEmMenuEvent.hpp */,
-				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
-				178BCCA72490E1DC0099EB8A /* TestGlue.cpp */,
-				178BCCA92490E1DC0099EB8A /* TestGlue.hpp */,
-				175ADC21249E1A0800A53F53 /* BeebEvent.cpp */,
-				175ADC22249E1A0800A53F53 /* BeebEvent.hpp */,
 				19E9FA09086B5C85008741A6 /* 6502core.cc */,
 				173406592487E315005588CC /* 6502core.h */,
 				199193910BF601F20025F5A0 /* Arm.cc */,
@@ -290,12 +281,23 @@
 				17E47C1B2489012F0073DF2D /* atodconv.h */,
 				19E9FA06086B5C85008741A6 /* audev-macosx.cc */,
 				17E47C1A2489012F0073DF2D /* audev.h */,
+				178BCCA82490E1DC0099EB8A /* BBCEmulator.cpp */,
+				178BCCAB2490E1DC0099EB8A /* BBCEmulator.hpp */,
 				19E9FA0E086B5C85008741A6 /* BeebEm-main.cc */,
 				17E47C1C24890C130073DF2D /* BeebEm-main.h */,
 				17F7FBAA249275F400B369B7 /* BeebEmCommon.cpp */,
 				1730E788249172A500396BA8 /* BeebEmCommon.h */,
+				178BCCA72490E1DC0099EB8A /* BeebEmGlue.cpp */,
+				178BCCA92490E1DC0099EB8A /* BeebEmGlue.hpp */,
 				17BEDF8C248D194800A1C002 /* BeebEmLog.cpp */,
 				17BEDF8D248D194800A1C002 /* BeebEmLog.hpp */,
+				17ABFB9F24A27EAF00894422 /* BeebEmMenuEvent.cpp */,
+				17ABFBA024A27EAF00894422 /* BeebEmMenuEvent.hpp */,
+				17A9EE0124A4EFF000CB6211 /* BeebEmMenuItem.h */,
+				170FAE0024A0FE4E005F2505 /* BeebEmVideoFrame.cpp */,
+				170FAE0124A0FE4E005F2505 /* BeebEmVideoFrame.hpp */,
+				175ADC21249E1A0800A53F53 /* BeebEvent.cpp */,
+				175ADC22249E1A0800A53F53 /* BeebEvent.hpp */,
 				19E9FA0A086B5C85008741A6 /* beebmem.cc */,
 				17E47C192489012F0073DF2D /* beebmem.h */,
 				19E9FA0B086B5C85008741A6 /* beebsound.cc */,
@@ -311,6 +313,7 @@
 				173406582487E203005588CC /* discedit.h */,
 				197E62FF09605023008AA155 /* econet.cc */,
 				199E79EF088121AE006705E8 /* GetFile.cc */,
+				178BCCA62490E1DC0099EB8A /* GlueInterface.h */,
 				191CA3A309A11734006B6614 /* i86.cc */,
 				191CA3A409A11734006B6614 /* i386dasm.cc */,
 				199E7BB008816C80006705E8 /* plist.cc */,
@@ -323,8 +326,6 @@
 				19E90D7D095B395C0004AD96 /* speech.cc */,
 				19E9FA10086B5C85008741A6 /* sysvia.cc */,
 				19368F9A098397E300B05B51 /* teletext.cc */,
-				178BCCA82490E1DC0099EB8A /* TestClass.cpp */,
-				178BCCAB2490E1DC0099EB8A /* TestClass.hpp */,
 				19E9FA03086B5C85008741A6 /* tube.cc */,
 				19023C8808E3E96000BA702E /* uef.cc */,
 				1927935508818ED200C10483 /* uefstate.cc */,
@@ -335,7 +336,6 @@
 				190C57C308A55D5A007CD57E /* z80_support.cc */,
 				190C57C408A55D5A007CD57E /* z80.cc */,
 				190C57C508A55D5A007CD57E /* z80dis.cc */,
-				17A9EE0124A4EFF000CB6211 /* BeebEmMenuItem.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -503,7 +503,7 @@
 				19E9FA1F086B5C85008741A6 /* BeebEm-main.cc in Sources */,
 				17F3965424A4BAFA0057ADF5 /* BeebEmXMenuStatus.mm in Sources */,
 				19E9FA21086B5C85008741A6 /* sysvia.cc in Sources */,
-				178BCCAD2490E1DC0099EB8A /* TestClass.cpp in Sources */,
+				178BCCAD2490E1DC0099EB8A /* BBCEmulator.cpp in Sources */,
 				19E9FA22086B5C85008741A6 /* uservia.cc in Sources */,
 				19E9FA23086B5C85008741A6 /* via.cc in Sources */,
 				19E9FA24086B5C85008741A6 /* video.cc in Sources */,
@@ -525,7 +525,7 @@
 				19172C4009653728006A4ED9 /* sasi.cc in Sources */,
 				19368F9B098397E300B05B51 /* teletext.cc in Sources */,
 				191CA3A509A11734006B6614 /* i86.cc in Sources */,
-				178BCCAC2490E1DC0099EB8A /* TestGlue.cpp in Sources */,
+				178BCCAC2490E1DC0099EB8A /* BeebEmGlue.cpp in Sources */,
 				191CA3A609A11734006B6614 /* i386dasm.cc in Sources */,
 				190C3A110AA211B500DF468A /* csw.cc in Sources */,
 				1907F0690AA32D4D0098CA99 /* serialdevices.cc in Sources */,

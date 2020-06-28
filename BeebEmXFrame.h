@@ -6,6 +6,10 @@
 //  Copyright © 2020 Jon Welch. All rights reserved.
 //
 
+// ------------------------------------------------
+// Objective-C wrapper for video frame.
+// Wraps a pointer to a BeebEmVideoFrame instance.
+
 #ifndef BeebEmXFrame_h
 #define BeebEmXFrame_h
 

@@ -1,5 +1,5 @@
 //
-//  TestClass.cpp
+//  BBCEmulator.cpp
 //  TestGUI
 //
 //  Created by Ian Rutt on 07/06/2020.
@@ -9,23 +9,23 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
-#include "TestClass.hpp"
+#include "BBCEmulator.hpp"
 #include "BeebEm-main.h"
 #include "BeebEmCommon.h"
 
-TestClass::TestClass()
+BBCEmulator::BBCEmulator()
 {
     testVal = 0;
     delay = 1;
 }
 
-void TestClass::testMethod(int val)
+void BBCEmulator::testMethod(int val)
 {
     testVal = val;
     
 }
 
-void TestClass::mainLoop()
+void BBCEmulator::mainLoop()
 {
     using namespace std::chrono; // nanoseconds, system_clock, seconds
     using namespace std::this_thread; // sleep_for, sleep_until
@@ -34,17 +34,17 @@ void TestClass::mainLoop()
     
 }
 
-void TestClass::registerGlue(GlueInterface* gl){
+void BBCEmulator::registerGlue(GlueInterface* gl){
   glue = gl;
     BeebEmCommon::beebGlue = gl;
 }
 
-BeebEmVideoFrame* TestClass::getNextFrame() {
+BeebEmVideoFrame* BBCEmulator::getNextFrame() {
     BeebEmVideoFrame* nextFrame = glue->getVideoFrame();
     return nextFrame;
 }
 
-BeebEmMenuEvent* TestClass::getMenuStatus() {
+BeebEmMenuEvent* BBCEmulator::getMenuStatus() {
     BeebEmMenuEvent* nextEvent = glue->getMenuStatus();
     return nextEvent;
 }

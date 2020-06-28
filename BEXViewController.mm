@@ -1,6 +1,5 @@
 //
-//  BEXViewController.m
-//  TestGUI2
+//  BEXViewController.mm
 //
 //  Created by Ian Rutt on 08/06/2020.
 //  Copyright © 2020 Ian Rutt. All rights reserved.
@@ -49,6 +48,18 @@
                     break;
                 case bbcm:
                     [bbcmItem setState:state];
+                    break;
+                case mbcn:
+                    [mbcnItem setState:state];
+                    break;
+                case mbca:
+                    [mbcaItem setState:state];
+                    break;
+                case mbco:
+                    [mbcoItem setState:state];
+                    break;
+                case mbcw:
+                    [mbcwItem setState:state];
                     break;
                 default:
                     break;
@@ -159,6 +170,26 @@ const char* getFileToSave() {
 - (IBAction)BBC_Master:(id)sender {
     const char* fPath = "";
     [_myObj sendMenuEvent:bbcm theURL:fPath];
+}
+
+- (IBAction)disc8271:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:mbcn theURL:fPath];
+}
+
+- (IBAction)discAc1770:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:mbca theURL:fPath];
+}
+
+- (IBAction)discOp1770:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:mbco theURL:fPath];
+}
+
+- (IBAction)discWa1770:(id)sender {
+    const char* fPath = "";
+    [_myObj sendMenuEvent:mbcw theURL:fPath];
 }
 
 

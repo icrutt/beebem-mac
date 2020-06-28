@@ -1,26 +1,22 @@
 //
-//  TestGlue.cpp
+//  BeebEmGlue.cpp
 //  TestGUI2
 //
 //  Created by Ian Rutt on 09/06/2020.
 //  Copyright © 2020 Ian Rutt. All rights reserved.
 //
 
-#include "TestGlue.hpp"
+#include "BeebEmGlue.hpp"
 #include <iostream>
 
-TestGlue::TestGlue(){
-  newVal = false;
-}
-
-void TestGlue::sendVideoFrame(BeebEmVideoFrame* frame) {
+void BeebEmGlue::sendVideoFrame(BeebEmVideoFrame* frame) {
     frameMutex.lock();
     //std::cout << "Pushed video frame" << std::endl;
     frameQueue.push(frame);
     frameMutex.unlock();
 }
 
-BeebEmVideoFrame* TestGlue::getVideoFrame() {
+BeebEmVideoFrame* BeebEmGlue::getVideoFrame() {
     frameMutex.lock();
     if (frameQueue.empty()) {
         frameMutex.unlock();
@@ -33,13 +29,13 @@ BeebEmVideoFrame* TestGlue::getVideoFrame() {
     }
 }
 
-void TestGlue::sendEvent(BeebEvent* event) {
+void BeebEmGlue::sendEvent(BeebEvent* event) {
     eventMutex.lock();
     eventQueue.push(event);
     eventMutex.unlock();
 }
 
-BeebEvent* TestGlue::getEvent() {
+BeebEvent* BeebEmGlue::getEvent() {
     eventMutex.lock();
     if (eventQueue.empty()) {
         eventMutex.unlock();
@@ -52,13 +48,13 @@ BeebEvent* TestGlue::getEvent() {
     }
 }
 
-void TestGlue::sendMenuEvent(BeebEmMenuEvent* event) {
+void BeebEmGlue::sendMenuEvent(BeebEmMenuEvent* event) {
     menuEventMutex.lock();
     menuEventQueue.push(event);
     menuEventMutex.unlock();
 }
 
-BeebEmMenuEvent* TestGlue::getMenuEvent() {
+BeebEmMenuEvent* BeebEmGlue::getMenuEvent() {
     menuEventMutex.lock();
     if (menuEventQueue.empty()) {
         menuEventMutex.unlock();
@@ -69,17 +65,16 @@ BeebEmMenuEvent* TestGlue::getMenuEvent() {
         menuEventMutex.unlock();
         return tmp;
     }
-
+    
 }
 
-
-void TestGlue::sendMenuStatus(BeebEmMenuEvent* event) {
+void BeebEmGlue::sendMenuStatus(BeebEmMenuEvent* event) {
     menuStatusMutex.lock();
     menuStatusQueue.push(event);
     menuStatusMutex.unlock();
 }
 
-BeebEmMenuEvent* TestGlue::getMenuStatus() {
+BeebEmMenuEvent* BeebEmGlue::getMenuStatus() {
     menuStatusMutex.lock();
     if (menuStatusQueue.empty()) {
         menuStatusMutex.unlock();
@@ -90,5 +85,5 @@ BeebEmMenuEvent* TestGlue::getMenuStatus() {
         menuStatusMutex.unlock();
         return tmp;
     }
-
+    
 }

@@ -1,10 +1,14 @@
 //
-//  BeebEmXFrame.m
+//  BeebEmXFrame.mm
 //  BeebEm4
 //
 //  Created by Ian Rutt on 19/06/2020.
 //  Copyright © 2020 Jon Welch. All rights reserved.
 //
+
+// ------------------------------------------------
+// Objective-C wrapper for video frame.
+// Wraps a pointer to a BeebEmVideoFrame instance.
 
 #import <Foundation/Foundation.h>
 #import "BeebEmXFrame.h"

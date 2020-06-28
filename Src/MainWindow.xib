@@ -15,6 +15,10 @@
                 <outlet property="bbciItem" destination="Rbs-jq-UdB" id="wQK-BA-GiL"/>
                 <outlet property="bbcmItem" destination="1Hc-44-akD" id="uyF-fw-94B"/>
                 <outlet property="bbcpItem" destination="PhA-qO-PdE" id="VI8-aS-euI"/>
+                <outlet property="mbcaItem" destination="hAA-lj-CvT" id="xEL-3N-s9o"/>
+                <outlet property="mbcnItem" destination="UM0-Dp-Z5r" id="itG-qL-d6Z"/>
+                <outlet property="mbcoItem" destination="q5s-TG-Inn" id="lZ3-dh-iyM"/>
+                <outlet property="mbcwItem" destination="Cv4-pX-WqS" id="5mt-9A-Zp6"/>
                 <outlet property="theMenu" destination="FC2-H9-8gP" id="buo-E3-gGv"/>
             </connections>
         </customObject>
@@ -506,6 +510,54 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Sound" id="TnF-MA-v7r">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Sound" id="Vdi-d0-Nwo">
+                        <items>
+                            <menuItem title="Sound On/Off" keyEquivalent="m" id="SDF-tG-7ka"/>
+                            <menuItem title="Speech On/Off" id="YUz-4r-sFO">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Sound Chip" id="gBf-T4-1el">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="yau-l1-XT5"/>
+                            <menuItem title="Sound Effects" id="0KS-T7-TZt">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Sound Effects" id="fiH-6t-uDy">
+                                    <items>
+                                        <menuItem title="Cassette Relay" id="wZH-UY-Y0n">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Cassette Input" id="Voc-6d-Fx4">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Disc Drives" id="SEZ-Sb-wpZ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="4OX-uF-KVm"/>
+                            <menuItem title="Full Volume" id="21m-mY-1s7">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="High Volume" id="zSL-ab-qxJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Medium Volume" id="Tca-SR-1jZ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Low Volume" id="U3e-C8-Pol">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="0xj-f4-pGo"/>
+                            <menuItem title="Exponential Volume" id="HGD-ND-45v">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Hardware" id="bHM-lO-4O5">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Hardware" id="hM6-3D-ipM">
@@ -547,15 +599,27 @@
                                     <items>
                                         <menuItem title="Native 8271" id="UM0-Dp-Z5r">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="disc8271:" target="JHv-1W-Pcp" id="rba-OW-qNg"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Acorn 1770" id="hAA-lj-CvT">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="discAc1770:" target="JHv-1W-Pcp" id="JiL-kc-qSU"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Opus 1770" id="q5s-TG-Inn">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="discOp1770:" target="JHv-1W-Pcp" id="D3v-DV-OEt"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Watford 1770" id="Cv4-pX-WqS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="discWa1770:" target="JHv-1W-Pcp" id="N7K-hq-nGh"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
@@ -580,7 +644,52 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Allow ROM writes" id="j2U-lI-AW6">
                                     <items>
-                                        <menuItem title="Item" id="UzZ-j6-chj">
+                                        <menuItem title="0 Empty" id="UzZ-j6-chj">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="1 Empty" id="wJ6-pU-Lbm">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="2 Empty" id="tBQ-oX-pyt">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="3 Empty" id="H0Y-rF-yWs">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="4 Empty" id="IqD-iZ-Jiv">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="5 Empty" id="aXe-iN-vtl">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="6 Empty" id="SHm-Jp-9k5">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="7 Empty" id="hdk-bh-1qx">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="8 Empty" id="Pg8-EH-plI">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="9 Empty" id="JDd-Zw-jNd">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="a Empty" id="JkS-jR-QJB">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="b Empty" id="vSP-PY-rAZ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="c Empty" id="ppS-O5-kj5">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="d Empty" id="83n-Y4-SHc">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="e Empty" id="fhn-e5-YCo">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="f Empty" id="AMu-tr-72E">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                     </items>
@@ -594,7 +703,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Undocumented Instructions" id="dSu-dJ-i1P">
                                     <items>
-                                        <menuItem title="Item" id="dtu-gR-34p">
+                                        <menuItem title="Documented Only" id="dtu-gR-34p">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Common Extras" id="zBR-Xy-OSK">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Full Set" id="E8L-XG-CBO">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                     </items>
@@ -612,7 +727,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Teletext Adapter" id="6TO-rU-PWw">
                                     <items>
-                                        <menuItem title="Item" id="qJO-SE-U2E">
+                                        <menuItem title="Teletext Adapter On/Off" id="qJO-SE-U2E">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Use Data Files" id="DdN-X5-g8P">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Use UDP Server" id="LVy-B3-nm0">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                     </items>

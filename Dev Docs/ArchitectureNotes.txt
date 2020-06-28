@@ -1,19 +1,5 @@
 List of source files, with notes on dependencies, etc.
 ======================================================
-
-discedit.cc
-    Handles DFS import/export (?)
-    No GUI dpendencies
-    Libraries: stdio.h, stdlib.h, string.h, ctype.h
-    
-6502code.cc
-    Implements core 6502 functionality
-    Standard libs: stdio.h, stdlib.h
-    Depends: beebmem.h, beebsound.h, disc8271.h, sysvia.h, uservia.h, video.h, atodconv.h, main.h, disc1770.h, serial.h"
-        tube.h, debug.h, uefstate.h, z80mem.h, z80.h, econet.h, Arm.h
-
-main.cc
-    Seems to be the code that deals with the Carbon interface
     
 List of menu references:
 

@@ -19,7 +19,11 @@ enum BeebEmMenuItem {
     bbcb,  // BBC B
     bbci,  // BBC B integra
     bbcp,  // BBC B+
-    bbcm   // BBC Master
+    bbcm,  // BBC Master
+    mbcn,  // Native 8271 Controller
+    mbca,  // Acorn 1770 Controller
+    mbco,  // OPUS 1770 Controller
+    mbcw   // Watford 1770 Controller
 };
 
 #endif /* BeebEmMenuItem_h */
